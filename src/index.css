@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: #F8F6F2;
+  color: #2B2B2B;
+  font-family: 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #C9A669;
+  color: #fff;
+}
+
+/* Custom thin scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #F8F6F2; }
+::-webkit-scrollbar-thumb { background: #E4D3A6; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #C9A669; }
+
+.eyebrow {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #9C7B3D;
+  font-weight: 600;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #C9A669, transparent);
+}
+
+/* Aperture blade signature loader / reveal element */
+.aperture {
+  --size: 64px;
+  width: var(--size);
+  height: var(--size);
+  position: relative;
+}
+.aperture .blade {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid #C9A669;
+  border-radius: 9999px;
+  clip-path: polygon(50% 50%, 50% 0%, 100% 0%);
+  transform-origin: 50% 50%;
+  animation: aperture-spin 2.6s cubic-bezier(0.65,0,0.35,1) infinite;
+  opacity: 0.85;
+}
+.aperture .blade:nth-child(1){ transform: rotate(0deg); animation-delay: 0s; }
+.aperture .blade:nth-child(2){ transform: rotate(60deg); animation-delay: 0.05s; }
+.aperture .blade:nth-child(3){ transform: rotate(120deg); animation-delay: 0.1s; }
+.aperture .blade:nth-child(4){ transform: rotate(180deg); animation-delay: 0.15s; }
+.aperture .blade:nth-child(5){ transform: rotate(240deg); animation-delay: 0.2s; }
+.aperture .blade:nth-child(6){ transform: rotate(300deg); animation-delay: 0.25s; }
+
+@keyframes aperture-spin {
+  0%, 100% { transform: scale(1) rotate(var(--r,0deg)); }
+  50% { transform: scale(0.55) rotate(calc(var(--r,0deg) + 20deg)); }
+}
+
+.text-balance { text-wrap: balance; }
+
+/* Lenis smooth scroll helper class */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.lg-caption { font-family: 'Manrope', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.75rem; }

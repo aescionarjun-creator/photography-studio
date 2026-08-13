@@ -1,0 +1,190 @@
+import { Link } from "react-router-dom";
+import Reveal from "../components/Reveal";
+import SectionHeading from "../components/SectionHeading";
+import { services } from "../data/services";
+
+export default function Services() {
+  return (
+    <main className="min-h-screen bg-[#F8F6F1]">
+
+      {/* ========================================
+          SERVICES INTRO SECTION
+      ======================================== */}
+
+      <section className="pt-40 pb-20 max-w-7xl mx-auto px-6 lg:px-10">
+
+        <SectionHeading
+          eyebrow="WHAT WE OFFER"
+          title="Twenty crafts, one studio standard."
+          desc="Whether it's a three-day wedding or a single passport photo, every service carries the same attention to light, timing and detail."
+        />
+
+      </section>
+
+
+      {/* ========================================
+          SERVICES CARDS
+      ======================================== */}
+
+      <section className="max-w-7xl mx-auto px-6 lg:px-10 pb-28">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          {services.map((service, index) => (
+
+            <Reveal
+              key={service.slug}
+              delay={(index % 6) * 0.06}
+            >
+
+              <article
+                className="
+                  group
+                  bg-white
+                  rounded-md
+                  overflow-hidden
+                  border
+                  border-[#E8E2D7]
+                  shadow-sm
+                  h-full
+                  flex
+                  flex-col
+                  transition-all
+                  duration-500
+                  hover:-translate-y-2
+                  hover:shadow-xl
+                "
+              >
+
+                {/* ========================================
+                    SERVICE IMAGE
+                ======================================== */}
+
+                <div className="relative aspect-[4/3] overflow-hidden bg-[#EDE9E1]">
+
+                  <img
+                    src={service.image}
+                    alt={service.name}
+                    loading="lazy"
+                    className="
+                      w-full
+                      h-full
+                      object-cover
+                      transition-transform
+                      duration-700
+                      ease-out
+                      group-hover:scale-110
+                    "
+                  />
+
+                  {/* Image Hover Overlay */}
+
+                  <div
+                    className="
+                      absolute
+                      inset-0
+                      bg-black/0
+                      group-hover:bg-black/10
+                      transition-all
+                      duration-500
+                    "
+                  />
+
+                </div>
+
+
+                {/* ========================================
+                    SERVICE CONTENT
+                ======================================== */}
+
+                <div className="p-7 flex flex-col flex-1">
+
+                  <h3
+                    className="
+                      font-display
+                      text-xl
+                      text-[#252525]
+                      mb-3
+                    "
+                  >
+                    {service.name}
+                  </h3>
+
+
+                  <p
+                    className="
+                      text-sm
+                      text-[#707070]
+                      leading-relaxed
+                      flex-1
+                    "
+                  >
+                    {service.blurb}
+                  </p>
+
+
+                  {/* ========================================
+                      ACTION BUTTONS
+                  ======================================== */}
+
+                  <div className="flex items-center gap-4 mt-7">
+
+                    <Link
+                      to="/portfolio"
+                      className="
+                        text-xs
+                        font-semibold
+                        tracking-[0.12em]
+                        uppercase
+                        text-[#252525]
+                        hover:text-[#A27B35]
+                        transition-colors
+                        duration-300
+                      "
+                    >
+                      Learn More
+                    </Link>
+
+
+                    <span
+                      className="
+                        w-5
+                        h-px
+                        bg-[#D8D0C2]
+                      "
+                    />
+
+
+                    <Link
+                      to="/contact"
+                      className="
+                        text-xs
+                        font-semibold
+                        tracking-[0.12em]
+                        uppercase
+                        text-[#A27B35]
+                        hover:text-[#76571F]
+                        transition-colors
+                        duration-300
+                      "
+                    >
+                      Book Now
+                    </Link>
+
+                  </div>
+
+                </div>
+
+              </article>
+
+            </Reveal>
+
+          ))}
+
+        </div>
+
+      </section>
+
+    </main>
+  );
+}
