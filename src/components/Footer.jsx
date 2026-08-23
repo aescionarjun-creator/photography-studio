@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaWhatsapp, FaInstagram, FaFacebookF, FaPinterestP } from "react-icons/fa";
+import Logomark from "./Logomark";
 
 export default function Footer() {
   return (
@@ -7,9 +8,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 rounded-full border border-gold flex items-center justify-center">
-              <span className="w-2.5 h-2.5 rounded-full bg-gold" />
-            </span>
+            <div className="w-8 h-8 rounded-lg bg-white p-0.5 flex items-center justify-center shadow-sm">
+              <Logomark size={28} />
+            </div>
             <span className="font-display text-lg tracking-[0.18em] text-bg-soft">SUBASH STUDIO</span>
           </div>
           <p className="text-sm leading-relaxed max-w-sm text-bg-soft/60">

@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingButtons from "./components/FloatingButtons";
 import { useLenis, scrollToTop } from "./lib/useLenis";
 
+// Public Pages
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -15,6 +16,26 @@ import Films from "./pages/Films";
 import Branches from "./pages/Branches";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+
+// Admin Contexts & Components
+import { ToastProvider } from "./admin/context/ToastContext";
+import { AdminAuthProvider, ProtectedAdminRoute } from "./admin/context/AdminAuthContext";
+import { AdminDataProvider } from "./admin/context/AdminDataContext";
+import AdminLayout from "./admin/components/AdminLayout";
+
+// Admin Pages
+import AdminLogin from "./admin/pages/AdminLogin";
+import Dashboard from "./admin/pages/Dashboard";
+import Bookings from "./admin/pages/Bookings";
+import Enquiries from "./admin/pages/Enquiries";
+import GalleryManager from "./admin/pages/GalleryManager";
+import PortfolioManager from "./admin/pages/PortfolioManager";
+import ServicesManager from "./admin/pages/ServicesManager";
+import FilmsManager from "./admin/pages/FilmsManager";
+import BranchesManager from "./admin/pages/BranchesManager";
+import TestimonialsManager from "./admin/pages/TestimonialsManager";
+import WebsiteContent from "./admin/pages/WebsiteContent";
+import Settings from "./admin/pages/Settings";
 
 const pageVariants = {
   initial: { opacity: 0, y: 24 },
@@ -36,13 +57,8 @@ function PageWrapper({ children }) {
   );
 }
 
-export default function App() {
-  useLenis();
+function PublicWebsiteLayout() {
   const location = useLocation();
-
-  useEffect(() => {
-    scrollToTop();
-  }, [location.pathname]);
 
   return (
     <div className="min-h-screen flex flex-col bg-bg text-ink">
@@ -63,5 +79,63 @@ export default function App() {
       <Footer />
       <FloatingButtons />
     </div>
+  );
+}
+
+export default function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  // Only run Lenis smooth scroll on public pages
+  if (!isAdminRoute) {
+    useLenis();
+  }
+
+  useEffect(() => {
+    scrollToTop();
+  }, [location.pathname]);
+
+  return (
+    <ToastProvider>
+      <AdminAuthProvider>
+        <AdminDataProvider>
+          <Routes>
+            {/* Admin Login (Public) */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+
+            {/* Admin Redirect */}
+            <Route
+              path="/admin"
+              element={<Navigate to="/admin/dashboard" replace />}
+            />
+
+            {/* Protected Admin Routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedAdminRoute>
+                  <AdminLayout />
+                </ProtectedAdminRoute>
+              }
+            >
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="bookings" element={<Bookings />} />
+              <Route path="enquiries" element={<Enquiries />} />
+              <Route path="gallery" element={<GalleryManager />} />
+              <Route path="portfolio" element={<PortfolioManager />} />
+              <Route path="services" element={<ServicesManager />} />
+              <Route path="films" element={<FilmsManager />} />
+              <Route path="branches" element={<BranchesManager />} />
+              <Route path="testimonials" element={<TestimonialsManager />} />
+              <Route path="content" element={<WebsiteContent />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+
+            {/* Public Website Routes (Catch-all for non-admin) */}
+            <Route path="/*" element={<PublicWebsiteLayout />} />
+          </Routes>
+        </AdminDataProvider>
+      </AdminAuthProvider>
+    </ToastProvider>
   );
 }

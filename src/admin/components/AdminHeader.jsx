@@ -1,0 +1,321 @@
+import { useState, useRef, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Menu,
+  Bell,
+  Search,
+  ExternalLink,
+  ChevronDown,
+  User,
+  Settings as SettingsIcon,
+  LogOut,
+  RefreshCw,
+  Plus,
+  Calendar,
+  MessageSquare,
+  Sparkles,
+} from "lucide-react";
+import { useAdminAuth } from "../context/AdminAuthContext";
+import { useAdminData } from "../context/AdminDataContext";
+import { useToast } from "../context/ToastContext";
+
+export default function AdminHeader({ onMobileMenuClick }) {
+  const { adminUser, logout } = useAdminAuth();
+  const { bookings, enquiries, resetAllDemoData } = useAdminData();
+  const { addToast } = useToast();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const profileRef = useRef(null);
+  const notifRef = useRef(null);
+
+  // Close menus on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileMenuOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotificationsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Compute Page Title from location
+  const getPageMeta = () => {
+    const path = location.pathname;
+    switch (path) {
+      case "/admin/dashboard":
+        return { title: "Studio Dashboard", subtitle: "Real-time overview of bookings & activity" };
+      case "/admin/bookings":
+        return { title: "Shoot Bookings", subtitle: "Manage client bookings, status & schedules" };
+      case "/admin/enquiries":
+        return { title: "Client Enquiries", subtitle: "Direct client inquiries and consultation leads" };
+      case "/admin/gallery":
+        return { title: "Gallery Management", subtitle: "Organize client images, categories & featured photos" };
+      case "/admin/portfolio":
+        return { title: "Portfolio Projects", subtitle: "Showcase curated studio wedding & couple stories" };
+      case "/admin/services":
+        return { title: "Studio Services", subtitle: "Manage photography packages, descriptions & rates" };
+      case "/admin/films":
+        return { title: "Cinematic Films", subtitle: "Curate 4K wedding films, teasers and trailers" };
+      case "/admin/branches":
+        return { title: "Studio Branches", subtitle: "Manage Kalladaikurichi, Tirunelveli & Tenkasi locations" };
+      case "/admin/testimonials":
+        return { title: "Client Testimonials", subtitle: "Review and feature client reviews & star ratings" };
+      case "/admin/content":
+        return { title: "Website Content CMS", subtitle: "Update public website hero text, about story & contact" };
+      case "/admin/settings":
+        return { title: "Admin & Studio Settings", subtitle: "Configure account security, preferences and studio details" };
+      default:
+        return { title: "Admin Portal", subtitle: "SUBASH STUDIO Management" };
+    }
+  };
+
+  const pageMeta = getPageMeta();
+
+  // Recent notifications from bookings & enquiries
+  const unreadEnquiries = enquiries.filter((e) => e.status === "New");
+  const recentBookings = bookings.slice(0, 3);
+  const totalNotifications = unreadEnquiries.length + recentBookings.length;
+
+  const handleResetData = () => {
+    if (window.confirm("Reset all admin data back to initial demo seeds?")) {
+      resetAllDemoData();
+      addToast("Demo data successfully reset to initial state.", "info");
+      setProfileMenuOpen(false);
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/admin/bookings?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+    }
+  };
+
+  return (
+    <header className="h-20 bg-white/90 backdrop-blur-md border-b border-[#E7E0D2] sticky top-0 z-20 px-4 sm:px-8 flex items-center justify-between transition-all">
+      {/* Left Title & Mobile Trigger */}
+      <div className="flex items-center gap-4">
+        <button
+          type="button"
+          onClick={onMobileMenuClick}
+          className="lg:hidden p-2 rounded-xl text-[#2B2B2B] hover:bg-[#F8F6F2] border border-[#E7E0D2]"
+          aria-label="Open Sidebar Menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        <div>
+          <h1 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B] tracking-tight">
+            {pageMeta.title}
+          </h1>
+          <p className="text-xs text-[#6F6A62] hidden sm:block">
+            {pageMeta.subtitle}
+          </p>
+        </div>
+      </div>
+
+      {/* Right Controls */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Search Bar */}
+        <form onSubmit={handleSearchSubmit} className="hidden md:flex relative items-center">
+          <Search className="w-4 h-4 absolute left-3 text-[#6F6A62] pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Search bookings, clients..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-48 lg:w-64 pl-9 pr-4 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669] focus:bg-white transition-all"
+          />
+        </form>
+
+        {/* Quick Add Booking */}
+        <Link
+          to="/admin/bookings?new=true"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold shadow-sm transition-all active:scale-95"
+        >
+          <Plus className="w-4 h-4 text-[#E4D3A6]" />
+          <span>New Shoot</span>
+        </Link>
+
+        {/* Live Site Link */}
+        <a
+          href="/"
+          target="_blank"
+          rel="noreferrer"
+          className="p-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors hidden sm:flex items-center gap-1.5 text-xs font-medium"
+          title="Open Public Website"
+        >
+          <ExternalLink className="w-4 h-4 text-[#9C7B3D]" />
+          <span className="hidden lg:inline">Live Site</span>
+        </a>
+
+        {/* Notification Bell */}
+        <div className="relative" ref={notifRef}>
+          <button
+            type="button"
+            onClick={() => setNotificationsOpen(!notificationsOpen)}
+            className="relative p-2.5 rounded-xl border border-[#E7E0D2] text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors"
+            aria-label="View notifications"
+          >
+            <Bell className="w-4 h-4" />
+            {unreadEnquiries.length > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#C9A669] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow">
+                {unreadEnquiries.length}
+              </span>
+            )}
+          </button>
+
+          {notificationsOpen && (
+            <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-4 z-50 animate-fadeIn">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E7E0D2]">
+                <div className="flex items-center gap-2">
+                  <h4 className="font-display font-semibold text-sm text-[#2B2B2B]">
+                    Studio Activity
+                  </h4>
+                  {unreadEnquiries.length > 0 && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900">
+                      {unreadEnquiries.length} New Enquiries
+                    </span>
+                  )}
+                </div>
+                <Link
+                  to="/admin/enquiries"
+                  onClick={() => setNotificationsOpen(false)}
+                  className="text-xs text-[#9C7B3D] hover:underline font-medium"
+                >
+                  View All
+                </Link>
+              </div>
+
+              <div className="divide-y divide-[#F8F6F2] max-h-72 overflow-y-auto mt-2">
+                {unreadEnquiries.length > 0 ? (
+                  unreadEnquiries.map((enq) => (
+                    <div
+                      key={enq.id}
+                      onClick={() => {
+                        navigate("/admin/enquiries");
+                        setNotificationsOpen(false);
+                      }}
+                      className="py-2.5 px-2 hover:bg-[#FDFBF7] rounded-xl cursor-pointer transition-colors"
+                    >
+                      <div className="flex items-start justify-between">
+                        <span className="font-medium text-xs text-[#2B2B2B] flex items-center gap-1.5">
+                          <MessageSquare className="w-3.5 h-3.5 text-[#9C7B3D]" />
+                          {enq.name}
+                        </span>
+                        <span className="text-[10px] text-[#8E867B]">
+                          {enq.receivedDate}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-[#6F6A62] mt-1 line-clamp-1">
+                        {enq.message}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <div className="py-6 text-center text-xs text-[#6F6A62]">
+                    No new enquiries at this time.
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Profile Dropdown */}
+        <div className="relative" ref={profileRef}>
+          <button
+            type="button"
+            onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+            className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl border border-[#E7E0D2] hover:bg-[#F8F6F2] transition-colors"
+          >
+            <div className="w-8 h-8 rounded-lg bg-[#2B2B2B] text-[#E4D3A6] flex items-center justify-center font-display font-semibold text-xs overflow-hidden">
+              {adminUser?.avatar ? (
+                <img
+                  src={adminUser.avatar}
+                  alt={adminUser.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                adminUser?.name?.charAt(0) || "S"
+              )}
+            </div>
+            <div className="hidden md:block text-left">
+              <p className="text-xs font-semibold text-[#2B2B2B] leading-none">
+                {adminUser?.name || "Admin"}
+              </p>
+              <p className="text-[10px] text-[#8E867B] mt-0.5 leading-none">
+                {adminUser?.role || "Director"}
+              </p>
+            </div>
+            <ChevronDown className="w-3.5 h-3.5 text-[#6F6A62]" />
+          </button>
+
+          {profileMenuOpen && (
+            <div className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-2 z-50 animate-fadeIn">
+              <div className="px-3 py-2 border-b border-[#E7E0D2]/60 mb-1">
+                <p className="text-xs font-bold text-[#2B2B2B]">
+                  {adminUser?.name || "Subash Admin"}
+                </p>
+                <p className="text-[11px] text-[#6F6A62] truncate">
+                  {adminUser?.email || "subashstudio009@gmail.com"}
+                </p>
+              </div>
+
+              <Link
+                to="/admin/settings"
+                onClick={() => setProfileMenuOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2 text-xs text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-xl transition-colors font-medium"
+              >
+                <User className="w-4 h-4 text-[#9C7B3D]" />
+                <span>Admin Profile</span>
+              </Link>
+
+              <Link
+                to="/admin/settings"
+                onClick={() => setProfileMenuOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2 text-xs text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-xl transition-colors font-medium"
+              >
+                <SettingsIcon className="w-4 h-4 text-[#9C7B3D]" />
+                <span>Studio Settings</span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={handleResetData}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-xl transition-colors font-medium text-left"
+              >
+                <RefreshCw className="w-4 h-4 text-amber-600" />
+                <span>Reset Demo Data</span>
+              </button>
+
+              <div className="pt-1 border-t border-[#E7E0D2]/60 mt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setProfileMenuOpen(false);
+                    logout();
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-xl transition-colors font-medium text-left"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Log Out</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}
