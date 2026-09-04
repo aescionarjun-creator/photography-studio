@@ -7,6 +7,7 @@ import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import FloralCorners from "../components/FloralCorners";
+import WhyChooseUs from "../components/WhyChooseUs";
 import { img } from "../data/images";
 import { services } from "../data/services";
 import { portfolioProjects } from "../data/portfolio";
@@ -27,9 +28,9 @@ export default function Home() {
       <section className="relative w-full overflow-hidden bg-gradient-to-br from-bg-soft via-bg to-bg-soft pt-[84px]">
         <FloralCorners />
 
-        <div className="relative max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_1fr] min-h-[calc(100vh-84px)]">
+        <div className="relative max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_1fr] items-center">
           {/* Left — copy */}
-          <div className="relative z-10 flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-16 lg:py-0">
+          <div className="relative z-10 flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-16 lg:py-12">
             <motion.p
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -126,15 +127,16 @@ export default function Home() {
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
-            className="relative min-h-[420px] lg:min-h-0"
+            className="relative w-full aspect-square overflow-hidden"
+            style={{ aspectRatio: "1 / 1" }}
           >
             <img
               src="/images/storefront.jpg"
               alt="SUBASH STUDIO storefront"
-              className="absolute inset-0 w-full  object-cover"
+              className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-bg-soft/30 lg:to-bg-soft/0" />
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg-soft to-transparent hidden lg:block" />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-bg-soft/30 lg:to-bg-soft/0 pointer-events-none" />
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg-soft to-transparent hidden lg:block pointer-events-none" />
           </motion.div>
         </div>
       </section>
@@ -153,6 +155,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* WHY CHOOSE US */}
+      <WhyChooseUs />
 
       {/* INTRO / ABOUT TEASER */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-28 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
