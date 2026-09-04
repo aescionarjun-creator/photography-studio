@@ -5,10 +5,24 @@ import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import { img } from "../data/images";
-import { films } from "../data/films";
+import { films as defaultFilms } from "../data/films";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
 export default function Films() {
+  const { films: adminFilms } = useAdminData();
   const [active, setActive] = useState(null);
+
+  const filmsList = (adminFilms && adminFilms.length > 0
+    ? adminFilms.filter((f) => f.published !== false)
+    : defaultFilms
+  ).map((f) => ({
+    ...f,
+    title: f.title || "Subash Studio Film",
+    type: f.type || f.category || "Wedding Film",
+    duration: f.duration || "Highlight",
+    poster: f.posterImage || f.thumbnail || f.image || (f.seed ? img(f.seed, 900, 506) : "/public/images/films.png"),
+    videoUrl: f.videoUrl || f.youtubeUrl || "",
+  }));
 
   return (
     <>
@@ -29,13 +43,13 @@ export default function Films() {
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-24">
         <SectionHeading eyebrow="Watch" title="Recent cinematic work." align="center" />
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {films.map((f, i) => (
+          {filmsList.map((f, i) => (
             <Reveal key={f.id} delay={(i % 4) * 0.08}>
               <button
                 onClick={() => setActive(f)}
                 className="group relative block w-full aspect-video rounded-md overflow-hidden shadow-card"
               >
-                <img src={img(f.seed, 900, 506)} alt={f.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src={f.poster} alt={f.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-ink/45 group-hover:bg-ink/55 transition-colors duration-400" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="w-16 h-16 rounded-full bg-bg-soft/90 flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-400">
@@ -72,7 +86,7 @@ export default function Films() {
               className="w-full max-w-3xl"
             >
               <div className="aspect-video rounded-md overflow-hidden shadow-2xl bg-ink flex items-center justify-center relative">
-                <img src={img(active.seed, 1000, 563)} alt={active.title} className="w-full h-full object-cover opacity-60" />
+                <img src={active.poster} alt={active.title} className="w-full h-full object-cover opacity-60" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center px-6">
                   <span className="w-16 h-16 rounded-full bg-bg-soft/90 flex items-center justify-center">
                     <Play size={22} className="text-ink ml-1" fill="currentColor" />

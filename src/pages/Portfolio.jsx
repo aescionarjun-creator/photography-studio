@@ -2,25 +2,45 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
-import { portfolioCategories, portfolioProjects } from "../data/portfolio";
+import {
+  portfolioCategories as defaultCategories,
+  portfolioProjects as defaultProjects,
+} from "../data/portfolio";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
 export default function Portfolio() {
+  const { portfolio } = useAdminData();
   const [active, setActive] = useState("All");
   const [lightbox, setLightbox] = useState(null);
 
-  // ==========================================
-  // FILTER PORTFOLIO
-  // ==========================================
+  const projects = useMemo(() => {
+    if (portfolio && portfolio.length > 0) {
+      return portfolio
+        .filter((item) => item.published !== false)
+        .map((item) => ({
+          ...item,
+          image: item.coverImage || item.image || item.imageUrl || "/public/images/gallery/wedding-1.jpg",
+          title: item.title || item.client || item.category || "Subash Studio",
+          excerpt: item.description || item.excerpt || item.location || "",
+        }));
+    }
+    return defaultProjects;
+  }, [portfolio]);
+
+  const categories = useMemo(() => {
+    if (portfolio && portfolio.length > 0) {
+      const cats = Array.from(new Set(projects.map((p) => p.category).filter(Boolean)));
+      return ["All", ...cats];
+    }
+    return defaultCategories;
+  }, [portfolio, projects]);
 
   const filtered = useMemo(() => {
     if (active === "All") {
-      return portfolioProjects;
+      return projects;
     }
-
-    return portfolioProjects.filter(
-      (project) => project.category === active
-    );
-  }, [active]);
+    return projects.filter((project) => project.category === active);
+  }, [active, projects]);
 
 
   // ==========================================
@@ -179,7 +199,7 @@ export default function Portfolio() {
           "
         >
 
-          {portfolioCategories.map((category) => (
+          {categories.map((category) => (
 
             <button
               key={category}

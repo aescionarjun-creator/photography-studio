@@ -74,6 +74,17 @@ export function AdminDataProvider({ children }) {
   );
   useEffect(() => saveToStorage("enquiries", enquiries), [enquiries]);
 
+  const addEnquiry = (enquiry) => {
+    const newEnquiry = {
+      ...enquiry,
+      id: `ENQ-${Math.floor(1000 + Math.random() * 9000)}`,
+      createdAt: new Date().toISOString().split("T")[0],
+      status: enquiry.status || "New",
+    };
+    setEnquiries((prev) => [newEnquiry, ...prev]);
+    return newEnquiry;
+  };
+
   const updateEnquiryStatus = (id, status) => {
     setEnquiries((prev) =>
       prev.map((item) => (item.id === id ? { ...item, status } : item))
@@ -375,6 +386,7 @@ export function AdminDataProvider({ children }) {
 
         // Enquiries
         enquiries,
+        addEnquiry,
         updateEnquiryStatus,
         deleteEnquiry,
 
