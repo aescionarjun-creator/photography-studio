@@ -10,25 +10,42 @@ import "lightgallery/css/lg-thumbnail.css";
 
 import Seo from "../components/Seo";
 import {
-  galleryCategories,
-  galleryImages,
+  galleryCategories as defaultCategories,
+  galleryImages as defaultGalleryImages,
 } from "../data/gallery";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
 export default function Gallery() {
-
+  const { gallery } = useAdminData();
   const [active, setActive] = useState("All");
 
-  const filtered = useMemo(() => {
-
-    if (active === "All") {
-      return galleryImages;
+  const images = useMemo(() => {
+    if (gallery && gallery.length > 0) {
+      return gallery
+        .filter((item) => item.published !== false)
+        .map((item) => ({
+          ...item,
+          src: item.imageUrl || item.src || "/public/images/gallery/wedding-1.jpg",
+          title: item.title || item.caption || item.category || "Subash Studio",
+        }));
     }
+    return defaultGalleryImages;
+  }, [gallery]);
 
-    return galleryImages.filter(
-      (image) => image.category === active
-    );
+  const categories = useMemo(() => {
+    if (gallery && gallery.length > 0) {
+      const cats = Array.from(new Set(images.map((img) => img.category).filter(Boolean)));
+      return ["All", ...cats];
+    }
+    return defaultCategories;
+  }, [gallery, images]);
 
-  }, [active]);
+  const filtered = useMemo(() => {
+    if (active === "All") {
+      return images;
+    }
+    return images.filter((image) => image.category === active);
+  }, [active, images]);
 
 
   return (
@@ -79,7 +96,7 @@ export default function Gallery() {
 
           <div className="py-5 flex gap-3 overflow-x-auto no-scrollbar">
 
-            {galleryCategories.map((category) => (
+            {categories.map((category) => (
 
               <button
                 key={category}

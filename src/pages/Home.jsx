@@ -8,17 +8,41 @@ import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import FloralCorners from "../components/FloralCorners";
 import { img } from "../data/images";
-import { services } from "../data/services";
-import { portfolioProjects } from "../data/portfolio";
+import { services as defaultServices } from "../data/services";
+import { portfolioProjects as defaultPortfolio } from "../data/portfolio";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
-const stats = [
+const defaultStats = [
   { end: 12, suffix: "+", label: "Years Behind the Lens" },
   { end: 1400, suffix: "+", label: "Weddings Documented" },
-  { end: 3, suffix: "", label: "Studio Branches" },
+  { end: 2, suffix: "", label: "Studio Branches" },
   { end: 98, suffix: "%", label: "Clients Who Refer Us" },
 ];
 
 export default function Home() {
+  const { websiteContent, services: adminServices, portfolio: adminPortfolio } = useAdminData();
+
+  const homeData = websiteContent?.home || {};
+  const heroEyebrow = homeData.heroHeading || "Fine Photography & Cinematic Films";
+  const heroSub = homeData.heroTagline || "Preserving timeless heritage, profound emotions, and authentic human celebrations across generations.";
+  
+  const displayServices = (adminServices && adminServices.length > 0
+    ? adminServices.filter((s) => s.status !== "Inactive")
+    : defaultServices
+  ).map((s) => ({
+    ...s,
+    name: s.name || s.title || "Service",
+    image: s.image || s.imageUrl || "/images/wedding photos.jpg",
+  }));
+
+  const displayPortfolio = (adminPortfolio && adminPortfolio.length > 0
+    ? adminPortfolio.filter((p) => p.published !== false)
+    : defaultPortfolio
+  ).map((p) => ({
+    ...p,
+    title: p.title || p.client || "Portfolio",
+    image: p.coverImage || p.image || p.imageUrl || "/images/wedding photos.jpg",
+  }));
   return (
     <>
       <Seo title="Home" description="SUBASH STUDIO — a premium photography and cinematography house crafting timeless wedding, portrait and editorial imagery across three branches." />
@@ -36,7 +60,7 @@ export default function Home() {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="eyebrow mb-6"
             >
-              Capturing Moments
+              {heroEyebrow}
             </motion.p>
 
             <h1 className="font-display font-semibold leading-[0.95] tracking-tight">
@@ -77,8 +101,7 @@ export default function Home() {
               transition={{ delay: 0.8, duration: 0.8 }}
               className="max-w-sm text-ink-soft text-[15px] leading-relaxed"
             >
-              𝙇𝙚𝙩 𝙪𝙨 𝙘𝙖𝙥𝙩𝙪𝙧𝙚 𝙮𝙤𝙪𝙧 𝙢𝙚𝙢𝙤𝙧𝙞𝙚𝙨 𝙖𝙣𝙙 𝙩𝙪𝙧𝙣 𝙩𝙝𝙚𝙢 𝙞𝙣𝙩𝙤 𝙖𝙧𝙩
-              Capturing timeless moments with creativity, emotion, and perfection.
+              {heroSub}
             </motion.p>
 
             <motion.div
@@ -142,7 +165,7 @@ export default function Home() {
       {/* STATS */}
       <section className="bg-bg-soft border-y border-line">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
-          {stats.map((s, i) => (
+          {defaultStats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.08} className="text-center">
               <p className="font-display text-4xl md:text-5xl text-gold-dark">
                 <CountUp end={s.end} duration={2.2} enableScrollSpy scrollSpyOnce />

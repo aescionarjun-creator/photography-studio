@@ -2,9 +2,25 @@ import { MapPin, Phone, Clock } from "lucide-react";
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import { branches } from "../data/branches";
+import { branches as defaultBranches } from "../data/branches";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
 export default function Branches() {
+  const { branches: adminBranches } = useAdminData();
+
+  const branchesList = (adminBranches && adminBranches.length > 0
+    ? adminBranches.filter((b) => b.active !== false)
+    : defaultBranches
+  ).map((b) => ({
+    ...b,
+    city: b.city || b.name || "Studio Branch",
+    tag: b.tag || b.name || "Studio",
+    desc: b.desc || b.description || b.address || "",
+    address: b.address || "",
+    phone: b.phone || "+91 93457 06609",
+    hours: b.hours || "Mon – Sun, 08:00 AM – 09:00 PM",
+    image: b.image || "/images/gallery/branches/kalladaikurichi.jpg",
+  }));
   return (
     <>
       <Seo
@@ -27,7 +43,7 @@ export default function Branches() {
           BRANCHES
       ========================== */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 pb-28 space-y-10">
-        {branches.map((b, i) => (
+        {branchesList.map((b, i) => (
           <Reveal key={b.city} delay={i * 0.08}>
             <div
               className="

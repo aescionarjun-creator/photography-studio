@@ -5,20 +5,38 @@ import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import { services } from "../data/services";
+import { services as defaultServices } from "../data/services";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
 export default function Contact() {
+  const { addEnquiry, services: adminServices } = useAdminData();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  const servicesList = adminServices && adminServices.length > 0 ? adminServices : defaultServices;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitting(true);
-    // Frontend-only demo: no backend is wired up yet.
+    
+    const formData = new FormData(e.currentTarget);
+    const enquiryData = {
+      name: formData.get("name") || "",
+      phone: formData.get("phone") || "",
+      email: formData.get("email") || "",
+      service: formData.get("service") || "General Inquiry",
+      eventDate: formData.get("date") || "",
+      notes: formData.get("notes") || "",
+    };
+
+    if (addEnquiry) {
+      addEnquiry(enquiryData);
+    }
+
     setTimeout(() => {
       setSubmitting(false);
       setSent(true);
-    }, 900);
+    }, 600);
   };
 
   return (
@@ -57,15 +75,16 @@ export default function Contact() {
                 <Field label="Email" name="email" type="email" placeholder="you@example.com" required className="md:col-span-2" />
                 <div className="flex flex-col gap-2">
                   <label className="text-xs tracking-[0.08em] uppercase text-ink-soft font-semibold">Service</label>
-                  <select className="bg-bg-soft border border-line rounded-sm px-4 py-3 text-sm text-ink focus:outline-none focus:border-gold transition-colors" defaultValue="">
+                  <select name="service" className="bg-bg-soft border border-line rounded-sm px-4 py-3 text-sm text-ink focus:outline-none focus:border-gold transition-colors" defaultValue="">
                     <option value="" disabled>Select a service</option>
-                    {services.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}
+                    {servicesList.map((s) => <option key={s.slug || s.id || s.name} value={s.name || s.slug}>{s.name || s.title}</option>)}
                   </select>
                 </div>
                 <Field label="Event Date" name="date" type="date" />
                 <div className="md:col-span-2 flex flex-col gap-2">
                   <label className="text-xs tracking-[0.08em] uppercase text-ink-soft font-semibold">Tell us about your day</label>
                   <textarea
+                    name="notes"
                     rows={5}
                     placeholder="Venue, guest count, style you love..."
                     className="bg-bg-soft border border-line rounded-sm px-4 py-3 text-sm text-ink focus:outline-none focus:border-gold transition-colors resize-none"

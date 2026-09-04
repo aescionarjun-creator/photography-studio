@@ -3,22 +3,28 @@ import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import { img } from "../data/images";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
-const timeline = [
-  { year: "2013", title: "A Single Room in Mylapore", text: "Subash picks up his first camera for a friend's wedding — and never puts it down. The studio opens as a one-man operation above a print shop." },
-  { year: "2016", title: "First Full-Time Team", text: "Demand grows beyond weekends. SUBASH STUDIO hires its first editors and second shooters, and moves into a proper studio floor." },
-  { year: "2019", title: "Coimbatore Branch Opens", text: "A second studio opens to serve the Kongu region, bringing the same documentary approach to a new audience." },
-  { year: "2022", title: "Cinematography Wing Launches", text: "Wedding films join the offering, built around a small in-house edit and colour team." },
-  { year: "2025", title: "Madurai Branch Opens", text: "A third studio opens in Southern Tamil Nadu, completing a decade of steady, deliberate growth." },
+const defaultTimeline = [
+  { year: "2013", title: "A Single Room in Kalladaikurichi", text: "Subash picks up his first camera for a friend's wedding — and never puts it down. The studio opens as a one-man operation." },
+  { year: "2016", title: "First Full-Time Production Floor", text: "Demand grows. SUBASH STUDIO hires its first editors and second shooters, and moves into a proper studio floor." },
+  { year: "2019", title: "Tirunelveli Branch Opens", text: "A second studio opens in Tirunelveli, bringing the signature documentary approach to a wider audience." },
+  { year: "2022", title: "Cinematography Atelier Launches", text: "Wedding films join the offering, built around a small in-house edit and colour grading team." },
+  { year: "2025", title: "Expanded Headquarters", text: "Flagship studio headquarters expanded with album ateliers and multi-suite editing pods." },
 ];
 
 const values = [
   { title: "Honesty in the Frame", text: "We photograph what's true — not what's staged. Every album should read like a memory, not a performance." },
   { title: "Craft Over Volume", text: "We take on fewer shoots than we could, so every one gets the attention it deserves." },
-  { title: "Family, Extended", text: "Three branches, one team culture — every SUBASH STUDIO photographer trains under the same eye." },
+  { title: "Family, Extended", text: "Multi-branch studio hubs, one team culture — every SUBASH STUDIO photographer trains under the same eye." },
 ];
 
 export default function About() {
+  const { websiteContent } = useAdminData();
+  const aboutData = websiteContent?.about || {};
+
+  const storyTitle = aboutData.heading || "A studio built on one belief: light doesn't lie.";
+  const storyDesc = aboutData.studioStory || "SUBASH STUDIO began with a single photographer, a rented lens and a wedding he almost turned down out of nerves. Over a decade on, that same instinct — to shoot what's real rather than what's expected — still shapes every frame we deliver. Today our team works across studios in Kalladaikurichi and Tirunelveli, Tamil Nadu.";
   return (
     <>
       <Seo title="About" description="The story of SUBASH STUDIO — from a single room in Mylapore to three branches across Tamil Nadu." />
@@ -45,8 +51,8 @@ export default function About() {
         <div>
           <SectionHeading
             eyebrow="Our Introduction"
-            title="A studio built on one belief: light doesn't lie."
-            desc="SUBASH STUDIO began with a single photographer, a rented lens and a wedding he almost turned down out of nerves. Twelve years on, that same instinct — to shoot what's real rather than what's expected — still shapes every frame we deliver. Today our team of photographers, cinematographers and editors work from three studios across Tamil Nadu, but the philosophy hasn't moved an inch."
+            title={storyTitle}
+            desc={storyDesc}
           />
         </div>
       </section>
@@ -57,7 +63,7 @@ export default function About() {
           <div className="mt-20 relative">
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-line -translate-x-1/2" />
             <div className="space-y-14 md:space-y-0">
-              {timeline.map((t, i) => (
+              {defaultTimeline.map((t, i) => (
                 <Reveal key={t.year} delay={i * 0.05}>
                   <div className={`md:grid md:grid-cols-2 md:gap-16 md:py-10 ${i % 2 === 0 ? "" : ""}`}>
                     <div className={`${i % 2 === 0 ? "md:text-right md:pr-16" : "md:col-start-2 md:pl-16"}`}>

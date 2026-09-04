@@ -1,9 +1,22 @@
 import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import { services } from "../data/services";
+import { services as defaultServices } from "../data/services";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
 export default function Services() {
+  const { services: adminServices } = useAdminData();
+
+  const servicesList = (adminServices && adminServices.length > 0
+    ? adminServices.filter((s) => s.status !== "Inactive")
+    : defaultServices
+  ).map((s) => ({
+    ...s,
+    image: s.image || s.imageUrl || "/public/images/gallery/wedding-1.jpg",
+    name: s.name || s.title || "Subash Studio Service",
+    blurb: s.blurb || s.description || s.shortDesc || "",
+    slug: s.slug || s.id || s.name,
+  }));
   return (
     <main className="min-h-screen bg-[#F8F6F1]">
 
@@ -30,7 +43,7 @@ export default function Services() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-          {services.map((service, index) => (
+          {servicesList.map((service, index) => (
 
             <Reveal
               key={service.slug}
