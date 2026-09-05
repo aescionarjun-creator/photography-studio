@@ -15,6 +15,7 @@ import Gallery from "./pages/Gallery";
 import Films from "./pages/Films";
 import Branches from "./pages/Branches";
 import Contact from "./pages/Contact";
+import OrderFrames from "./pages/OrderFrames";
 import NotFound from "./pages/NotFound";
 
 // Admin Contexts & Components
@@ -28,6 +29,7 @@ import AdminLogin from "./admin/pages/AdminLogin";
 import Dashboard from "./admin/pages/Dashboard";
 import Bookings from "./admin/pages/Bookings";
 import Enquiries from "./admin/pages/Enquiries";
+import FramesManager from "./admin/pages/FramesManager";
 import GalleryManager from "./admin/pages/GalleryManager";
 import PortfolioManager from "./admin/pages/PortfolioManager";
 import ServicesManager from "./admin/pages/ServicesManager";
@@ -68,6 +70,7 @@ function PublicWebsiteLayout() {
           <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
           <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
+          <Route path="/frames" element={<PageWrapper><OrderFrames /></PageWrapper>} />
           <Route path="/portfolio" element={<PageWrapper><Portfolio /></PageWrapper>} />
           <Route path="/gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
           <Route path="/films" element={<PageWrapper><Films /></PageWrapper>} />
@@ -121,6 +124,7 @@ export default function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="bookings" element={<Bookings />} />
               <Route path="enquiries" element={<Enquiries />} />
+              <Route path="frames" element={<FramesManager />} />
               <Route path="gallery" element={<GalleryManager />} />
               <Route path="portfolio" element={<PortfolioManager />} />
               <Route path="services" element={<ServicesManager />} />
