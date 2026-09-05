@@ -3,7 +3,10 @@ import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 
 export default function FloatingButtons() {
   return (
-    <div className="fixed bottom-7 right-6 lg:bottom-9 lg:right-9 z-40 flex flex-col gap-4">
+    <div
+      data-no-print="true"
+      className="fixed bottom-7 right-6 lg:bottom-9 lg:right-9 z-40 flex flex-col gap-4 no-print print:hidden"
+    >
       <motion.a
         href="https://www.instagram.com/subash_studio/"
         target="_blank"

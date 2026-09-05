@@ -5,41 +5,44 @@ const AdminAuthContext = createContext(null);
 
 const AUTH_STORAGE_KEY = "subash_studio_admin_auth";
 
+const DEFAULT_ADMIN_USER = {
+  name: "Subash",
+  email: "subashstudio009@gmail.com",
+  role: "Studio Director & Founder",
+  avatar: "/images/admin/profile.png",
+};
+
+function safeParseAuth(stored) {
+  if (!stored || typeof stored !== "string") return null;
+  const trimmed = stored.trim();
+  if (!trimmed || trimmed === "undefined" || trimmed === "null") return null;
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return null;
+  }
+}
+
 export function AdminAuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     try {
       const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return Boolean(parsed?.token);
-      }
+      const parsed = safeParseAuth(stored);
+      return Boolean(parsed?.token);
     } catch {
-      // Fallback
+      return false;
     }
-    return false;
   });
 
   const [adminUser, setAdminUser] = useState(() => {
     try {
       const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return parsed?.user || {
-          name: "Subash",
-          email: "subashstudio009@gmail.com",
-          role: "Studio Director & Founder",
-          avatar: "/images/admin/profile.png",
-        };
-      }
+      const parsed = safeParseAuth(stored);
+      if (parsed?.user) return parsed.user;
     } catch {
       // Fallback
     }
-    return {
-      name: "Subash",
-      email: "subashstudio009@gmail.com",
-      role: "Studio Director & Founder",
-      avatar: "/images/admin/profile.png",
-    };
+    return DEFAULT_ADMIN_USER;
   });
 
   const [loading, setLoading] = useState(false);
@@ -80,7 +83,11 @@ export function AdminAuthProvider({ children }) {
   };
 
   const logout = () => {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
+    try {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+    } catch {
+      // Fallback
+    }
     setIsAuthenticated(false);
   };
 
@@ -89,8 +96,8 @@ export function AdminAuthProvider({ children }) {
       const next = { ...prev, ...updatedData };
       try {
         const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-        if (stored) {
-          const parsed = JSON.parse(stored);
+        const parsed = safeParseAuth(stored);
+        if (parsed) {
           localStorage.setItem(
             AUTH_STORAGE_KEY,
             JSON.stringify({ ...parsed, user: next })

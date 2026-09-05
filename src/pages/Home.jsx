@@ -188,7 +188,7 @@ export default function Home() {
           <div className="relative rounded-md overflow-hidden shadow-soft aspect-[4/5]">
             <img src="/images/shyam chandru.jpeg" alt="SUBASH STUDIO photographer at work" className="w-full h-full object-cover" />
           </div>
-          <div className="hidden md:flex absolute -bottom-8 -right-8 w-40 h-40 rounded-md overflow-hidden shadow-soft border-4 border-bg-soft">
+          <div className="hidden md:flex absolute -bottom-8 right-2 lg:-right-8 w-40 h-40 rounded-md overflow-hidden shadow-soft border-4 border-bg-soft">
             <img src="/images/shyam chandru.jpeg" alt="Detail from a SUBASH STUDIO wedding shoot" className="w-full h-full object-cover" />
           </div>
         </Reveal>

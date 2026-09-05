@@ -10,6 +10,10 @@ import {
   initialTestimonials,
   initialWebsiteContent,
   initialSettings,
+  initialFrameWoodTypes,
+  initialFrameDesigns,
+  initialFrameRatios,
+  initialFrameOrders,
 } from "../data/adminInitialData";
 
 const AdminDataContext = createContext(null);
@@ -362,6 +366,144 @@ export function AdminDataProvider({ children }) {
     }));
   };
 
+  // 11. Frame Wood Types
+  const [frameWoodTypes, setFrameWoodTypes] = useState(() =>
+    loadFromStorage("frameWoodTypes", initialFrameWoodTypes)
+  );
+  useEffect(() => saveToStorage("frameWoodTypes", frameWoodTypes), [frameWoodTypes]);
+
+  const addFrameWoodType = (wood) => {
+    const newWood = {
+      ...wood,
+      id: wood.id || `wood-${Date.now()}`,
+      active: wood.active ?? true,
+    };
+    setFrameWoodTypes((prev) => [...prev, newWood]);
+    return newWood;
+  };
+
+  const updateFrameWoodType = (id, updatedFields) => {
+    setFrameWoodTypes((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedFields } : item))
+    );
+  };
+
+  const deleteFrameWoodType = (id) => {
+    setFrameWoodTypes((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const toggleFrameWoodTypeStatus = (id) => {
+    setFrameWoodTypes((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, active: !item.active } : item
+      )
+    );
+  };
+
+  // 12. Frame Designs
+  const [frameDesigns, setFrameDesigns] = useState(() =>
+    loadFromStorage("frameDesigns", initialFrameDesigns)
+  );
+  useEffect(() => saveToStorage("frameDesigns", frameDesigns), [frameDesigns]);
+
+  const addFrameDesign = (design) => {
+    const newDesign = {
+      ...design,
+      id: design.id || `design-${Date.now()}`,
+      compatibleWoods: design.compatibleWoods || ["All"],
+      active: design.active ?? true,
+    };
+    setFrameDesigns((prev) => [...prev, newDesign]);
+    return newDesign;
+  };
+
+  const updateFrameDesign = (id, updatedFields) => {
+    setFrameDesigns((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedFields } : item))
+    );
+  };
+
+  const deleteFrameDesign = (id) => {
+    setFrameDesigns((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const toggleFrameDesignStatus = (id) => {
+    setFrameDesigns((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, active: !item.active } : item
+      )
+    );
+  };
+
+  // 13. Frame Ratios
+  const [frameRatios, setFrameRatios] = useState(() =>
+    loadFromStorage("frameRatios", initialFrameRatios)
+  );
+  useEffect(() => saveToStorage("frameRatios", frameRatios), [frameRatios]);
+
+  const addFrameRatio = (ratio) => {
+    const newRatio = {
+      ...ratio,
+      id: ratio.id || `ratio-${Date.now()}`,
+      active: ratio.active ?? true,
+    };
+    setFrameRatios((prev) => [...prev, newRatio]);
+    return newRatio;
+  };
+
+  const updateFrameRatio = (id, updatedFields) => {
+    setFrameRatios((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedFields } : item))
+    );
+  };
+
+  const deleteFrameRatio = (id) => {
+    setFrameRatios((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const toggleFrameRatioStatus = (id) => {
+    setFrameRatios((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, active: !item.active } : item
+      )
+    );
+  };
+
+  // 14. Frame Orders
+  const [frameOrders, setFrameOrders] = useState(() =>
+    loadFromStorage("frameOrders", initialFrameOrders)
+  );
+  useEffect(() => saveToStorage("frameOrders", frameOrders), [frameOrders]);
+
+  const addFrameOrder = (order) => {
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const rand = Math.floor(100 + Math.random() * 900);
+    const newOrder = {
+      ...order,
+      id: order.id || `SS-FR-${today}-${rand}`,
+      status: order.status || "New",
+      createdAt: order.createdAt || new Date().toISOString(),
+    };
+    setFrameOrders((prev) => [newOrder, ...prev]);
+    return newOrder;
+  };
+
+  const updateFrameOrderStatus = (id, status) => {
+    setFrameOrders((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, status } : item))
+    );
+  };
+
+  const updateFrameOrder = (id, updatedFields) => {
+    setFrameOrders((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedFields } : item))
+    );
+  };
+
+  const deleteFrameOrder = (id) => {
+    setFrameOrders((prev) => prev.filter((item) => item.id !== id));
+  };
+
   const resetAllDemoData = () => {
     setBookings(initialBookings);
     setEnquiries(initialEnquiries);
@@ -373,6 +515,10 @@ export function AdminDataProvider({ children }) {
     setTestimonials(initialTestimonials);
     setWebsiteContent(initialWebsiteContent);
     setSettings(initialSettings);
+    setFrameWoodTypes(initialFrameWoodTypes);
+    setFrameDesigns(initialFrameDesigns);
+    setFrameRatios(initialFrameRatios);
+    setFrameOrders(initialFrameOrders);
   };
 
   return (
@@ -442,6 +588,34 @@ export function AdminDataProvider({ children }) {
         // Settings
         settings,
         updateSettings,
+
+        // Frame Wood Types
+        frameWoodTypes,
+        addFrameWoodType,
+        updateFrameWoodType,
+        deleteFrameWoodType,
+        toggleFrameWoodTypeStatus,
+
+        // Frame Designs
+        frameDesigns,
+        addFrameDesign,
+        updateFrameDesign,
+        deleteFrameDesign,
+        toggleFrameDesignStatus,
+
+        // Frame Ratios
+        frameRatios,
+        addFrameRatio,
+        updateFrameRatio,
+        deleteFrameRatio,
+        toggleFrameRatioStatus,
+
+        // Frame Orders
+        frameOrders,
+        addFrameOrder,
+        updateFrameOrderStatus,
+        updateFrameOrder,
+        deleteFrameOrder,
 
         resetAllDemoData,
       }}

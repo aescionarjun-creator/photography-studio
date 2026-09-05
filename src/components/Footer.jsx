@@ -14,7 +14,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-ink text-bg-soft/80">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid grid-cols-1 md:grid-cols-4 gap-6 lg:gap-12">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-8 h-8 rounded-lg bg-white p-0.5 flex items-center justify-center shadow-sm">
@@ -39,6 +39,7 @@ export default function Footer() {
           <ul className="space-y-3 text-sm">
             <li><Link to="/about" className="hover:text-gold transition-colors">About</Link></li>
             <li><Link to="/services" className="hover:text-gold transition-colors">Services</Link></li>
+            <li><Link to="/frames" className="hover:text-gold transition-colors">Order Frames</Link></li>
             <li><Link to="/portfolio" className="hover:text-gold transition-colors">Portfolio</Link></li>
             <li><Link to="/gallery" className="hover:text-gold transition-colors">Gallery</Link></li>
             <li><Link to="/films" className="hover:text-gold transition-colors">Films</Link></li>

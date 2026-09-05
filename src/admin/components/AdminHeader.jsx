@@ -102,49 +102,49 @@ export default function AdminHeader({ onMobileMenuClick }) {
   };
 
   return (
-    <header className="h-20 bg-white/90 backdrop-blur-md border-b border-[#E7E0D2] sticky top-0 z-20 px-4 sm:px-8 flex items-center justify-between transition-all">
+    <header className="h-20 bg-white/90 backdrop-blur-md border-b border-[#E7E0D2] sticky top-0 z-20 px-3 sm:px-6 lg:px-8 flex items-center justify-between transition-all min-w-0">
       {/* Left Title & Mobile Trigger */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0 mr-2">
         <button
           type="button"
           onClick={onMobileMenuClick}
-          className="lg:hidden p-2 rounded-xl text-[#2B2B2B] hover:bg-[#F8F6F2] border border-[#E7E0D2]"
+          className="lg:hidden p-2 rounded-xl text-[#2B2B2B] hover:bg-[#F8F6F2] border border-[#E7E0D2] shrink-0"
           aria-label="Open Sidebar Menu"
         >
           <Menu className="w-5 h-5" />
         </button>
 
-        <div>
-          <h1 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B] tracking-tight">
+        <div className="min-w-0">
+          <h1 className="text-lg sm:text-xl xl:text-2xl font-display font-bold text-[#2B2B2B] tracking-tight truncate">
             {pageMeta.title}
           </h1>
-          <p className="text-xs text-[#6F6A62] hidden sm:block">
+          <p className="text-xs text-[#6F6A62] hidden sm:block truncate">
             {pageMeta.subtitle}
           </p>
         </div>
       </div>
 
       {/* Right Controls */}
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
         {/* Search Bar */}
         <form onSubmit={handleSearchSubmit} className="hidden md:flex relative items-center">
           <Search className="w-4 h-4 absolute left-3 text-[#6F6A62] pointer-events-none" />
           <input
             type="text"
-            placeholder="Search bookings, clients..."
+            placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-48 lg:w-64 pl-9 pr-4 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669] focus:bg-white transition-all"
+            className="w-32 lg:w-40 xl:w-60 pl-9 pr-3 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669] focus:bg-white transition-all"
           />
         </form>
 
         {/* Quick Add Booking */}
         <Link
           to="/admin/bookings?new=true"
-          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold shadow-sm transition-all active:scale-95"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold shadow-sm transition-all active:scale-95 shrink-0"
         >
           <Plus className="w-4 h-4 text-[#E4D3A6]" />
-          <span>New Shoot</span>
+          <span className="hidden md:inline">New Shoot</span>
         </Link>
 
         {/* Live Site Link */}
@@ -152,11 +152,11 @@ export default function AdminHeader({ onMobileMenuClick }) {
           href="/"
           target="_blank"
           rel="noreferrer"
-          className="p-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors hidden sm:flex items-center gap-1.5 text-xs font-medium"
+          className="p-2 sm:p-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors hidden sm:flex items-center gap-1.5 text-xs font-medium shrink-0"
           title="Open Public Website"
         >
           <ExternalLink className="w-4 h-4 text-[#9C7B3D]" />
-          <span className="hidden lg:inline">Live Site</span>
+          <span className="hidden xl:inline">Live Site</span>
         </a>
 
         {/* Notification Bell */}
@@ -176,7 +176,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
           </button>
 
           {notificationsOpen && (
-            <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-4 z-50 animate-fadeIn">
+            <div className="absolute right-0 mt-3 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-4 z-50 animate-fadeIn">
               <div className="flex items-center justify-between pb-3 border-b border-[#E7E0D2]">
                 <div className="flex items-center gap-2">
                   <h4 className="font-display font-semibold text-sm text-[#2B2B2B]">
@@ -250,7 +250,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
                 adminUser?.name?.charAt(0) || "S"
               )}
             </div>
-            <div className="hidden md:block text-left">
+            <div className="hidden xl:block text-left">
               <p className="text-xs font-semibold text-[#2B2B2B] leading-none">
                 {adminUser?.name || "Admin"}
               </p>
@@ -262,7 +262,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
           </button>
 
           {profileMenuOpen && (
-            <div className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-2 z-50 animate-fadeIn">
+            <div className="absolute right-0 mt-3 w-56 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-2 z-50 animate-fadeIn">
               <div className="px-3 py-2 border-b border-[#E7E0D2]/60 mb-1">
                 <p className="text-xs font-bold text-[#2B2B2B]">
                   {adminUser?.name || "Subash Admin"}
