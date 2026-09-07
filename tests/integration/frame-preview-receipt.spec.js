@@ -50,7 +50,7 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
     await expect(page.getByText("SS-FR-20260901-101")).toBeVisible();
 
     // Click "View Details" on Order 1: Teak Wood + Classic Gold + 10x12
-    const firstOrderRow = page.locator("div").filter({ hasText: "SS-FR-20260901-101" }).first();
+    const firstOrderRow = page.locator("tr").filter({ hasText: "SS-FR-20260901-101" });
     await firstOrderRow.getByRole("button", { name: /View Details/i }).click();
 
     // Verify modal opened
@@ -77,11 +77,11 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
     expect(objectFit).toBe("cover");
 
     // Close modal
-    await modal.getByRole("button", { name: "Close" }).click();
+    await modal.getByRole("button", { name: "Close", exact: true }).click();
     await expect(modal).not.toBeVisible();
 
     // Open Order 2: Walnut Wood + Modern Black + 8x10
-    const secondOrderRow = page.locator("div").filter({ hasText: "SS-FR-20260902-102" }).first();
+    const secondOrderRow = page.locator("tr").filter({ hasText: "SS-FR-20260902-102" });
     await secondOrderRow.getByRole("button", { name: /View Details/i }).click();
     await expect(modal).toBeVisible();
 
@@ -92,11 +92,11 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
     await expect(modal.locator('img[alt="reception-portrait.jpg"]')).toBeVisible();
 
     // Close modal
-    await modal.getByRole("button", { name: "Close" }).click();
+    await modal.getByRole("button", { name: "Close", exact: true }).click();
     await expect(modal).not.toBeVisible();
 
     // Open Order 3: Rose Wood + Vintage Brown + 12x18
-    const thirdOrderRow = page.locator("div").filter({ hasText: "SS-FR-20260904-103" }).first();
+    const thirdOrderRow = page.locator("tr").filter({ hasText: "SS-FR-20260904-103" });
     await thirdOrderRow.getByRole("button", { name: /View Details/i }).click();
     await expect(modal).toBeVisible();
 
@@ -105,6 +105,10 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
       modal.getByText("Rose Wood • Vintage Brown • 12 × 18")
     ).toBeVisible();
     await expect(modal.locator('img[alt="traditional-heritage.jpg"]')).toBeVisible();
+
+    // Close modal
+    await modal.getByRole("button", { name: "Close", exact: true }).click();
+    await expect(modal).not.toBeVisible();
   });
 
   test("3. Admin Print Receipt uses shared FramePrintReceipt (NOT a screenshot) and contains zero WhatsApp icon", async ({
@@ -121,12 +125,15 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
     await page.getByRole("button", { name: /Orders/i }).click();
 
     // Open Order 1
-    const firstOrderRow = page.locator("div").filter({ hasText: "SS-FR-20260901-101" }).first();
+    const firstOrderRow = page.locator("tr").filter({ hasText: "SS-FR-20260901-101" });
     await firstOrderRow.getByRole("button", { name: /View Details/i }).click();
 
     // Check that #frame-print-receipt is in the DOM (rendered via portal)
     const receipt = page.locator("#frame-print-receipt");
     await expect(receipt).toBeAttached();
+
+    // Emulate print media so print-only receipt is visible
+    await page.emulateMedia({ media: "print" });
 
     // Verify receipt content according to exact specifications:
     await expect(receipt.getByText("ATELIER WOODCRAFT & FRAMING")).toBeVisible();
@@ -139,7 +146,7 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
 
     // Customer details
     await expect(receipt.getByText("Ananya Iyer")).toBeVisible();
-    await expect(receipt.getByText("+91 98401 55667")).toBeVisible();
+    await expect(receipt.getByText("+91 98401 55667").first()).toBeVisible();
     await expect(receipt.getByText("ananya.iyer@gmail.com")).toBeVisible();
 
     // Specifications
@@ -159,9 +166,6 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
     // Verify WhatsApp icon or floating logo is NOT inside the receipt
     const receiptWhatsApp = receipt.locator("svg, img").filter({ hasText: /whatsapp/i });
     expect(await receiptWhatsApp.count()).toBe(0);
-
-    // Emulate print media
-    await page.emulateMedia({ media: "print" });
 
     // Under print styles:
     // #frame-print-receipt should be visible
@@ -208,7 +212,7 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
       // Open Order 1 if not open
       const modal = page.locator(".fixed.inset-0");
       if (!(await modal.isVisible())) {
-        const firstOrderRow = page.locator("div").filter({ hasText: "SS-FR-20260901-101" }).first();
+        const firstOrderRow = page.locator("tr").filter({ hasText: "SS-FR-20260901-101" });
         await firstOrderRow.getByRole("button", { name: /View Details/i }).click();
         await expect(modal).toBeVisible();
       }
@@ -225,7 +229,7 @@ test.describe("Order Frames Admin Upgrades: WhatsApp Receipt Removal, Shared Pri
 
       // Ensure Print Receipt and Close buttons remain clickable
       const printBtn = modal.getByRole("button", { name: /Print Receipt/i });
-      const closeBtn = modal.getByRole("button", { name: "Close" });
+      const closeBtn = modal.getByRole("button", { name: "Close", exact: true });
       await expect(printBtn).toBeVisible();
       await expect(closeBtn).toBeVisible();
     }

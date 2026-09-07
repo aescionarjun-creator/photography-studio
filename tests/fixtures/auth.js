@@ -41,6 +41,7 @@ export async function injectAdminAuthSession(page) {
       role: "Studio Director & Lead Photographer",
       avatar: "/images/admin/profile.png",
     },
+    expiresAt: Date.now() + 24 * 60 * 60 * 1000,
   };
 
   await page.addInitScript((authSession) => {

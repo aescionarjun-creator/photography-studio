@@ -1,4 +1,4 @@
-import { MapPin, Phone, Clock } from "lucide-react";
+import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
@@ -20,6 +20,7 @@ export default function Branches() {
     phone: b.phone || "+91 93457 06609",
     hours: b.hours || "Mon – Sun, 08:00 AM – 09:00 PM",
     image: b.image || "/images/gallery/branches/kalladaikurichi.jpg",
+    mapsUrl: b.mapsUrl || (b.city?.toLowerCase().includes("tirunelveli") ? "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9" : "https://maps.google.com/?q=Subash+Studio+" + encodeURIComponent(b.city || "")),
   }));
   return (
     <>
@@ -138,6 +139,20 @@ export default function Branches() {
                       {b.hours}
                     </span>
                   </div>
+
+                  {/* Directions / Maps Link */}
+                  {b.mapsUrl && (
+                    <div className="pt-2">
+                      <a
+                        href={b.mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-gold-dark hover:text-ink transition-colors"
+                      >
+                        Get Directions <ExternalLink size={13} />
+                      </a>
+                    </div>
+                  )}
 
                 </div>
               </div>

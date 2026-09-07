@@ -1,6 +1,7 @@
 // @ts-check
 import { test, expect } from "@playwright/test";
 import { captureConsoleErrors, hasHorizontalOverflow, verifyImagesLoaded } from "../fixtures/test-data.js";
+import { loginAsAdmin } from "../fixtures/auth.js";
 
 test.describe("Custom Handcrafted Frames Feature", () => {
   test.beforeEach(async ({ page }) => {
@@ -51,7 +52,6 @@ test.describe("Custom Handcrafted Frames Feature", () => {
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
       "base64"
     );
-    const fileChooserPromise = page.waitForEvent("filechooser");
     await page.locator('input[type="file"]').setInputFiles({
       name: "wedding-portrait.png",
       mimeType: "image/png",
@@ -76,7 +76,7 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     await page.getByRole("button", { name: "Continue", exact: false }).click();
 
     await expect(page.getByText(/Step 5: Review Configuration & Pricing Breakdown/i)).toBeVisible();
-    await expect(page.getByText("Pricing Breakdown")).toBeVisible();
+    await expect(page.getByText("Pricing Breakdown", { exact: true })).toBeVisible();
 
     // Verify exact pricing formula: Teak(800) + Classic Gold(0) + 10x12(1200) = 2,000
     await expect(page.getByText("₹800").first()).toBeVisible();
@@ -98,9 +98,9 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     await page.getByRole("button", { name: /Confirm & Place Order/i }).click();
 
     // Verify Step 7: Confirmation & WhatsApp
-    await expect(page.getByText(/Order Successfully Received/i)).toBeVisible({ timeout: 8000 });
+    await expect(page.getByText(/Order Successful/i)).toBeVisible({ timeout: 8000 });
     await expect(page.getByText(/Aarav Sundaram/i).first()).toBeVisible();
-    await expect(page.getByText(/SS-FR-/)).toBeVisible();
+    await expect(page.getByText(/SS-FR-/).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Confirm Order on WhatsApp/i })).toBeVisible();
 
     // Verify WhatsApp link format
@@ -116,11 +116,7 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     const consoleErrors = captureConsoleErrors(page);
 
     // 1. Login to Admin Panel
-    await page.goto("/admin/login");
-    await page.fill('input[type="email"]', "admin@subashstudio.com");
-    await page.fill('input[type="password"]', "admin123");
-    await page.click('button[type="submit"]');
-    await expect(page).toHaveURL(/\/admin\/dashboard$/);
+    await loginAsAdmin(page);
 
     // 2. Sidebar contains Frames link with Frame icon
     const framesNavLink = page.locator("aside").getByRole("link", { name: /Frames/i }).first();
@@ -136,7 +132,7 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     // 4. Tab Switching
     // Tab 1: Orders table
     await expect(page.getByRole("table")).toBeVisible();
-    await expect(page.getByText("SS-FR-")).toBeVisible();
+    await expect(page.getByText("SS-FR-").first()).toBeVisible();
 
     // Tab 2: Wood Types
     await page.getByRole("button", { name: /Wood Types/i }).click();
@@ -153,7 +149,7 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     // Tab 4: Sizes & Ratios
     await page.getByRole("button", { name: /Sizes & Ratios/i }).click();
     await expect(page.getByText(/Standard Dimensions & Ratio Surcharges/i)).toBeVisible();
-    await expect(page.getByText("10 × 12")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "10 × 12" })).toBeVisible();
 
     expect(consoleErrors).toEqual([]);
   });

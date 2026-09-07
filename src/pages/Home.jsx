@@ -8,7 +8,6 @@ import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import FloralCorners from "../components/FloralCorners";
 import WhyChooseUs from "../components/WhyChooseUs";
-import { img } from "../data/images";
 import { services as defaultServices } from "../data/services";
 import { portfolioProjects as defaultPortfolio } from "../data/portfolio";
 import { useAdminData } from "../admin/context/AdminDataContext";
@@ -210,338 +209,91 @@ export default function Home() {
 
       {/* SERVICES PREVIEW */}
       <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-  {/* Wedding Photography */}
-  <Reveal delay={0}>
-    <Link
-      to="/services"
-      className="group block relative rounded-md overflow-hidden aspect-[3/4] shadow-card"
-    >
-      <img
-        src="/images/wedding photos.jpg"
-        alt="Wedding Photography"
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
-
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <p className="text-bg-soft font-display text-lg">
-          Wedding Photography
-        </p>
+        {displayServices.slice(0, 4).map((srv, idx) => (
+          <Reveal key={srv.id || srv.name || idx} delay={idx * 0.08}>
+            <Link
+              to="/services"
+              className="group block relative rounded-md overflow-hidden aspect-[3/4] shadow-card"
+            >
+              <img
+                src={srv.image}
+                alt={srv.name}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <p className="text-bg-soft font-display text-lg">
+                  {srv.name}
+                </p>
+              </div>
+            </Link>
+          </Reveal>
+        ))}
       </div>
-    </Link>
-  </Reveal>
 
-
-  {/* Wedding Cinematography */}
-  <Reveal delay={0.08}>
-    <Link
-      to="/services"
-      className="group block relative rounded-md overflow-hidden aspect-[3/4] shadow-card"
-    >
-      <img
-        src="/images/wedding cinematography.jpg"
-        alt="Wedding Cinematography"
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
-
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <p className="text-bg-soft font-display text-lg">
-          Wedding Cinematography
-        </p>
-      </div>
-    </Link>
-  </Reveal>
-
-
-  {/* Traditional Photography */}
-  <Reveal delay={0.16}>
-    <Link
-      to="/services"
-      className="group block relative rounded-md overflow-hidden aspect-[3/4] shadow-card"
-    >
-      <img
-        src="/images/traditional photos.jpg"
-        alt="Traditional Photography"
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
-
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <p className="text-bg-soft font-display text-lg">
-          Traditional Photography
-        </p>
-      </div>
-    </Link>
-  </Reveal>
-
-
-  {/* Traditional Cinematography */}
-  <Reveal delay={0.24}>
-    <Link
-      to="/services"
-      className="group block relative rounded-md overflow-hidden aspect-[3/4] shadow-card"
-    >
-      <img
-        src="/images/traditional cinematography.jpg"
-        alt="Traditional Cinematography"
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
-
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <p className="text-bg-soft font-display text-lg">
-          Traditional Cinematography
-        </p>
-      </div>
-    </Link>
-  </Reveal>
-
-</div>
       {/* PORTFOLIO PREVIEW */}
-      {/* PORTFOLIO PREVIEW */}
-<section className="max-w-7xl mx-auto px-6 lg:px-10 py-28">
+      <section className="max-w-7xl mx-auto px-6 lg:px-10 py-28">
+        {/* SECTION HEADER */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+          <SectionHeading
+            eyebrow="Selected Work"
+            title="Stories captured, moments preserved."
+            desc="A glimpse into the celebrations, emotions, and unforgettable moments captured by SUBASH STUDIO."
+          />
 
-  {/* SECTION HEADER */}
-  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-
-    <SectionHeading
-      eyebrow="Selected Work"
-      title="Stories captured, moments preserved."
-      desc="A glimpse into the celebrations, emotions, and unforgettable moments captured by SUBASH STUDIO."
-    />
-
-    <Reveal delay={0.15}>
-      <Link
-        to="/portfolio"
-        className="group inline-flex items-center gap-3 text-sm font-semibold tracking-[0.08em] uppercase text-ink whitespace-nowrap"
-      >
-        Full Portfolio
-
-        <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">
-          →
-        </span>
-      </Link>
-    </Reveal>
-
-  </div>
-
-
-  {/* PORTFOLIO GRID */}
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-    {/* WEDDING */}
-    <Reveal delay={0}>
-      <Link
-        to="/portfolio"
-        className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
-      >
-
-        <img
-          src="/images/wedding photos.jpg"
-          alt="Wedding Photography by SUBASH STUDIO"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-
-        {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-
-          <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
-            Wedding
-          </p>
-
-          <h3 className="text-white font-display text-2xl">
-            Timeless Celebrations
-          </h3>
-
+          <Reveal delay={0.15}>
+            <Link
+              to="/portfolio"
+              className="group inline-flex items-center gap-3 text-sm font-semibold tracking-[0.08em] uppercase text-ink whitespace-nowrap"
+            >
+              Full Portfolio
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">
+                →
+              </span>
+            </Link>
+          </Reveal>
         </div>
 
-      </Link>
-    </Reveal>
-
-
-    {/* COUPLE */}
-    <Reveal delay={0.08}>
-      <Link
-        to="/portfolio"
-        className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
-      >
-
-        <img
-          src="/images/couple.jpg"
-          alt="Couple Photography by SUBASH STUDIO"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-
-          <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
-            Couple
-          </p>
-
-          <h3 className="text-white font-display text-2xl">
-            Stories of Two
-          </h3>
-
+        {/* PORTFOLIO GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayPortfolio.slice(0, 6).map((item, idx) => (
+            <Reveal key={item.id || item.title || idx} delay={idx * 0.08}>
+              <Link
+                to="/portfolio"
+                className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
+              >
+                <img
+                  src={item.image}
+                  alt={`${item.title} by SUBASH STUDIO`}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
+                    {item.category || "Featured"}
+                  </p>
+                  <h3 className="text-white font-display text-2xl">
+                    {item.title}
+                  </h3>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
         </div>
 
-      </Link>
-    </Reveal>
-
-
-    {/* RECEPTION */}
-    <Reveal delay={0.16}>
-      <Link
-        to="/portfolio"
-        className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
-      >
-
-        <img
-          src="/images/From this day,always and forever❤️🥹 Groom- @sankarsubramanian Bride- @esakiammal_kandasamy ..Ma.jpg"
-          alt="Reception Photography by SUBASH STUDIO"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-
-          <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
-            Reception
-          </p>
-
-          <h3 className="text-white font-display text-2xl">
-            Moments in Motion
-          </h3>
-
-        </div>
-
-      </Link>
-    </Reveal>
-
-
-    {/* BABY */}
-    <Reveal delay={0.08}>
-      <Link
-        to="/portfolio"
-        className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
-      >
-
-        <img
-          src="/images/Divinity is found in every moment🦚✨..DM FOR BOOKING♥️📸9345706609@subash_studio @shyam_chandru2.jpg"
-          alt="Baby Photography by SUBASH STUDIO"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-
-          <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
-            Baby Photography
-          </p>
-
-          <h3 className="text-white font-display text-2xl">
-            Little Memories
-          </h3>
-
-        </div>
-
-      </Link>
-    </Reveal>
-
-
-    {/* MATERNITY */}
-    <Reveal delay={0.16}>
-      <Link
-        to="/portfolio"
-        className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
-      >
-
-        <img
-          src="/images/maternity.jpg"
-          alt="Maternity Photography by SUBASH STUDIO"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-
-          <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
-            Maternity
-          </p>
-
-          <h3 className="text-white font-display text-2xl">
-            Before We Meet
-          </h3>
-
-        </div>
-
-      </Link>
-    </Reveal>
-
-
-    {/* OUTDOOR */}
-    <Reveal delay={0.24}>
-      <Link
-        to="/portfolio"
-        className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
-      >
-
-        <img
-          src="/images/outdoor.jpg"
-          alt="Outdoor Photography by SUBASH STUDIO"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-
-          <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
-            Outdoor
-          </p>
-
-          <h3 className="text-white font-display text-2xl">
-            Frames in Nature
-          </h3>
-
-        </div>
-
-      </Link>
-    </Reveal>
-
-  </div>
-
-
-  {/* VIEW PORTFOLIO BUTTON */}
-  <Reveal delay={0.3} className="mt-14 text-center">
-
-    <Link
-      to="/portfolio"
-      className="inline-flex items-center gap-3 px-8 py-3.5 border border-ink/20 text-ink text-[13px] font-semibold tracking-[0.12em] uppercase rounded-full hover:border-gold hover:text-gold-dark transition-all duration-300"
-    >
-      Explore Full Portfolio
-
-      <span className="transition-transform duration-300 hover:translate-x-1">
-        →
-      </span>
-    </Link>
-
-  </Reveal>
-
-</section>
+        {/* VIEW PORTFOLIO BUTTON */}
+        <Reveal delay={0.3} className="mt-14 text-center">
+          <Link
+            to="/portfolio"
+            className="inline-flex items-center gap-3 px-8 py-3.5 border border-ink/20 text-ink text-[13px] font-semibold tracking-[0.12em] uppercase rounded-full hover:border-gold hover:text-gold-dark transition-all duration-300"
+          >
+            Explore Full Portfolio
+            <span className="transition-transform duration-300 hover:translate-x-1">
+              →
+            </span>
+          </Link>
+        </Reveal>
+      </section>
 
       {/* CTA BAND */}
       <section className="relative py-28 overflow-hidden">

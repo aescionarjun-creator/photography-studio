@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import { img } from "../data/images";
 import { useAdminData } from "../admin/context/AdminDataContext";
 
 const defaultTimeline = [

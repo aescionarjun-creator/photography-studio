@@ -27,7 +27,7 @@ test.describe("Public Contact Form & Submission", () => {
     await expect(page.getByText(/Kalladaikurichi|Tirunelveli/i).first()).toBeVisible();
 
     // Google Maps iframe exists
-    const mapIframe = page.locator('iframe[title="SUBASH STUDIO location"]');
+    const mapIframe = page.locator('iframe[title*="SUBASH STUDIO"]');
     await expect(mapIframe).toBeVisible();
 
     // Check no horizontal overflow
@@ -69,12 +69,13 @@ test.describe("Public Contact Form & Submission", () => {
     await expect(page.getByText(/Thank you — a member of the SUBASH STUDIO team will reach out/i)).toBeVisible();
 
     // Verify localStorage contains the newly added enquiry
+    /** @type {Array<{ name?: string, phone?: string }>} */
     const storedEnquiries = await page.evaluate(() => {
       const data = localStorage.getItem("subash_studio_db_v4_enquiries");
       return data ? JSON.parse(data) : [];
     });
 
-    const created = storedEnquiries.find((e) => e.name === testName);
+    const created = storedEnquiries.find((/** @type {{ name?: string, phone?: string }} */ e) => e.name === testName);
     expect(created, "Created enquiry was not found in localStorage").toBeDefined();
     expect(created?.phone).toBe(testPhone);
   });

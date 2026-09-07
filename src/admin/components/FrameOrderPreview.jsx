@@ -127,25 +127,27 @@ export default function FrameOrderPreview({
   designs = [],
   className = "",
 }) {
-  if (!order) return null;
-
   // Resolve matching wood timber item
   const matchedWood = useMemo(() => {
+    if (!order) return null;
     return (woodTypes || []).find(
       (w) =>
         (w.name || "").trim().toLowerCase() === (order.woodType || "").trim().toLowerCase() ||
         (w.id || "").trim().toLowerCase() === (order.woodId || "").trim().toLowerCase()
     );
-  }, [woodTypes, order.woodType, order.woodId]);
+  }, [woodTypes, order?.woodType, order?.woodId]);
 
   // Resolve matching design profile item
   const matchedDesign = useMemo(() => {
+    if (!order) return null;
     return (designs || []).find(
       (d) =>
         (d.name || "").trim().toLowerCase() === (order.frameDesign || "").trim().toLowerCase() ||
         (d.id || "").trim().toLowerCase() === (order.designId || "").trim().toLowerCase()
     );
-  }, [designs, order.frameDesign, order.designId]);
+  }, [designs, order?.frameDesign, order?.designId]);
+
+  if (!order) return null;
 
   const aspectRatio = getAspectRatio(order.frameRatio);
   const woodTexture = matchedWood?.image || "";

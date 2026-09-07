@@ -1,9 +1,27 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 const AdminAuthContext = createContext(null);
 
 const AUTH_STORAGE_KEY = "subash_studio_admin_auth";
+const SESSION_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+const ALLOWED_ADMIN_CREDENTIALS = [
+  {
+    email: (import.meta.env?.VITE_ADMIN_EMAIL || "admin@subashstudio.com").toLowerCase(),
+    password: import.meta.env?.VITE_ADMIN_PASSWORD || "subash@2026",
+    name: "Subash",
+    role: "Studio Director & Founder",
+    avatar: "/images/admin/profile.png",
+  },
+  {
+    email: "subashstudio009@gmail.com",
+    password: import.meta.env?.VITE_ADMIN_PASSWORD || "subash@2026",
+    name: "Subash",
+    role: "Studio Director & Founder",
+    avatar: "/images/admin/profile.png",
+  },
+];
 
 const DEFAULT_ADMIN_USER = {
   name: "Subash",
@@ -17,7 +35,18 @@ function safeParseAuth(stored) {
   const trimmed = stored.trim();
   if (!trimmed || trimmed === "undefined" || trimmed === "null") return null;
   try {
-    return JSON.parse(trimmed);
+    const data = JSON.parse(trimmed);
+    if (!data || !data.token) return null;
+    // Enforce session expiration
+    if (data.expiresAt && Date.now() > data.expiresAt) {
+      try {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+      } catch {
+        // Fallback
+      }
+      return null;
+    }
+    return data;
   } catch {
     return null;
   }
@@ -49,36 +78,50 @@ export function AdminAuthProvider({ children }) {
 
   const login = async (email, password, rememberMe = true) => {
     setLoading(true);
-    // Simulated JWT login response (ready for REST API POST /api/auth/login)
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         setLoading(false);
-        // Clean validation
-        if (!email || !password) {
-          reject(new Error("Please enter both email and password"));
+        const cleanEmail = (email || "").trim().toLowerCase();
+        const cleanPassword = (password || "").trim();
+
+        if (!cleanEmail || !cleanPassword) {
+          reject(new Error("Please enter both email and password."));
           return;
         }
 
-        // Demo credentials check (accepts demo user or standard subash studio admin credentials)
+        const matched = ALLOWED_ADMIN_CREDENTIALS.find(
+          (c) => c.email === cleanEmail && c.password === cleanPassword
+        );
+
+        if (!matched) {
+          reject(new Error("Invalid email or password. Please check your credentials."));
+          return;
+        }
+
         const user = {
-          name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
-          email: email,
-          role: "Studio Director",
-          avatar: "/images/admin/profile.png",
+          name: matched.name,
+          email: matched.email,
+          role: matched.role,
+          avatar: matched.avatar,
         };
 
         const session = {
-          token: "jwt_demo_token_" + Date.now(),
+          token: "jwt_subash_" + Math.random().toString(36).substring(2) + Date.now(),
           user,
+          expiresAt: Date.now() + SESSION_DURATION_MS,
         };
 
         if (rememberMe) {
-          localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
+          try {
+            localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
+          } catch {
+            // Fallback
+          }
         }
         setIsAuthenticated(true);
         setAdminUser(user);
         resolve(user);
-      }, 700);
+      }, 500);
     });
   };
 

@@ -3,7 +3,6 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { Menu, X, ChevronDown, Camera, Frame } from "lucide-react";
-import Logomark from "./Logomark";
 
 const NAV_LINKS = [
   { to: "/", label: "Home" },
@@ -67,10 +66,26 @@ export default function Navbar() {
               scrolled ? "border-line shadow-card" : "border-transparent"
             }`}
           >
-            <div className="max-w-7xl mx-auto px-6 lg:px-10 h-[84px] flex items-center justify-between">
-              <Link to="/" className="flex items-center gap-3 group">
-                <Logomark size={34} />
-                <span className="font-display text-lg tracking-[0.22em] text-ink">SUBASH STUDIO</span>
+            <div className="w-full px-3 sm:px-6 lg:px-8 h-[84px] flex items-center justify-between">
+              <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+                <img
+                  src="/logo.png"
+                  alt="SUBASH STUDIO"
+                  className="h-10 w-10 sm:h-11 sm:w-11 object-contain shrink-0"
+                />
+                <div className="h-7 sm:h-8 w-[1px] bg-black shrink-0" aria-hidden="true" />
+                <div className="flex flex-col justify-center select-none">
+                  <span className="font-display text-[15px] sm:text-[17px] font-bold tracking-[0.22em] text-black uppercase leading-none">
+                    SUBASH
+                  </span>
+                  <div className="flex items-center justify-between w-full mt-1">
+                    <span className="h-[1px] flex-1 bg-black" />
+                    <span className="text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.24em] text-black uppercase leading-none px-1">
+                      STUDIO
+                    </span>
+                    <span className="h-[1px] flex-1 bg-black" />
+                  </div>
+                </div>
               </Link>
 
               <nav className="hidden lg:flex items-center gap-9">

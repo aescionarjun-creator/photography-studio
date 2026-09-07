@@ -61,6 +61,7 @@ function PageWrapper({ children }) {
 
 function PublicWebsiteLayout() {
   const location = useLocation();
+  useLenis();
 
   return (
     <div className="min-h-screen flex flex-col bg-bg text-ink">
@@ -87,12 +88,6 @@ function PublicWebsiteLayout() {
 
 export default function App() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
-
-  // Only run Lenis smooth scroll on public pages
-  if (!isAdminRoute) {
-    useLenis();
-  }
 
   useEffect(() => {
     scrollToTop();
