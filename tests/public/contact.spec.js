@@ -69,12 +69,13 @@ test.describe("Public Contact Form & Submission", () => {
     await expect(page.getByText(/Thank you — a member of the SUBASH STUDIO team will reach out/i)).toBeVisible();
 
     // Verify localStorage contains the newly added enquiry
+    /** @type {Array<{ name?: string, phone?: string }>} */
     const storedEnquiries = await page.evaluate(() => {
       const data = localStorage.getItem("subash_studio_db_v4_enquiries");
       return data ? JSON.parse(data) : [];
     });
 
-    const created = storedEnquiries.find((e) => e.name === testName);
+    const created = storedEnquiries.find((/** @type {any} */ e) => e.name === testName);
     expect(created, "Created enquiry was not found in localStorage").toBeDefined();
     expect(created?.phone).toBe(testPhone);
   });
