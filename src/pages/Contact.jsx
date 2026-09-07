@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Check } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Check, ExternalLink, Navigation } from "lucide-react";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
@@ -8,12 +8,35 @@ import SectionHeading from "../components/SectionHeading";
 import { services as defaultServices } from "../data/services";
 import { useAdminData } from "../admin/context/AdminDataContext";
 
+const STUDIO_LOCATIONS = [
+  {
+    id: "tirunelveli",
+    name: "Tirunelveli Studio & Gallery",
+    city: "Tirunelveli",
+    tag: "Studio & Gallery",
+    address: "Ahil Complex, S Bypass Rd, next to selam RR briyani, Vasanth Nagar, Tirunelveli, Tamil Nadu 627005",
+    embedUrl: "https://maps.google.com/maps?q=8.7023167,77.7226628&hl=en&z=16&output=embed",
+    mapsUrl: "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9",
+  },
+  {
+    id: "kalladaikurichi",
+    name: "Kalladaikurichi Flagship Studio",
+    city: "Kalladaikurichi",
+    tag: "Flagship Studio & Atelier",
+    address: "88 Main Road, Kalladaikurichi, Tamil Nadu 627416",
+    embedUrl: "https://www.google.com/maps?q=subashstudio,Kalladaikurichi,TamilNadu&output=embed",
+    mapsUrl: "https://maps.google.com/?q=Subash+Studio+Kalladaikurichi",
+  },
+];
+
 export default function Contact() {
   const { addEnquiry, services: adminServices } = useAdminData();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [selectedBranchId, setSelectedBranchId] = useState("tirunelveli");
 
   const servicesList = adminServices && adminServices.length > 0 ? adminServices : defaultServices;
+  const currentBranch = STUDIO_LOCATIONS.find((loc) => loc.id === selectedBranchId) || STUDIO_LOCATIONS[0];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +64,7 @@ export default function Contact() {
 
   return (
     <>
-      <Seo title="Contact" description="Book a shoot with SUBASH STUDIO — reach out to our Chennai, Coimbatore or Madurai studio." />
+      <Seo title="Contact" description="Book a shoot with SUBASH STUDIO — reach out to our Tirunelveli or Kalladaikurichi studio." />
 
       <section className="pt-40 pb-16 max-w-7xl mx-auto px-6 lg:px-10">
         <SectionHeading
@@ -106,31 +129,122 @@ export default function Contact() {
         <Reveal delay={0.1} className="lg:col-span-2 flex flex-col gap-6">
           <div className="bg-ink text-bg-soft rounded-md p-8 md:p-10">
             <p className="eyebrow text-gold-light mb-6">Reach Us Directly</p>
-            <div className="space-y-5 text-sm">
-              <a href="tel:+919876543210" className="flex items-center gap-4 hover:text-gold transition-colors">
-                <Phone size={18} className="text-gold shrink-0" /> +91 93457 06609
+            <div className="space-y-4 text-sm">
+              <a href="tel:+919345706609" className="flex items-center gap-3.5 hover:text-gold transition-colors">
+                <Phone size={17} className="text-gold shrink-0" /> +91 93457 06609
               </a>
-              <a href="mailto:hello@subashstudio.com" className="flex items-center gap-4 hover:text-gold transition-colors">
-                <Mail size={18} className="text-gold shrink-0" /> hello@subashstudio.com
+              <a href="mailto:hello@subashstudio.com" className="flex items-center gap-3.5 hover:text-gold transition-colors">
+                <Mail size={17} className="text-gold shrink-0" /> hello@subashstudio.com
               </a>
-              <div className="flex items-start gap-4">
-                <MapPin size={18} className="text-gold shrink-0 mt-0.5" /> Ahil Complex, S Bypass Rd, next to selam RR briyani, Vasanth Nagar, Tirunelveli, Tamil Nadu 627005
+
+              <div className="pt-3 border-t border-bg-soft/10 space-y-3">
+                <p className="text-[11px] uppercase tracking-[0.14em] text-gold-light/75 font-semibold">Our Studio Locations</p>
+                {STUDIO_LOCATIONS.map((loc) => {
+                  const isSelected = selectedBranchId === loc.id;
+                  return (
+                    <button
+                      key={loc.id}
+                      type="button"
+                      onClick={() => setSelectedBranchId(loc.id)}
+                      className={`w-full text-left p-3 rounded transition-all border ${
+                        isSelected
+                          ? "bg-bg-soft/10 border-gold text-bg-soft shadow-xs ring-1 ring-gold/40"
+                          : "bg-bg-soft/5 border-bg-soft/10 hover:border-bg-soft/30 text-bg-soft/80"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="font-semibold text-xs tracking-wider uppercase text-gold">
+                          {loc.city}
+                        </span>
+                        <span className={`text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full ${
+                          isSelected ? "bg-gold/25 text-gold-light" : "bg-bg-soft/10 text-bg-soft/60"
+                        }`}>
+                          {isSelected ? "Active On Map" : "View On Map"}
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-bg-soft/80 leading-relaxed">
+                        <MapPin size={13} className="text-gold shrink-0 mt-0.5" />
+                        <span>{loc.address}</span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-            <div className="flex items-center gap-4 mt-8">
-              <a href="https://wa.me/+919345706609" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-bg-soft/25 flex items-center justify-center hover:border-gold hover:text-gold transition-colors"><FaWhatsapp /></a>
-              <a href="https://www.instagram.com/subash_studio/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-bg-soft/25 flex items-center justify-center hover:border-gold hover:text-gold transition-colors"><FaInstagram /></a>
+
+            <div className="flex items-center justify-between pt-5 border-t border-bg-soft/10 mt-6">
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://wa.me/+919345706609"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="WhatsApp"
+                  className="w-10 h-10 rounded-full border border-bg-soft/25 flex items-center justify-center hover:border-gold hover:text-gold transition-colors"
+                >
+                  <FaWhatsapp size={17} />
+                </a>
+                <a
+                  href="https://www.instagram.com/subash_studio/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Instagram"
+                  className="w-10 h-10 rounded-full border border-bg-soft/25 flex items-center justify-center hover:border-gold hover:text-gold transition-colors"
+                >
+                  <FaInstagram size={17} />
+                </a>
+              </div>
+
+              <a
+                href={currentBranch.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase text-gold hover:underline"
+              >
+                Directions <Navigation size={13} />
+              </a>
             </div>
           </div>
 
-          <div className="rounded-md overflow-hidden shadow-card border border-line/60 h-64">
-            <iframe
-              title="SUBASH STUDIO location"
-              src="https://www.google.com/maps?q=subashstudio,Kalladaikurichi,TamilNadu&output=embed"
-              className="w-full h-full border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <div className="rounded-md overflow-hidden shadow-card border border-line/60 bg-card flex flex-col">
+            <div className="p-3 bg-bg-soft border-b border-line flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1 bg-card p-1 rounded border border-line">
+                {STUDIO_LOCATIONS.map((loc) => (
+                  <button
+                    key={loc.id}
+                    type="button"
+                    onClick={() => setSelectedBranchId(loc.id)}
+                    className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
+                      selectedBranchId === loc.id
+                        ? "bg-ink text-bg-soft shadow-xs"
+                        : "text-ink-soft hover:text-ink hover:bg-bg-soft"
+                    }`}
+                  >
+                    {loc.city}
+                  </button>
+                ))}
+              </div>
+
+              <a
+                href={currentBranch.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-gold-dark hover:text-ink transition-colors px-2 py-1"
+              >
+                <span>Open in Maps</span>
+                <ExternalLink size={12} />
+              </a>
+            </div>
+
+            <div className="relative h-72 w-full bg-line/10">
+              <iframe
+                key={currentBranch.id}
+                title={`SUBASH STUDIO ${currentBranch.city} location`}
+                src={currentBranch.embedUrl}
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
         </Reveal>
       </section>

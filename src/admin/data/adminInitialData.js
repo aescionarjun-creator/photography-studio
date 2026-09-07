@@ -1,7 +1,6 @@
 import { galleryImages } from "../../data/gallery";
 import { portfolioProjects } from "../../data/portfolio";
 import { services as publicServices } from "../../data/services";
-import { branches as publicBranches } from "../../data/branches";
 
 export const initialBookings = [
   {
@@ -322,7 +321,7 @@ export const initialBranches = [
     phone: "+91 93457 06609",
     whatsapp: "+91 93457 06609",
     email: "tirunelveli@subashstudio.com",
-    mapsUrl: "https://maps.google.com/?q=Subash+Studio+Tirunelveli",
+    mapsUrl: "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9",
     hours: "Mon – Sun, 08:00 AM – 09:00 PM",
     image: "/images/gallery/branches/tirunelveli.jpg",
     manager: "Arun Kumar",

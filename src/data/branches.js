@@ -6,7 +6,9 @@ export const branches = [
     address: "88 Main Road, Kalladaikurichi, Tamil Nadu 627416",
     phone: "+91 93457 06609",
     hours: "Mon – Sun, 08:00 AM – 09:00 PM",
-    image: "/public/images/gallery/branches/kalladaikurichi.jpg",
+    image: "/images/gallery/branches/kalladaikurichi.jpg",
+    mapsUrl: "https://maps.google.com/?q=Subash+Studio+Kalladaikurichi",
+    embedUrl: "https://www.google.com/maps?q=subashstudio,Kalladaikurichi,TamilNadu&output=embed",
   },
 
   {
@@ -16,7 +18,9 @@ export const branches = [
     address: "Ahil Complex, S Bypass Rd, next to selam RR briyani, Vasanth Nagar, Tirunelveli, Tamil Nadu 627005",
     phone: "+91 93457 06609",
     hours: "Mon – Sun, 08:00 AM – 09:00 PM",
-    image: "/public/images/gallery/branches/tirunelveli.jpg",
+    image: "/images/gallery/branches/tirunelveli.jpg",
+    mapsUrl: "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9",
+    embedUrl: "https://maps.google.com/maps?q=8.7023167,77.7226628&hl=en&z=16&output=embed",
   },
 
  

@@ -27,7 +27,7 @@ test.describe("Public Contact Form & Submission", () => {
     await expect(page.getByText(/Kalladaikurichi|Tirunelveli/i).first()).toBeVisible();
 
     // Google Maps iframe exists
-    const mapIframe = page.locator('iframe[title="SUBASH STUDIO location"]');
+    const mapIframe = page.locator('iframe[title*="SUBASH STUDIO"]');
     await expect(mapIframe).toBeVisible();
 
     // Check no horizontal overflow
@@ -75,7 +75,7 @@ test.describe("Public Contact Form & Submission", () => {
       return data ? JSON.parse(data) : [];
     });
 
-    const created = storedEnquiries.find((/** @type {any} */ e) => e.name === testName);
+    const created = storedEnquiries.find((/** @type {{ name?: string, phone?: string }} */ e) => e.name === testName);
     expect(created, "Created enquiry was not found in localStorage").toBeDefined();
     expect(created?.phone).toBe(testPhone);
   });

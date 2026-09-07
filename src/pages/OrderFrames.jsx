@@ -22,6 +22,7 @@ import {
   formatRupee,
   isDesignCompatible,
 } from "../lib/framePricing";
+import { FaWhatsapp } from "react-icons/fa";
 
 
 const STEPS = [
@@ -1148,6 +1149,10 @@ export default function OrderFrames() {
                 {/* Compact Order Details Box */}
                 <div className="bg-[#FAF8F5] rounded-2xl p-5 border border-[#E7E0D2] text-left space-y-2 text-xs">
                   <div className="flex justify-between items-center py-1 border-b border-[#E7E0D2]/60">
+                    <span className="text-[#6F6A62] font-medium">Customer:</span>
+                    <span className="font-semibold text-[#1C1B19]">{placedOrder.customerName}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-[#E7E0D2]/60">
                     <span className="text-[#6F6A62] font-medium">Wood:</span>
                     <span className="font-bold text-[#1C1B19]">{placedOrder.woodType}</span>
                   </div>
@@ -1167,8 +1172,20 @@ export default function OrderFrames() {
                   </div>
                 </div>
 
-                {/* Primary Actions: Print Receipt & Back to Home */}
+                {/* Primary Actions: WhatsApp, Print Receipt & Back to Home */}
                 <div className="space-y-3 pt-2">
+                  <a
+                    href={`https://wa.me/919345706609?text=${encodeURIComponent(
+                      `Hello Subash Studio! I have placed frame order ${placedOrder.id} for ${placedOrder.customerName} (${placedOrder.woodType}, ${placedOrder.frameDesign}, ${placedOrder.frameRatio}). Total: ${formatRupee(placedOrder.totalAmount)}.`
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-3.5 px-6 bg-[#25D366] text-white hover:bg-[#1EBE5D] rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+                  >
+                    <FaWhatsapp className="w-4 h-4" />
+                    <span>Confirm Order on WhatsApp</span>
+                  </a>
+
                   <button
                     type="button"
                     onClick={() => window.print()}
