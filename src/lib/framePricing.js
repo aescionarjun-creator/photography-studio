@@ -1,6 +1,26 @@
 // @ts-check
 
 /**
+ * @typedef {Object} WoodOption
+ * @property {string} [id]
+ * @property {string} [name]
+ * @property {number | string} [price]
+ * @property {number | string} [basePrice]
+ *
+ * @typedef {Object} DesignOption
+ * @property {string} [id]
+ * @property {string} [name]
+ * @property {number | string} [price]
+ * @property {number | string} [additionalPrice]
+ * @property {Array<string | any>} [compatibleWoods]
+ *
+ * @typedef {Object} RatioOption
+ * @property {string} [id]
+ * @property {string} [ratio]
+ * @property {number | string} [price]
+ */
+
+/**
  * Parses numeric price from string (e.g. "₹800", "800", 800)
  * @param {string | number | undefined | null} priceVal
  * @returns {number}
@@ -33,9 +53,9 @@ export function formatRupee(amount) {
  * FINAL PRICE = Wood Base Price + Design Additional Price + Ratio/Size Price
  * 
  * @param {Object} params
- * @param {Object} [params.wood]
- * @param {Object} [params.design]
- * @param {Object} [params.ratio]
+ * @param {WoodOption | null} [params.wood]
+ * @param {DesignOption | null} [params.design]
+ * @param {RatioOption | null} [params.ratio]
  * @returns {{
  *   woodPrice: number,
  *   designPrice: number,
@@ -71,8 +91,8 @@ export function calculateFramePrice({ wood, design, ratio }) {
  * If design.compatibleWoods is missing or empty or contains "All", it is compatible with all woods.
  * Otherwise, checks if wood.id or wood.name is in design.compatibleWoods.
  * 
- * @param {Object} design
- * @param {Object} wood
+ * @param {DesignOption | null} design
+ * @param {WoodOption | null} wood
  * @returns {boolean}
  */
 export function isDesignCompatible(design, wood) {
@@ -83,7 +103,7 @@ export function isDesignCompatible(design, wood) {
   const woodId = String(wood.id || "").toLowerCase();
   const woodName = String(wood.name || "").toLowerCase();
 
-  return design.compatibleWoods.some((w) => {
+  return design.compatibleWoods.some((/** @type {string | any} */ w) => {
     const target = String(w).toLowerCase();
     return target === woodId || target === woodName;
   });
@@ -104,4 +124,3 @@ export function normalizeWhatsAppNumber(phone) {
   }
   return cleaned;
 }
-

@@ -294,17 +294,38 @@ export function AdminDataProvider({ children }) {
   };
 
   // 8. Testimonials
-  const [testimonials, setTestimonials] = useState(() =>
-    loadFromStorage("testimonials", initialTestimonials)
-  );
+  const [testimonials, setTestimonials] = useState(() => {
+    const loaded = loadFromStorage("testimonials", initialTestimonials);
+    if (!Array.isArray(loaded)) return initialTestimonials;
+    // Normalize existing records safely without modifying user data
+    return loaded.map((item) => ({
+      ...item,
+      source: item.source || "manual",
+      hidden: Boolean(item.hidden),
+      syncStatus: item.syncStatus || (item.source === "google" ? "imported" : "approved"),
+    }));
+  });
   useEffect(() => saveToStorage("testimonials", testimonials), [testimonials]);
+
+  // Google Reviews sync metadata
+  const [googleReviewsMeta, setGoogleReviewsMeta] = useState(() =>
+    loadFromStorage("googleReviewsMeta", {
+      lastSynced: null,
+      totalGoogleReviews: 0,
+      accountName: "Subash Studio",
+    })
+  );
+  useEffect(() => saveToStorage("googleReviewsMeta", googleReviewsMeta), [googleReviewsMeta]);
 
   const addTestimonial = (tst) => {
     const newTst = {
       ...tst,
       id: `TST-${Math.floor(100 + Math.random() * 900)}`,
+      source: tst.source || "manual",
       approved: tst.approved ?? true,
       featured: tst.featured ?? false,
+      hidden: Boolean(tst.hidden),
+      syncStatus: tst.syncStatus || "approved",
       date: tst.date || new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
     };
     setTestimonials((prev) => [newTst, ...prev]);
@@ -335,6 +356,92 @@ export function AdminDataProvider({ children }) {
         item.id === id ? { ...item, featured: !item.featured } : item
       )
     );
+  };
+
+  const toggleTestimonialHidden = (id) => {
+    setTestimonials((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, hidden: !item.hidden } : item
+      )
+    );
+  };
+
+  const syncGoogleReviews = (fetchedReviews = []) => {
+    let newCount = 0;
+    let updatedCount = 0;
+    let unchangedCount = 0;
+
+    setTestimonials((prev) => {
+      const existingGoogleMap = new Map();
+      prev.forEach((item) => {
+        const key = item.googleReviewId || (item.source === "google" ? item.id : null);
+        if (key) existingGoogleMap.set(key, item);
+      });
+
+      const updatedPrev = prev.map((item) => {
+        const key = item.googleReviewId || (item.source === "google" ? item.id : null);
+        if (!key) return item;
+
+        const matchedFetch = fetchedReviews.find(
+          (f) => f.googleReviewId === key || f.id === item.id
+        );
+        if (!matchedFetch) return item;
+
+        const hasChanged =
+          item.review !== matchedFetch.review ||
+          item.rating !== matchedFetch.rating ||
+          item.date !== matchedFetch.date ||
+          item.googleReply !== matchedFetch.googleReply;
+
+        if (hasChanged) {
+          updatedCount++;
+          return {
+            ...item,
+            review: matchedFetch.review,
+            rating: matchedFetch.rating,
+            date: matchedFetch.date,
+            googleUpdateTime: matchedFetch.googleUpdateTime || item.googleUpdateTime,
+            googleReply: matchedFetch.googleReply || item.googleReply,
+            customerName: matchedFetch.customerName || item.customerName,
+            customerImage: matchedFetch.customerImage || item.customerImage,
+          };
+        }
+
+        unchangedCount++;
+        return item;
+      });
+
+      const newItems = [];
+      fetchedReviews.forEach((fetched) => {
+        const key = fetched.googleReviewId || fetched.id;
+        if (!existingGoogleMap.has(key)) {
+          newCount++;
+          newItems.push({
+            ...fetched,
+            source: "google",
+            approved: false, // Default to false so admin moderates first
+            featured: false,
+            hidden: false,
+            syncStatus: "imported",
+          });
+        }
+      });
+
+      return [...newItems, ...updatedPrev];
+    });
+
+    setGoogleReviewsMeta((prev) => ({
+      ...prev,
+      lastSynced: new Date().toISOString(),
+      totalGoogleReviews: (prev.totalGoogleReviews || 0) + newCount,
+    }));
+
+    return {
+      checked: fetchedReviews.length,
+      added: newCount,
+      updated: updatedCount,
+      unchanged: unchangedCount,
+    };
   };
 
   // 9. Website Content
@@ -580,6 +687,10 @@ export function AdminDataProvider({ children }) {
         deleteTestimonial,
         toggleTestimonialApproved,
         toggleTestimonialFeatured,
+        toggleTestimonialHidden,
+        syncGoogleReviews,
+        googleReviewsMeta,
+        setGoogleReviewsMeta,
 
         // Website Content
         websiteContent,

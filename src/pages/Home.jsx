@@ -8,7 +8,7 @@ import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import FloralCorners from "../components/FloralCorners";
 import WhyChooseUs from "../components/WhyChooseUs";
-import { services as defaultServices } from "../data/services";
+import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import { portfolioProjects as defaultPortfolio } from "../data/portfolio";
 import { useAdminData } from "../admin/context/AdminDataContext";
 
@@ -20,20 +20,11 @@ const defaultStats = [
 ];
 
 export default function Home() {
-  const { websiteContent, services: adminServices, portfolio: adminPortfolio } = useAdminData();
+  const { websiteContent, portfolio: adminPortfolio } = useAdminData();
 
   const homeData = websiteContent?.home || {};
   const heroEyebrow = homeData.heroHeading || "Fine Photography & Cinematic Films";
   const heroSub = homeData.heroTagline || "Preserving timeless heritage, profound emotions, and authentic human celebrations across generations.";
-  
-  const displayServices = (adminServices && adminServices.length > 0
-    ? adminServices.filter((s) => s.status !== "Inactive")
-    : defaultServices
-  ).map((s) => ({
-    ...s,
-    name: s.name || s.title || "Service",
-    image: s.image || s.imageUrl || "/images/wedding photos.jpg",
-  }));
 
   const displayPortfolio = (adminPortfolio && adminPortfolio.length > 0
     ? adminPortfolio.filter((p) => p.published !== false)
@@ -207,29 +198,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVICES PREVIEW */}
-      <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {displayServices.slice(0, 4).map((srv, idx) => (
-          <Reveal key={srv.id || srv.name || idx} delay={idx * 0.08}>
-            <Link
-              to="/services"
-              className="group block relative rounded-md overflow-hidden aspect-[3/4] shadow-card"
-            >
-              <img
-                src={srv.image}
-                alt={srv.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <p className="text-bg-soft font-display text-lg">
-                  {srv.name}
-                </p>
-              </div>
-            </Link>
-          </Reveal>
-        ))}
-      </div>
+      {/* CLIENT TESTIMONIALS CAROUSEL */}
+      <TestimonialsCarousel />
 
       {/* PORTFOLIO PREVIEW */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-28">

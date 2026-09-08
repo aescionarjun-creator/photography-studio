@@ -21,6 +21,7 @@ import {
   Briefcase,
   Eye,
   Frame,
+  Star,
 } from "lucide-react";
 import StatCard from "../components/StatCard";
 import StatusBadge from "../components/StatusBadge";
@@ -39,6 +40,7 @@ export default function Dashboard() {
     portfolio,
     films,
     frameOrders,
+    testimonials,
   } = useAdminData();
 
   // Dynamic Time of Day Greeting
@@ -59,6 +61,8 @@ export default function Dashboard() {
   const totalServices = services.length;
   const totalBranches = branches.length;
   const newFrameOrders = (frameOrders || []).filter((o) => o.status === "New").length;
+  const googleReviews = (testimonials || []).filter((t) => t.source === "google");
+  const pendingGoogleReviews = googleReviews.filter((t) => !t.approved && !t.hidden).length;
 
   // Upcoming shoots (sorted by date)
   const upcomingShoots = [...bookings]
@@ -126,6 +130,13 @@ export default function Dashboard() {
           >
             <Images className="w-4 h-4 text-[#C9A669]" />
             <span>Upload Photo</span>
+          </Link>
+          <Link
+            to="/admin/testimonials"
+            className="px-4 py-2.5 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5"
+          >
+            <Star className="w-4 h-4 text-[#C9A669]" />
+            <span>Reviews{pendingGoogleReviews > 0 ? ` (${pendingGoogleReviews} pending)` : ""}</span>
           </Link>
         </div>
       </div>

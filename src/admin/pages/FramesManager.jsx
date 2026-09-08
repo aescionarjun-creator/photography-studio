@@ -14,13 +14,21 @@ import {
   Sparkles,
   X,
   FileText,
+  Download,
+  ImageDown,
+  Loader2,
+  Check,
 } from "lucide-react";
 import StatCard from "../components/StatCard";
 import { useAdminData } from "../context/AdminDataContext";
+import { useToast } from "../context/ToastContext";
 import { formatRupee, parsePrice } from "../../lib/framePricing";
 import FrameImageUploader from "../components/FrameImageUploader";
 import FramePrintReceipt from "../../components/FramePrintReceipt";
-import FrameOrderPreview from "../components/FrameOrderPreview";
+import FrameOrderPreview, {
+  exportFrameImage,
+  downloadOriginalFrameOrderImage,
+} from "../components/FrameOrderPreview";
 
 const STATUS_OPTIONS = [
   "All",
@@ -63,6 +71,49 @@ export default function FramesManager() {
   const [woodModal, setWoodModal] = useState({ open: false, mode: "add", data: null });
   const [designModal, setDesignModal] = useState({ open: false, mode: "add", data: null });
   const [ratioModal, setRatioModal] = useState({ open: false, mode: "add", data: null });
+
+  // Download state & handler
+  const { addToast } = useToast();
+  const [downloadStatus, setDownloadStatus] = useState("idle"); // "idle" | "loading" | "success"
+  const [downloadOriginalStatus, setDownloadOriginalStatus] = useState("idle"); // "idle" | "loading" | "success"
+
+  const handleDownloadFrame = async () => {
+    if (!selectedOrder || downloadStatus === "loading") return;
+    try {
+      setDownloadStatus("loading");
+      const filename = await exportFrameImage(
+        selectedOrder,
+        frameWoodTypes,
+        frameDesigns
+      );
+      setDownloadStatus("success");
+      addToast(`Frame downloaded: ${filename}`, "success", 3000);
+      setTimeout(() => {
+        setDownloadStatus("idle");
+      }, 2000);
+    } catch (err) {
+      console.error("Frame export error:", err);
+      setDownloadStatus("idle");
+      addToast("Unable to generate frame image. Please try again.", "error", 4000);
+    }
+  };
+
+  const handleDownloadOriginal = async () => {
+    if (!selectedOrder || downloadOriginalStatus === "loading") return;
+    try {
+      setDownloadOriginalStatus("loading");
+      const filename = await downloadOriginalFrameOrderImage(selectedOrder);
+      setDownloadOriginalStatus("success");
+      addToast(`Original photo downloaded: ${filename}`, "success", 3000);
+      setTimeout(() => {
+        setDownloadOriginalStatus("idle");
+      }, 2000);
+    } catch (err) {
+      console.error("Original photo download error:", err);
+      setDownloadOriginalStatus("idle");
+      addToast("Unable to download the original image. Please try again.", "error", 4000);
+    }
+  };
 
   // Metrics
   const totalOrders = (frameOrders || []).length;
@@ -755,24 +806,84 @@ export default function FramesManager() {
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="pt-2 flex items-center justify-between gap-3">
-                    <button
-                      type="button"
-                      onClick={() => window.print()}
-                      className="px-5 py-2.5 bg-[#FAF8F5] hover:bg-[#F4EFE6] text-[#1C1B19] border border-[#DCD3C0] rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-sm flex items-center gap-2 active:scale-95"
-                    >
-                      <FileText className="w-4 h-4 text-[#8C6D32]" />
-                      <span>Print Receipt</span>
-                    </button>
+                  {/* Action Buttons Section */}
+                  <div className="pt-3 border-t border-[#E7E0D2] space-y-3">
+                    {/* Download Actions: Composed Frame vs Original Customer Image */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <button
+                        type="button"
+                        onClick={handleDownloadFrame}
+                        disabled={downloadStatus === "loading"}
+                        className="w-full px-4 py-2.5 bg-[#FAF8F5] hover:bg-[#F4EFE6] text-[#1C1B19] border border-[#DCD3C0] rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-sm flex items-center justify-center gap-2 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                        title="Download complete framed artwork image (composed with timber, design profile, and matboard)"
+                      >
+                        {downloadStatus === "loading" ? (
+                          <>
+                            <Loader2 className="w-4 h-4 text-[#8C6D32] animate-spin" />
+                            <span>Preparing frame...</span>
+                          </>
+                        ) : downloadStatus === "success" ? (
+                          <>
+                            <Check className="w-4 h-4 text-emerald-600" />
+                            <span>Downloaded</span>
+                          </>
+                        ) : (
+                          <>
+                            <Download className="w-4 h-4 text-[#8C6D32]" />
+                            <span>Download Frame</span>
+                          </>
+                        )}
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setSelectedOrder(null)}
-                      className="px-6 py-2.5 bg-[#1C1B19] text-[#F8F6F2] rounded-xl text-xs font-bold tracking-wider uppercase hover:bg-[#322F2A] transition-colors active:scale-95"
-                    >
-                      Close
-                    </button>
+                      <button
+                        type="button"
+                        onClick={handleDownloadOriginal}
+                        disabled={downloadOriginalStatus === "loading"}
+                        className="w-full px-4 py-2.5 bg-[#FAF8F5] hover:bg-[#F4EFE6] text-[#1C1B19] border border-[#DCD3C0] rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-sm flex items-center justify-center gap-2 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                        title="Download customer's original uploaded photograph (unframed for physical production)"
+                      >
+                        {downloadOriginalStatus === "loading" ? (
+                          <>
+                            <Loader2 className="w-4 h-4 text-[#8C6D32] animate-spin" />
+                            <span>Preparing image...</span>
+                          </>
+                        ) : downloadOriginalStatus === "success" ? (
+                          <>
+                            <Check className="w-4 h-4 text-emerald-600" />
+                            <span>Downloaded</span>
+                          </>
+                        ) : (
+                          <>
+                            <ImageDown className="w-4 h-4 text-[#8C6D32]" />
+                            <span>Download Original Image</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Document Actions: Print Receipt & Close */}
+                    <div className="flex items-center justify-between gap-3 pt-0.5">
+                      <button
+                        type="button"
+                        onClick={() => window.print()}
+                        className="px-4 sm:px-5 py-2.5 bg-[#FAF8F5] hover:bg-[#F4EFE6] text-[#1C1B19] border border-[#DCD3C0] rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-sm flex items-center gap-2 active:scale-95"
+                      >
+                        <FileText className="w-4 h-4 text-[#8C6D32]" />
+                        <span>Print Receipt</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedOrder(null);
+                          setDownloadStatus("idle");
+                          setDownloadOriginalStatus("idle");
+                        }}
+                        className="px-6 py-2.5 bg-[#1C1B19] text-[#F8F6F2] rounded-xl text-xs font-bold tracking-wider uppercase hover:bg-[#322F2A] transition-colors active:scale-95 text-center"
+                      >
+                        Close
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
