@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import { formatRupee } from "../lib/framePricing";
+import { formatRatioDisplayLabel } from "../lib/frameDimensions";
 
 /**
  * Format date string to "DD Month YYYY", e.g. "05 September 2026"
@@ -134,58 +135,140 @@ export default function FramePrintReceipt({ order }) {
         </div>
 
         {/* ==========================================================
-            FRAME SPECIFICATION
+            FRAME SPECIFICATION & ITEMIZATION
         ========================================================== */}
-        <div className="space-y-2 border-b border-gray-200 pb-4 print:border-gray-300 print-avoid-break">
-          <div className="text-[11px] font-bold tracking-wider uppercase text-[#1C1B19]">
-            FRAME SPECIFICATION
-          </div>
-          <div className="text-xs space-y-1.5">
-            <div className="flex justify-between items-center py-0.5">
-              <span className="text-gray-500">Wood Type</span>
-              <span className="font-semibold text-[#1C1B19]">{order.woodType}</span>
+        {order.items && order.items.length > 0 ? (
+          <div className="space-y-3 border-b border-gray-200 pb-4 print:border-gray-300 print-avoid-break">
+            <div className="flex justify-between items-center">
+              <div className="text-[11px] font-bold tracking-wider uppercase text-[#1C1B19]">
+                ORDERED FRAMES ({order.items.length} ITEM{order.items.length > 1 ? "S" : ""})
+              </div>
+              <div className="text-[10px] text-gray-500 font-semibold">
+                Total Units: {order.items.reduce((s, i) => s + (i.quantity || 1), 0)}
+              </div>
             </div>
-            <div className="flex justify-between items-center py-0.5">
-              <span className="text-gray-500">Frame Design</span>
-              <span className="font-semibold text-[#1C1B19]">{order.frameDesign}</span>
-            </div>
-            <div className="flex justify-between items-center py-0.5">
-              <span className="text-gray-500">Frame Ratio</span>
-              <span className="font-semibold text-[#1C1B19]">{order.frameRatio}</span>
-            </div>
-          </div>
-        </div>
 
-        {/* ==========================================================
-            PRICE BREAKDOWN
-        ========================================================== */}
-        <div className="space-y-2 border-b border-gray-200 pb-4 print:border-gray-300 print-avoid-break">
-          <div className="text-[11px] font-bold tracking-wider uppercase text-[#1C1B19]">
-            PRICE BREAKDOWN
+            <div className="text-xs space-y-2.5">
+              {order.items.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 rounded border border-gray-200 bg-[#FAF8F5] print:bg-transparent space-y-1 print-avoid-break"
+                >
+                  <div className="flex justify-between items-center font-bold text-[#1C1B19]">
+                    <span>
+                      Frame #{idx + 1}: {item.wood?.name || item.woodType}
+                    </span>
+                    <span className="font-mono text-sm">{formatRupee(item.totalAmount)}</span>
+                  </div>
+                  <div className="text-[11px] text-gray-700 flex flex-wrap gap-x-3 gap-y-0.5">
+                    <span>
+                      Profile: <strong>{item.design?.name || item.frameDesign}</strong>
+                    </span>
+                    <span>&bull;</span>
+                    <span>
+                      Size:{" "}
+                      <strong>
+                        {formatRatioDisplayLabel(
+                          item.ratio?.name || item.frameRatio,
+                          item.orientation
+                        )}
+                      </strong>{" "}
+                      ({item.orientation})
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-gray-500 flex justify-between pt-0.5 border-t border-gray-200/60">
+                    <span>
+                      Unit: {formatRupee(item.unitPrice)} &times; Qty {item.quantity || 1}
+                    </span>
+                    <span className="font-mono">{formatRupee(item.totalAmount)}</span>
+                  </div>
+                </div>
+              ))}
+
+              <div className="border-t border-gray-300 pt-2.5 flex justify-between items-center">
+                <span className="font-bold text-sm uppercase tracking-wider text-[#1C1B19]">
+                  GRAND TOTAL
+                </span>
+                <span className="font-mono font-bold text-base sm:text-lg text-[#1C1B19]">
+                  {formatRupee(totalAmount)}
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="text-xs space-y-1.5">
-            <div className="flex justify-between items-center py-0.5">
-              <span className="text-gray-500">Wood Base Price</span>
-              <span className="font-mono text-[#1C1B19]">{formatRupee(woodPrice)}</span>
+        ) : (
+          <>
+            <div className="space-y-2 border-b border-gray-200 pb-4 print:border-gray-300 print-avoid-break">
+              <div className="text-[11px] font-bold tracking-wider uppercase text-[#1C1B19]">
+                FRAME SPECIFICATION
+              </div>
+              <div className="text-xs space-y-1.5">
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-gray-500">Wood Type</span>
+                  <span className="font-semibold text-[#1C1B19]">{order.woodType}</span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-gray-500">Frame Design</span>
+                  <span className="font-semibold text-[#1C1B19]">{order.frameDesign}</span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-gray-500">Frame Ratio &amp; Size</span>
+                  <span className="font-semibold text-[#1C1B19]">
+                    {formatRatioDisplayLabel(order.frameRatio, order.orientation)}
+                  </span>
+                </div>
+                {order.orientation && (
+                  <div className="flex justify-between items-center py-0.5">
+                    <span className="text-gray-500">Orientation</span>
+                    <span className="font-semibold text-[#1C1B19] capitalize">{order.orientation}</span>
+                  </div>
+                )}
+                {order.quantity && (
+                  <div className="flex justify-between items-center py-0.5">
+                    <span className="text-gray-500">Quantity</span>
+                    <span className="font-semibold text-[#1C1B19]">{order.quantity}</span>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex justify-between items-center py-0.5">
-              <span className="text-gray-500">Frame Design</span>
-              <span className="font-mono text-[#1C1B19]">{formatRupee(designPrice)}</span>
+
+            {/* PRICE BREAKDOWN */}
+            <div className="space-y-2 border-b border-gray-200 pb-4 print:border-gray-300 print-avoid-break">
+              <div className="text-[11px] font-bold tracking-wider uppercase text-[#1C1B19]">
+                PRICE BREAKDOWN
+              </div>
+              <div className="text-xs space-y-1.5">
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-gray-500">Wood Base Price</span>
+                  <span className="font-mono text-[#1C1B19]">{formatRupee(woodPrice)}</span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-gray-500">Frame Design</span>
+                  <span className="font-mono text-[#1C1B19]">{formatRupee(designPrice)}</span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-gray-500">Size / Ratio Price</span>
+                  <span className="font-mono text-[#1C1B19]">{formatRupee(ratioPrice)}</span>
+                </div>
+                {order.quantity && order.quantity > 1 && (
+                  <div className="flex justify-between items-center py-0.5 text-gray-700">
+                    <span className="text-gray-500">Unit Price &times; Qty</span>
+                    <span className="font-mono text-[#1C1B19]">
+                      {formatRupee(woodPrice + designPrice + ratioPrice)} &times; {order.quantity}
+                    </span>
+                  </div>
+                )}
+                <div className="border-t border-gray-300 pt-2.5 flex justify-between items-center">
+                  <span className="font-bold text-sm uppercase tracking-wider text-[#1C1B19]">
+                    TOTAL
+                  </span>
+                  <span className="font-mono font-bold text-base sm:text-lg text-[#1C1B19]">
+                    {formatRupee(totalAmount)}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="flex justify-between items-center py-0.5">
-              <span className="text-gray-500">Size / Ratio Price</span>
-              <span className="font-mono text-[#1C1B19]">{formatRupee(ratioPrice)}</span>
-            </div>
-            <div className="border-t border-gray-300 pt-2.5 flex justify-between items-center">
-              <span className="font-bold text-sm uppercase tracking-wider text-[#1C1B19]">
-                TOTAL
-              </span>
-              <span className="font-mono font-bold text-base sm:text-lg text-[#1C1B19]">
-                {formatRupee(totalAmount)}
-              </span>
-            </div>
-          </div>
-        </div>
+          </>
+        )}
 
         {/* ==========================================================
             BOTTOM SECTION

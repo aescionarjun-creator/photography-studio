@@ -153,9 +153,22 @@ export default function BranchesManager() {
               {/* Branch Exterior / Interior Photo */}
               <div className="relative aspect-[16/9] bg-[#F8F6F2] overflow-hidden">
                 <img
-                  src={branch.image}
+                  src={
+                    branch.image && !branch.image.includes("outdoor-01.jpg")
+                      ? branch.image
+                      : branch.city?.toLowerCase().includes("tirunelveli")
+                      ? "/images/gallery/branches/tirunelveli.jpg"
+                      : branch.city?.toLowerCase().includes("tenkasi")
+                      ? "/images/storefront.jpg"
+                      : "/images/gallery/branches/kalladaikurichi.jpg"
+                  }
                   alt={branch.city}
                   className="w-full h-full object-cover"
+                  style={{
+                    objectPosition: branch.city?.toLowerCase().includes("tirunelveli")
+                      ? "center 28%"
+                      : "center top",
+                  }}
                   onError={(e) => {
                     e.currentTarget.src = "/images/gallery/branches/kalladaikurichi.jpg";
                   }}

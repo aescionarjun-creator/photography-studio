@@ -338,7 +338,7 @@ export const initialBranches = [
     email: "tenkasi@subashstudio.com",
     mapsUrl: "https://maps.google.com/?q=Subash+Studio+Tenkasi",
     hours: "Tue – Sun, 09:00 AM – 08:30 PM",
-    image: "/images/gallery/outdoor/outdoor-01.jpg",
+    image: "/images/storefront.jpg",
     manager: "M. Ramesh",
     active: true,
   },
