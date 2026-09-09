@@ -108,7 +108,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
         <button
           type="button"
           onClick={onMobileMenuClick}
-          className="lg:hidden p-2 rounded-xl text-[#2B2B2B] hover:bg-[#F8F6F2] border border-[#E7E0D2] shrink-0"
+          className="lg:hidden p-2 rounded-lg text-[#2B2B2B] hover:bg-[#F8F6F2] border border-[#E7E0D2] shrink-0"
           aria-label="Open Sidebar Menu"
         >
           <Menu className="w-5 h-5" />
@@ -134,14 +134,14 @@ export default function AdminHeader({ onMobileMenuClick }) {
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-32 lg:w-40 xl:w-60 pl-9 pr-3 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669] focus:bg-white transition-all"
+            className="w-32 lg:w-40 xl:w-60 pl-9 pr-3 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-lg text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669] focus:bg-white transition-all"
           />
         </form>
 
         {/* Quick Add Booking */}
         <Link
           to="/admin/bookings?new=true"
-          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold shadow-sm transition-all active:scale-95 shrink-0"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold shadow-sm transition-all active:scale-95 shrink-0"
         >
           <Plus className="w-4 h-4 text-[#E4D3A6]" />
           <span className="hidden md:inline">New Booking</span>
@@ -152,7 +152,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
           href="/"
           target="_blank"
           rel="noreferrer"
-          className="p-2 sm:p-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors hidden sm:flex items-center gap-1.5 text-xs font-medium shrink-0"
+          className="p-2 sm:p-2.5 rounded-lg border border-[#E7E0D2] text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors hidden sm:flex items-center gap-1.5 text-xs font-medium shrink-0"
           title="Open Public Website"
         >
           <ExternalLink className="w-4 h-4 text-[#9C7B3D]" />
@@ -164,7 +164,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
           <button
             type="button"
             onClick={() => setNotificationsOpen(!notificationsOpen)}
-            className="relative p-2.5 rounded-xl border border-[#E7E0D2] text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors"
+            className="relative p-2.5 rounded-lg border border-[#E7E0D2] text-[#2B2B2B] hover:bg-[#F8F6F2] transition-colors"
             aria-label="View notifications"
           >
             <Bell className="w-4 h-4" />
@@ -206,7 +206,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
                         navigate("/admin/enquiries");
                         setNotificationsOpen(false);
                       }}
-                      className="py-2.5 px-2 hover:bg-[#FDFBF7] rounded-xl cursor-pointer transition-colors"
+                      className="py-2.5 px-2 hover:bg-[#FDFBF7] rounded-lg cursor-pointer transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <span className="font-medium text-xs text-[#2B2B2B] flex items-center gap-1.5">
@@ -237,9 +237,9 @@ export default function AdminHeader({ onMobileMenuClick }) {
           <button
             type="button"
             onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-            className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl border border-[#E7E0D2] hover:bg-[#F8F6F2] transition-colors"
+            className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-lg border border-[#E7E0D2] hover:bg-[#F8F6F2] transition-colors"
           >
-            <div className="w-8 h-8 rounded-lg bg-[#2B2B2B] text-[#E4D3A6] flex items-center justify-center font-display font-semibold text-xs overflow-hidden">
+            <div className="w-8 h-8 rounded-md bg-[#2B2B2B] text-[#E4D3A6] flex items-center justify-center font-display font-semibold text-xs overflow-hidden">
               {adminUser?.avatar ? (
                 <img
                   src={adminUser.avatar}
@@ -262,7 +262,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
           </button>
 
           {profileMenuOpen && (
-            <div className="absolute right-0 mt-3 w-56 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-2 z-50 animate-fadeIn">
+            <div className="absolute right-0 mt-3 w-56 max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-xl border border-[#E7E0D2] p-2 z-50 animate-fadeIn">
               <div className="px-3 py-2 border-b border-[#E7E0D2]/60 mb-1">
                 <p className="text-xs font-bold text-[#2B2B2B]">
                   {adminUser?.name || "Subash Admin"}
@@ -275,7 +275,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
               <Link
                 to="/admin/settings"
                 onClick={() => setProfileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2 text-xs text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-xl transition-colors font-medium"
+                className="flex items-center gap-2.5 px-3 py-2 text-xs text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-lg transition-colors font-medium"
               >
                 <User className="w-4 h-4 text-[#9C7B3D]" />
                 <span>Admin Profile</span>
@@ -284,7 +284,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
               <Link
                 to="/admin/settings"
                 onClick={() => setProfileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2 text-xs text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-xl transition-colors font-medium"
+                className="flex items-center gap-2.5 px-3 py-2 text-xs text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-lg transition-colors font-medium"
               >
                 <SettingsIcon className="w-4 h-4 text-[#9C7B3D]" />
                 <span>Studio Settings</span>
@@ -293,7 +293,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
               <button
                 type="button"
                 onClick={handleResetData}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-xl transition-colors font-medium text-left"
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-[#6F6A62] hover:text-[#2B2B2B] hover:bg-[#F8F6F2] rounded-lg transition-colors font-medium text-left"
               >
                 <RefreshCw className="w-4 h-4 text-amber-600" />
                 <span>Reset Demo Data</span>
@@ -306,7 +306,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
                     setProfileMenuOpen(false);
                     logout();
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-xl transition-colors font-medium text-left"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-lg transition-colors font-medium text-left"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Log Out</span>
