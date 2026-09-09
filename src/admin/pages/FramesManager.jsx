@@ -144,38 +144,48 @@ export default function FramesManager() {
   return (
     <div className="space-y-8 animate-fadeIn min-w-0">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-[#24221F] to-[#1C1B19] rounded-xl p-5 sm:p-6 text-[#F8F6F2] shadow-lg border border-[#3A3833] flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden">
-        <div className="space-y-2 relative z-10">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#F8F6F2]">
-            Custom Frame Management
+      <div className="bg-white rounded-xl p-5 sm:p-6 text-[#2B2B2B] shadow-sm border border-[#E7E0D2] flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[#C9A669] before:via-[#DFCA9F] before:to-[#9C7B3D]">
+        {/* Subtle decorative warm background aura */}
+        <div className="pointer-events-none absolute -right-16 -top-16 w-64 h-64 bg-[#FBF7F0] rounded-full blur-2xl opacity-70" />
+
+        <div className="space-y-1.5 relative z-10 min-w-0">
+          <div className="inline-flex items-center gap-1.5 text-xs text-[#7A746B] font-medium mb-0.5">
+            <Frame className="w-3.5 h-3.5 text-[#C9A669]" />
+            <span>Handcrafted Studio Framing</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-[#1C1B19] tracking-tight">
+            Custom Frame{" "}
+            <span className="bg-gradient-to-r from-[#8C6D32] to-[#C9A669] bg-clip-text text-transparent">
+              Management
+            </span>
           </h2>
-          <p className="text-xs sm:text-sm text-[#A8A196] max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#6F6A62] max-w-xl leading-relaxed">
             Manage incoming handcrafted frame orders, configure timber woods, manage profiles &amp; finishes, and adjust pricing.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 relative z-10">
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab("woods");
-              setWoodModal({ open: true, mode: "add", data: null });
-            }}
-            className="px-4 py-2.5 bg-gradient-to-r from-[#C9A669] to-[#9C7B3D] text-[#1C1B19] rounded-xl text-xs font-bold shadow hover:brightness-110 transition-all flex items-center gap-1.5 active:scale-95"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Wood Type</span>
-          </button>
+        <div className="flex flex-wrap items-center gap-2.5 relative z-10 shrink-0">
           <button
             type="button"
             onClick={() => {
               setActiveTab("designs");
               setDesignModal({ open: true, mode: "add", data: null });
             }}
-            className="px-4 py-2.5 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5"
+            className="px-3.5 py-2.5 bg-[#FAF8F5] hover:bg-[#F3EFE8] text-[#2B2B2B] border border-[#E7E0D2] rounded-lg text-xs font-semibold transition-all flex items-center gap-2 shadow-sm group active:scale-95"
           >
-            <Plus className="w-4 h-4 text-[#C9A669]" />
+            <Plus className="w-3.5 h-3.5 text-[#C9A669] group-hover:scale-110 transition-transform" />
             <span>Add Profile Design</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("woods");
+              setWoodModal({ open: true, mode: "add", data: null });
+            }}
+            className="px-4 py-2.5 bg-gradient-to-r from-[#C9A669] to-[#9C7B3D] hover:from-[#D4B376] hover:to-[#A88544] text-[#1C1B19] rounded-lg text-xs font-bold shadow-sm hover:shadow transition-all flex items-center gap-2 active:scale-95"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add Wood Type</span>
           </button>
         </div>
       </div>
