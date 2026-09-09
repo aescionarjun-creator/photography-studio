@@ -39,16 +39,26 @@ export default function Enquiries() {
   // Filtered enquiries
   const filteredEnquiries = useMemo(() => {
     return enquiries.filter((e) => {
+      const clientName = e.clientName || e.name || "";
+      const phone = e.phone || "";
+      const message = e.message || e.notes || e.clientMessage || "";
+      const service = e.interestedService || e.service || "";
+      const location = e.location || e.venue || "";
+      const eventDate = e.proposedDate || e.eventDate || "";
+
       const matchesSearch =
         searchQuery === "" ||
-        e.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        e.phone?.includes(searchQuery) ||
-        e.message?.toLowerCase().includes(searchQuery.toLowerCase());
+        clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        phone.includes(searchQuery) ||
+        message.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        eventDate.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesStatus =
         selectedStatus === "All" || e.status === selectedStatus;
       const matchesService =
-        selectedService === "All" || e.interestedService === selectedService;
+        selectedService === "All" || service === selectedService;
 
       return matchesSearch && matchesStatus && matchesService;
     });
@@ -75,7 +85,7 @@ export default function Enquiries() {
   const handleConfirmDelete = () => {
     if (enquiryToDelete) {
       deleteEnquiry(enquiryToDelete.id);
-      addToast(`Enquiry from ${enquiryToDelete.name} deleted.`, "info");
+      addToast(`Enquiry from ${enquiryToDelete.clientName || enquiryToDelete.name} deleted.`, "info");
       if (activeEnquiry?.id === enquiryToDelete.id) {
         setActiveEnquiry(null);
       }
@@ -226,26 +236,26 @@ export default function Enquiries() {
                           )}
                           <div>
                             <div className="font-bold text-[#2B2B2B]">
-                              {enq.name}
+                              {enq.clientName || enq.name || "Anonymous"}
                             </div>
                             <div className="text-[11px] text-[#6F6A62]">
-                              {enq.phone}
+                              {enq.phone || "No phone"}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="py-3.5 px-4">
                         <span className="font-semibold text-[#9C7B3D]">
-                          {enq.interestedService}
+                          {enq.interestedService || enq.service || "General Inquiry"}
                         </span>
                       </td>
                       <td className="py-3.5 px-4 max-w-xs">
                         <p className="text-[#6F6A62] truncate text-xs">
-                          {enq.message}
+                          {enq.message || enq.notes || enq.clientMessage || "No message provided."}
                         </p>
                       </td>
                       <td className="py-3.5 px-4 text-[#8E867B] whitespace-nowrap">
-                        {enq.receivedDate}
+                        {enq.receivedDate || enq.createdAt || "Recent"}
                       </td>
                       <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
                         <StatusBadge status={enq.status} size="sm" />
@@ -256,7 +266,7 @@ export default function Enquiries() {
                       >
                         <div className="flex items-center justify-end gap-1.5">
                           <a
-                            href={`https://wa.me/${enq.phone.replace(/[^0-9]/g, "")}`}
+                            href={`https://wa.me/${(enq.phone || "").replace(/[^0-9]/g, "")}`}
                             target="_blank"
                             rel="noreferrer"
                             className="p-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors"
@@ -265,7 +275,7 @@ export default function Enquiries() {
                             <MessageCircle className="w-4 h-4" />
                           </a>
                           <a
-                            href={`tel:${enq.phone}`}
+                            href={`tel:${enq.phone || ""}`}
                             className="p-1.5 bg-[#F8F6F2] text-[#2B2B2B] hover:bg-[#E7E0D2] rounded-lg transition-colors"
                             title="Direct Call"
                           >
@@ -339,24 +349,24 @@ export default function Enquiries() {
                   <StatusBadge status={activeEnquiry.status} size="sm" />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
-                  {activeEnquiry.name}
+                  {activeEnquiry.clientName || activeEnquiry.name || "Anonymous"}
                 </h3>
                 <p className="text-xs text-[#6F6A62]">
-                  Received on {activeEnquiry.receivedDate}
+                  Received on {activeEnquiry.receivedDate || activeEnquiry.createdAt || "Recent"}
                 </p>
               </div>
 
               {/* Communication Bar */}
               <div className="grid grid-cols-3 gap-2 text-xs">
                 <a
-                  href={`tel:${activeEnquiry.phone}`}
+                  href={`tel:${activeEnquiry.phone || ""}`}
                   className="p-2.5 rounded-xl border border-[#E7E0D2] bg-[#F8F6F2] hover:border-[#C9A669] text-[#2B2B2B] font-semibold flex items-center justify-center gap-1.5 transition-all"
                 >
                   <PhoneCall className="w-3.5 h-3.5 text-[#9C7B3D]" />
-                  <span>{activeEnquiry.phone}</span>
+                  <span>{activeEnquiry.phone || "Call"}</span>
                 </a>
                 <a
-                  href={`https://wa.me/${activeEnquiry.phone.replace(/[^0-9]/g, "")}`}
+                  href={`https://wa.me/${(activeEnquiry.phone || "").replace(/[^0-9]/g, "")}`}
                   target="_blank"
                   rel="noreferrer"
                   className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-900 font-semibold flex items-center justify-center gap-1.5 transition-all"
@@ -364,14 +374,20 @@ export default function Enquiries() {
                   <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
                   <span>WhatsApp</span>
                 </a>
-                {activeEnquiry.email && (
+                {activeEnquiry.email ? (
                   <a
                     href={`mailto:${activeEnquiry.email}`}
                     className="p-2.5 rounded-xl border border-[#E7E0D2] bg-[#F8F6F2] hover:border-[#C9A669] text-[#2B2B2B] font-semibold flex items-center justify-center gap-1.5 transition-all truncate"
+                    title={activeEnquiry.email}
                   >
                     <Mail className="w-3.5 h-3.5 text-[#9C7B3D]" />
-                    <span className="truncate">Email</span>
+                    <span className="truncate">{activeEnquiry.email}</span>
                   </a>
+                ) : (
+                  <div className="p-2.5 rounded-xl border border-[#E7E0D2] bg-[#F8F6F2] text-[#8E867B] flex items-center justify-center gap-1.5 opacity-60">
+                    <Mail className="w-3.5 h-3.5 text-[#8E867B]" />
+                    <span>No Email</span>
+                  </div>
                 )}
               </div>
 
@@ -379,20 +395,22 @@ export default function Enquiries() {
               <div className="p-4 rounded-2xl bg-[#FDFBF7] border border-[#E7E0D2] space-y-2 text-xs">
                 <div className="flex justify-between">
                   <span className="text-[#6F6A62]">Interested Service:</span>
-                  <span className="font-bold text-[#2B2B2B]">{activeEnquiry.interestedService}</span>
+                  <span className="font-bold text-[#2B2B2B]">
+                    {activeEnquiry.interestedService || activeEnquiry.service || "General Inquiry"}
+                  </span>
                 </div>
-                {activeEnquiry.eventDate && (
-                  <div className="flex justify-between">
-                    <span className="text-[#6F6A62]">Proposed Date:</span>
-                    <span className="font-semibold text-[#2B2B2B]">{activeEnquiry.eventDate}</span>
-                  </div>
-                )}
-                {activeEnquiry.location && (
-                  <div className="flex justify-between">
-                    <span className="text-[#6F6A62]">Location:</span>
-                    <span className="font-semibold text-[#2B2B2B]">{activeEnquiry.location}</span>
-                  </div>
-                )}
+                <div className="flex justify-between">
+                  <span className="text-[#6F6A62]">Proposed Date:</span>
+                  <span className="font-semibold text-[#2B2B2B]">
+                    {activeEnquiry.proposedDate || activeEnquiry.eventDate || "Not specified"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#6F6A62]">Location:</span>
+                  <span className="font-semibold text-[#2B2B2B]">
+                    {activeEnquiry.location || activeEnquiry.venue || "Not specified"}
+                  </span>
+                </div>
               </div>
 
               {/* Client Message */}
@@ -400,8 +418,12 @@ export default function Enquiries() {
                 <span className="font-bold uppercase tracking-wider text-[#6F6A62]">
                   Client Inquiry Message
                 </span>
-                <div className="p-4 rounded-2xl bg-[#F8F6F2] border border-[#E7E0D2] text-[#2B2B2B] leading-relaxed text-sm">
-                  "{activeEnquiry.message}"
+                <div className="p-4 rounded-2xl bg-[#F8F6F2] border border-[#E7E0D2] text-[#2B2B2B] leading-relaxed text-sm whitespace-pre-wrap">
+                  {(activeEnquiry.message || activeEnquiry.notes || activeEnquiry.clientMessage)?.trim() ? (
+                    `"${(activeEnquiry.message || activeEnquiry.notes || activeEnquiry.clientMessage).trim()}"`
+                  ) : (
+                    <span className="text-[#8E867B] italic">No message provided.</span>
+                  )}
                 </div>
               </div>
 
@@ -438,7 +460,7 @@ export default function Enquiries() {
         onClose={() => setDeleteConfirmOpen(false)}
         onConfirm={handleConfirmDelete}
         title="Delete Enquiry"
-        message={`Are you sure you want to delete the lead enquiry from ${enquiryToDelete?.name}?`}
+        message={`Are you sure you want to delete the lead enquiry from ${enquiryToDelete?.clientName || enquiryToDelete?.name}?`}
         confirmText="Delete Enquiry"
         isDestructive={true}
       />

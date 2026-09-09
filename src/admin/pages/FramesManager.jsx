@@ -146,10 +146,6 @@ export default function FramesManager() {
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-[#24221F] to-[#1C1B19] rounded-3xl p-6 sm:p-8 text-[#F8F6F2] shadow-lg border border-[#3A3833] flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
         <div className="space-y-2 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#322F2A] text-[#E4D3A6] text-xs font-semibold border border-[#48443D]">
-            <Sparkles className="w-3.5 h-3.5 text-[#C9A669]" />
-            <span>Atelier Frames Administration</span>
-          </div>
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#F8F6F2]">
             Custom Frame Management
           </h2>

@@ -709,26 +709,32 @@ export default function Bookings() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] flex flex-col overflow-hidden"
             >
-              <button
-                onClick={() => setFormModalOpen(false)}
-                className="absolute top-6 right-6 p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="mb-6">
-                <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
-                  {editingBooking ? "Update Shoot" : "New Client Booking"}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
-                  {editingBooking ? `Edit ${editingBooking.id}` : "Schedule Shoot Session"}
-                </h3>
+              {/* Fixed Header */}
+              <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#F0EBE1] shrink-0 bg-white">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
+                    {editingBooking ? "Update Shoot" : "New Client Booking"}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
+                    {editingBooking ? `Edit ${editingBooking.id}` : "Schedule Shoot Session"}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFormModalOpen(false)}
+                  className="p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2] transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
-              <form onSubmit={handleFormSubmit} className="space-y-4 text-xs">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Form with scrollable body & pinned footer */}
+              <form onSubmit={handleFormSubmit} className="flex flex-col flex-1 min-h-0">
+                <div className="overflow-y-auto flex-1 p-6 sm:p-8 space-y-4 text-xs modal-scrollbar">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Customer Name */}
                   <div className="space-y-1">
                     <label className="font-semibold text-[#6F6A62]">Customer Name *</label>
@@ -931,12 +937,14 @@ export default function Bookings() {
                   />
                 </div>
 
-                {/* Submit Buttons */}
-                <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#E7E0D2]">
+                </div>
+
+                {/* Pinned Submit Footer */}
+                <div className="px-6 sm:px-8 py-4 bg-[#FCFAF7] border-t border-[#E7E0D2] flex items-center justify-end gap-3 shrink-0">
                   <button
                     type="button"
                     onClick={() => setFormModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] text-xs font-semibold"
+                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] text-xs font-semibold transition-colors"
                   >
                     Cancel
                   </button>

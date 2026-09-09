@@ -144,7 +144,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
           className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold shadow-sm transition-all active:scale-95 shrink-0"
         >
           <Plus className="w-4 h-4 text-[#E4D3A6]" />
-          <span className="hidden md:inline">New Shoot</span>
+          <span className="hidden md:inline">New Booking</span>
         </Link>
 
         {/* Live Site Link */}
@@ -211,14 +211,14 @@ export default function AdminHeader({ onMobileMenuClick }) {
                       <div className="flex items-start justify-between">
                         <span className="font-medium text-xs text-[#2B2B2B] flex items-center gap-1.5">
                           <MessageSquare className="w-3.5 h-3.5 text-[#9C7B3D]" />
-                          {enq.name}
+                          {enq.clientName || enq.name || "Anonymous"}
                         </span>
                         <span className="text-[10px] text-[#8E867B]">
-                          {enq.receivedDate}
+                          {enq.receivedDate || enq.createdAt || ""}
                         </span>
                       </div>
                       <p className="text-[11px] text-[#6F6A62] mt-1 line-clamp-1">
-                        {enq.message}
+                        {enq.message || enq.notes || enq.clientMessage || "New enquiry received."}
                       </p>
                     </div>
                   ))

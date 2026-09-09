@@ -18,11 +18,54 @@ body {
   color: #fff;
 }
 
-/* Custom thin scrollbar */
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #F8F6F2; }
-::-webkit-scrollbar-thumb { background: #E4D3A6; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #C9A669; }
+/* Custom box scrollbar (square box style, no curves) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #E4D3A6;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C9A669;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1C1B19;
+  border-radius: 0px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #48443D;
+  border-radius: 0px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #C9A669;
+}
+
+/* Dedicated modal scrollbar for clean alignment inside rounded cards */
+.modal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: #E4D3A6;
+  border-radius: 0px;
+}
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #C9A669;
+}
 
 .eyebrow {
   font-family: 'Manrope', sans-serif;

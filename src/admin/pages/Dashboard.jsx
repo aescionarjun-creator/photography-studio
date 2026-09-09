@@ -13,7 +13,6 @@ import {
   Plus,
   ArrowRight,
   TrendingUp,
-  Sparkles,
   Phone,
   Calendar,
   ExternalLink,
@@ -96,10 +95,6 @@ export default function Dashboard() {
       {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-[#24221F] to-[#1C1B19] rounded-3xl p-6 sm:p-8 text-[#F8F6F2] shadow-lg border border-[#3A3833] flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
         <div className="space-y-2 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#322F2A] text-[#E4D3A6] text-xs font-semibold border border-[#48443D]">
-            <Sparkles className="w-3.5 h-3.5 text-[#C9A669]" />
-            <span>Studio Management Hub</span>
-          </div>
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#F8F6F2]">
             {getGreeting()}, {adminUser?.name || "Subash"}
           </h2>
@@ -129,7 +124,7 @@ export default function Dashboard() {
             className="px-4 py-2.5 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5"
           >
             <Images className="w-4 h-4 text-[#C9A669]" />
-            <span>Upload Photo</span>
+            <span>Gallery</span>
           </Link>
           <Link
             to="/admin/testimonials"
@@ -457,20 +452,20 @@ export default function Dashboard() {
                 <div className="flex items-start justify-between gap-2 min-w-0">
                   <div className="min-w-0">
                     <h4 className="text-xs font-bold text-[#2B2B2B] truncate">
-                      {enq.name}
+                      {enq.clientName || enq.name || "Anonymous"}
                     </h4>
                     <p className="text-[11px] text-[#9C7B3D] font-medium truncate">
-                      {enq.interestedService}
+                      {enq.interestedService || enq.service || "General Inquiry"}
                     </p>
                   </div>
                   <StatusBadge status={enq.status} size="sm" />
                 </div>
                 <p className="text-xs text-[#6F6A62] line-clamp-2 leading-relaxed break-words">
-                  "{enq.message}"
+                  "{enq.message || enq.notes || enq.clientMessage || "No message provided."}"
                 </p>
                 <div className="flex items-center justify-between text-[11px] text-[#8E867B] pt-1">
-                  <span>{enq.phone}</span>
-                  <span>{enq.receivedDate}</span>
+                  <span>{enq.phone || "No phone"}</span>
+                  <span>{enq.receivedDate || enq.createdAt || ""}</span>
                 </div>
               </div>
             ))}
