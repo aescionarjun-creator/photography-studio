@@ -230,7 +230,7 @@ export default function Dashboard() {
             <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
               <Images className="w-3.5 h-3.5" />
             </div>
-            <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">Upload Image</span>
+            <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">+ Upload Image</span>
           </Link>
 
           <Link
