@@ -99,35 +99,35 @@ export default function Navbar() {
                         onMouseEnter={() => setServicesOpen(true)}
                         onMouseLeave={() => setServicesOpen(false)}
                       >
-                        <NavLink
-                          to={l.to}
-                          onClick={() => setServicesOpen((prev) => !prev)}
-                          className={({ isActive }) =>
-                            `text-[13px] tracking-[0.08em] uppercase font-medium transition-colors duration-300 relative py-1 flex items-center gap-1 ${
-                              isActive || isServicesActive
-                                ? "text-gold-dark"
-                                : "text-ink/70 hover:text-ink"
-                            }`
-                          }
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setServicesOpen((prev) => !prev);
+                          }}
+                          className={`text-[13px] tracking-[0.08em] uppercase font-medium transition-colors duration-300 relative py-1 flex items-center gap-1 cursor-pointer select-none ${
+                            isServicesActive
+                              ? "text-gold-dark"
+                              : "text-ink/70 hover:text-ink"
+                          }`}
+                          aria-expanded={servicesOpen}
+                          aria-haspopup="true"
                         >
-                          {() => (
-                            <>
-                              <span>{l.label}</span>
-                              <ChevronDown
-                                size={13}
-                                className={`transition-transform duration-200 ${
-                                  servicesOpen ? "rotate-180" : ""
-                                }`}
-                              />
-                              {isServicesActive && (
-                                <motion.span
-                                  layoutId="nav-underline"
-                                  className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gold"
-                                />
-                              )}
-                            </>
+                          <span>{l.label}</span>
+                          <ChevronDown
+                            size={13}
+                            className={`transition-transform duration-200 ${
+                              servicesOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                          {isServicesActive && (
+                            <motion.span
+                              layoutId="nav-underline"
+                              className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gold"
+                            />
                           )}
-                        </NavLink>
+                        </button>
 
                         <AnimatePresence>
                           {servicesOpen && (
@@ -245,24 +245,18 @@ export default function Navbar() {
                   return (
                     <div key={l.to} className="flex flex-col gap-2">
                       <div className="flex items-center justify-between text-sm tracking-[0.1em] uppercase font-medium text-ink/90">
-                        <NavLink
-                          to={l.to}
-                          onClick={() => setMenuOpen(false)}
-                          className={({ isActive }) =>
-                            isActive ? "text-gold-dark font-semibold" : "text-ink/80"
-                          }
-                        >
-                          {l.label}
-                        </NavLink>
                         <button
                           type="button"
                           onClick={() => setMobileServicesOpen((v) => !v)}
-                          className="p-1 text-ink/60"
-                          aria-label="Toggle services options"
+                          className="flex items-center justify-between w-full py-1 text-left select-none cursor-pointer"
+                          aria-expanded={mobileServicesOpen}
                         >
+                          <span className={isServicesActive ? "text-gold-dark font-semibold" : "text-ink/80"}>
+                            {l.label}
+                          </span>
                           <ChevronDown
                             size={16}
-                            className={`transition-transform duration-200 ${
+                            className={`transition-transform duration-200 text-ink/60 ${
                               mobileServicesOpen ? "rotate-180" : ""
                             }`}
                           />
