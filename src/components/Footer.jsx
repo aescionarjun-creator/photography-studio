@@ -61,7 +61,7 @@ export default function Footer() {
           <h4 className="eyebrow text-gold-light mb-5">Explore</h4>
           <ul className="space-y-2.5 text-sm">
             <li><Link to="/about" className="hover:text-gold transition-colors">About</Link></li>
-            <li><Link to="/services" className="hover:text-gold transition-colors">Services</Link></li>
+            <li><Link to="/order-booking" className="hover:text-gold transition-colors">Services</Link></li>
             <li><Link to="/frames" className="hover:text-gold transition-colors">Order Frames</Link></li>
             <li><Link to="/portfolio" className="hover:text-gold transition-colors">Portfolio</Link></li>
             <li><Link to="/gallery" className="hover:text-gold transition-colors">Gallery</Link></li>
