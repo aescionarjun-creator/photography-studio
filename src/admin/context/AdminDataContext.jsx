@@ -27,7 +27,10 @@ function loadFromStorage(key, fallback) {
     const parsed = JSON.parse(item);
     // If stored array has stale dummy image paths, use updated fallback
     if (Array.isArray(parsed) && parsed.length > 0) {
-      const hasStale = parsed.some((p) => (p.imageUrl || p.coverImage || p.image || "").includes("gal-1.jpg"));
+      const hasStale = parsed.some((p) => 
+        (p.imageUrl || p.coverImage || p.image || "").includes("gal-1.jpg") ||
+        (p.image || "").includes("outdoor-01.jpg")
+      );
       if (hasStale) return fallback;
     }
     return parsed;

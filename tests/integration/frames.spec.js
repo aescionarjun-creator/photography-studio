@@ -10,7 +10,7 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     await page.waitForLoadState("domcontentloaded");
   });
 
-  test("Public 7-step frame ordering wizard end-to-end", async ({ page }) => {
+  test("Public 4-stage frame ordering configurator end-to-end", async ({ page }) => {
     const consoleErrors = captureConsoleErrors(page);
 
     // 1. Navigate to /frames
@@ -19,21 +19,17 @@ test.describe("Custom Handcrafted Frames Feature", () => {
 
     await expect(page.getByRole("heading", { name: /Design Your Heirloom Frame/i })).toBeVisible();
 
-    // Verify Step 1: Wood Selection
-    await expect(page.getByText(/Step 1: Choose Timber Wood Type/i)).toBeVisible();
+    // Verify Stage 1: Customize Frame controls are all on the first page
+    await expect(page.getByRole("heading", { name: /Choose Timber Wood/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Teak Wood" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Rose Wood" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Pine Wood" })).toBeVisible();
 
     // Select Teak Wood
     const teakCard = page.locator("div").filter({ hasText: /^Teak Wood/ }).first();
     await teakCard.click();
 
-    // Proceed to Step 2
-    await page.getByRole("button", { name: "Continue", exact: false }).click();
-
-    // Verify Step 2: Design Selection
-    await expect(page.getByText(/Step 2: Choose Frame Profile/i)).toBeVisible();
+    // Verify Design Selection on same page
+    await expect(page.getByRole("heading", { name: /Choose Frame Profile/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Classic Gold" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Modern Black" })).toBeVisible();
 
@@ -41,11 +37,8 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     const goldCard = page.locator("div").filter({ hasText: /^Classic Gold/ }).first();
     await goldCard.click();
 
-    // Proceed to Step 3
-    await page.getByRole("button", { name: "Continue", exact: false }).click();
-
-    // Verify Step 3: Photo Upload
-    await expect(page.getByText(/Step 3: Upload Photo/i)).toBeVisible();
+    // Verify Photo Upload on same page
+    await expect(page.getByRole("heading", { name: /Upload Photograph/i })).toBeVisible();
 
     // Create a 1x1 test image buffer and upload
     const testImageBuffer = Buffer.from(
@@ -61,44 +54,55 @@ test.describe("Custom Handcrafted Frames Feature", () => {
     // Wait for photo uploaded state
     await expect(page.getByText(/ready for framing/i)).toBeVisible({ timeout: 5000 });
 
-    // Proceed to Step 4
-    await page.getByRole("button", { name: "Continue", exact: false }).click();
+    // Verify Frame Size & Orientation on same page
+    await expect(page.getByRole("heading", { name: /Frame Dimensions & Orientation/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "12 × 10" })).toBeVisible();
 
-    // Verify Step 4: Size Selection
-    await expect(page.getByText(/Step 4: Select Frame Aspect Ratio/i)).toBeVisible();
-    await expect(page.getByRole("heading", { name: "10 × 12" })).toBeVisible();
-
-    // Select 10 × 12 (₹1,200)
-    const sizeCard = page.locator("div").filter({ hasText: /^10 × 12/ }).first();
+    // Select 12 × 10 (₹1,200) (portrait format for 10 × 12)
+    const sizeCard = page.locator("div").filter({ hasText: /^12 × 10/ }).first();
     await sizeCard.click();
 
-    // Proceed to Step 5: Review & Pricing Breakdown
-    await page.getByRole("button", { name: "Continue", exact: false }).click();
+    // Verify Live Preview is visible on right side
+    await expect(page.getByText(/Live Artisan Frame Preview/i).first()).toBeVisible();
 
-    await expect(page.getByText(/Step 5: Review Configuration & Pricing Breakdown/i)).toBeVisible();
-    await expect(page.getByText("Pricing Breakdown", { exact: true })).toBeVisible();
+    // Proceed to Stage 2: Review My Frame
+    const reviewBtn = page.getByRole("button", { name: /Review My Frame/i });
+    await expect(reviewBtn).toBeEnabled();
+    await reviewBtn.click();
+
+    // Verify Stage 2: Review Specification & Pricing
+    await expect(page.getByText(/Stage 2: Review Artisan Frame Specification/i)).toBeVisible();
+    await expect(page.getByText("Itemized Pricing Summary", { exact: true })).toBeVisible();
 
     // Verify exact pricing formula: Teak(800) + Classic Gold(0) + 10x12(1200) = 2,000
     await expect(page.getByText("₹800").first()).toBeVisible();
     await expect(page.getByText("₹1,200").first()).toBeVisible();
     await expect(page.getByText("₹2,000").first()).toBeVisible();
 
-    // Proceed to Step 6: Customer Details
-    await page.getByRole("button", { name: /Proceed to Customer Details/i }).click();
+    // Test Edit Customization back button preserves selections
+    await page.getByRole("button", { name: /Edit/i }).first().click();
+    await expect(page.getByRole("heading", { name: /Choose Timber Wood/i })).toBeVisible();
+    await expect(page.getByText(/ready for framing/i)).toBeVisible();
 
-    await expect(page.getByText(/Step 6: Customer Details & Fulfillment/i)).toBeVisible();
+    // Proceed back to Review and then to Stage 3: Customer Details
+    await page.getByRole("button", { name: /Review My Frame/i }).click();
+    await page.getByRole("button", { name: /Yes, This Frame Looks Good — Continue/i }).click();
 
-    // Fill form
+    await expect(page.getByText(/Stage 3: Customer Details & Fulfillment/i)).toBeVisible();
+
+    // Fill customer form
     await page.getByPlaceholder(/Kavitha Ramachandran/i).fill("Aarav Sundaram");
     await page.getByPlaceholder(/98401/i).fill("+91 94431 88990");
     await page.getByPlaceholder(/kavitha@example.com/i).fill("aarav@teststudio.com");
-    await page.getByPlaceholder(/House \/ Flat No/i).fill("42 Palace Road, Tirunelveli 627001");
+    await page.getByPlaceholder(/House \/ Flat No/i).fill("42 Palace Road");
+    await page.getByPlaceholder(/Tirunelveli/i).first().fill("Tirunelveli");
+    await page.getByPlaceholder(/627001/i).fill("627001");
 
     // Submit Order
     await page.getByRole("button", { name: /Confirm & Place Order/i }).click();
 
-    // Verify Step 7: Confirmation & WhatsApp
-    await expect(page.getByText(/Order Successful/i)).toBeVisible({ timeout: 8000 });
+    // Verify Stage 4: Order Successful & WhatsApp
+    await expect(page.getByText(/ORDER SUCCESSFUL/i)).toBeVisible({ timeout: 8000 });
     await expect(page.getByText(/Aarav Sundaram/i).first()).toBeVisible();
     await expect(page.getByText(/SS-FR-/).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Confirm Order on WhatsApp/i })).toBeVisible();
