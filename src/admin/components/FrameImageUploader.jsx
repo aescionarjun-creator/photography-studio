@@ -163,7 +163,7 @@ export default function FrameImageUploader({
 
       {/* Upload Dropzone / Preview */}
       {value ? (
-        <div className="rounded-2xl border border-[#E7E0D2] bg-[#FAF8F5] p-3.5 space-y-3">
+        <div className="rounded-xl border border-[#E7E0D2] bg-[#FAF8F5] p-3.5 space-y-3">
           <div className="flex items-center gap-3">
             {/* Thumbnail Preview */}
             <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#ECE7DC] border border-[#E7E0D2] shrink-0 relative group">
@@ -213,7 +213,7 @@ export default function FrameImageUploader({
           onDragOver={handleDrag}
           onDrop={handleDrop}
           onClick={handleTriggerUpload}
-          className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center ${
+          className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all flex flex-col items-center justify-center ${
             dragActive
               ? "border-[#C9A669] bg-[#FDFBF7]"
               : "border-[#E7E0D2] hover:border-[#C9A669] bg-[#FAF8F5]/80 hover:bg-[#FDFBF7]"

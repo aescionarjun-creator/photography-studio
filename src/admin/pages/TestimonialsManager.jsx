@@ -315,11 +315,11 @@ export default function TestimonialsManager() {
       </div>
 
       {/* Google Business Profile Integration Banner */}
-      <div className="bg-white rounded-3xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm">
+      <div className="bg-white rounded-xl border border-[#E7E0D2] p-4 sm:p-5 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           {/* Status Details */}
           <div className="flex items-start gap-4">
-            <div className="w-11 h-11 rounded-2xl bg-[#F8F6F2] border border-[#E7E0D2] flex items-center justify-center shrink-0 shadow-inner">
+            <div className="w-11 h-11 rounded-xl bg-[#F8F6F2] border border-[#E7E0D2] flex items-center justify-center shrink-0 shadow-inner">
               <GoogleGIcon className="w-6 h-6" />
             </div>
 
@@ -497,7 +497,7 @@ export default function TestimonialsManager() {
             return (
               <div
                 key={tst.id}
-                className={`bg-white rounded-3xl border p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative ${
+                className={`bg-white rounded-xl border p-4 sm:p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-3.5 relative ${
                   isGoogle
                     ? "border-[#E7E0D2] hover:border-[#4285F4]/50"
                     : "border-[#E7E0D2] hover:border-[#C9A669]/60"
@@ -699,19 +699,12 @@ export default function TestimonialsManager() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-xl bg-white rounded-xl shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] flex flex-col overflow-hidden"
             >
-              <button
-                type="button"
-                onClick={() => setSetupModalOpen(false)}
-                className="absolute top-6 right-6 p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="space-y-4 text-xs text-[#2B2B2B]">
+              {/* Fixed Header */}
+              <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#F0EBE1] shrink-0 bg-white">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#F8F6F2] border border-[#E7E0D2] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#F8F6F2] border border-[#E7E0D2] flex items-center justify-center shrink-0">
                     <GoogleGIcon className="w-5 h-5" />
                   </div>
                   <div>
@@ -723,8 +716,19 @@ export default function TestimonialsManager() {
                     </p>
                   </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setSetupModalOpen(false)}
+                  className="p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2] transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-                <div className="p-4 rounded-2xl bg-[#F8F6F2] border border-[#E7E0D2] space-y-3">
+              {/* Scrollable Content */}
+              <div className="overflow-y-auto flex-1 p-6 sm:p-8 space-y-4 text-xs text-[#2B2B2B] modal-scrollbar">
+                <div className="p-4 rounded-xl bg-[#F8F6F2] border border-[#E7E0D2] space-y-3">
                   <p className="font-semibold text-[#9C7B3D]">1. Required Environment Variables</p>
                   <p className="text-[#6F6A62]">
                     Add the following credentials to your server environment file (e.g.{" "}
@@ -755,16 +759,17 @@ GOOGLE_REDIRECT_URI=http://localhost:5173/api/auth/google/callback`}
                     Imported reviews default to <em>Pending</em> so the studio director can approve or feature them before they appear on the homepage carousel.
                   </p>
                 </div>
+              </div>
 
-                <div className="pt-4 border-t border-[#E7E0D2] flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => setSetupModalOpen(false)}
-                    className="px-5 py-2.5 bg-[#2B2B2B] text-white hover:bg-[#1C1B19] rounded-xl font-semibold"
-                  >
-                    Got It
-                  </button>
-                </div>
+              {/* Pinned Footer */}
+              <div className="px-6 sm:px-8 py-4 bg-[#FCFAF7] border-t border-[#E7E0D2] flex justify-end shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setSetupModalOpen(false)}
+                  className="px-5 py-2.5 bg-[#2B2B2B] text-white hover:bg-[#1C1B19] rounded-xl font-semibold transition-colors"
+                >
+                  Got It
+                </button>
               </div>
             </motion.div>
           </div>
@@ -786,132 +791,140 @@ GOOGLE_REDIRECT_URI=http://localhost:5173/api/auth/google/callback`}
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-lg bg-white rounded-xl shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] flex flex-col overflow-hidden"
             >
-              <button
-                onClick={() => setModalOpen(false)}
-                className="absolute top-6 right-6 p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="mb-5">
-                <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
-                  {editingTestimonial ? "Edit Review" : "New Client Testimonial"}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
-                  {editingTestimonial
-                    ? `Update ${editingTestimonial.customerName}'s Review`
-                    : "Add Client Feedback"}
-                </h3>
+              {/* Fixed Header */}
+              <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#F0EBE1] shrink-0 bg-white">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
+                    {editingTestimonial ? "Edit Review" : "New Client Testimonial"}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
+                    {editingTestimonial
+                      ? `Update ${editingTestimonial.customerName}'s Review`
+                      : "Add Client Feedback"}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2] transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
-              <form onSubmit={handleSave} className="space-y-4 text-xs">
-                <ImageUploader
-                  value={formData.customerImage}
-                  onChange={(url) => setFormData({ ...formData, customerImage: url })}
-                  label="Customer Photo / Portrait (Optional)"
-                />
+              {/* Form with scrollable body & pinned footer */}
+              <form onSubmit={handleSave} className="flex flex-col flex-1 min-h-0">
+                <div className="overflow-y-auto flex-1 p-6 sm:p-8 space-y-4 text-xs modal-scrollbar">
+                  <ImageUploader
+                    value={formData.customerImage}
+                    onChange={(url) => setFormData({ ...formData, customerImage: url })}
+                    label="Customer Photo / Portrait (Optional)"
+                  />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Customer Name *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Dr. Arvind & Kavitha"
-                      value={formData.customerName}
-                      onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Customer Name *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Dr. Arvind & Kavitha"
+                        value={formData.customerName}
+                        onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Shoot / Event Type</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Wedding & Reception"
+                        value={formData.eventType}
+                        onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      />
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Shoot / Event Type</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Wedding & Reception"
-                      value={formData.eventType}
-                      onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    />
-                  </div>
-                </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Star Rating (1 to 5)</label>
+                      <div className="flex items-center gap-2 pt-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, rating: star })}
+                            className="p-1 text-[#9C7B3D] hover:scale-125 transition-transform"
+                          >
+                            <Star
+                              className={`w-5 h-5 ${
+                                star <= formData.rating
+                                  ? "fill-[#9C7B3D] text-[#9C7B3D]"
+                                  : "text-[#E7E0D2]"
+                              }`}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Star Rating (1 to 5)</label>
-                    <div className="flex items-center gap-2 pt-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          type="button"
-                          onClick={() => setFormData({ ...formData, rating: star })}
-                          className="p-1 text-[#9C7B3D] hover:scale-125 transition-transform"
-                        >
-                          <Star
-                            className={`w-5 h-5 ${
-                              star <= formData.rating
-                                ? "fill-[#9C7B3D] text-[#9C7B3D]"
-                                : "text-[#E7E0D2]"
-                            }`}
-                          />
-                        </button>
-                      ))}
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Date / Period</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. August 2026"
+                        value={formData.date}
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Date / Period</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. August 2026"
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    <label className="font-semibold text-[#6F6A62]">Client Review Text *</label>
+                    <textarea
+                      rows={4}
+                      required
+                      placeholder="Write the full feedback or quote from the couple/family..."
+                      value={formData.review}
+                      onChange={(e) => setFormData({ ...formData, review: e.target.value })}
                       className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
                     />
                   </div>
+
+                  <div className="flex items-center gap-6 pt-2">
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
+                      <input
+                        type="checkbox"
+                        checked={formData.approved}
+                        onChange={(e) => setFormData({ ...formData, approved: e.target.checked })}
+                        className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
+                      />
+                      <span>Approved for Website</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
+                      <input
+                        type="checkbox"
+                        checked={formData.featured}
+                        onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                        className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
+                      />
+                      <span>Feature on Homepage</span>
+                    </label>
+                  </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-semibold text-[#6F6A62]">Client Review Text *</label>
-                  <textarea
-                    rows={4}
-                    required
-                    placeholder="Write the full feedback or quote from the couple/family..."
-                    value={formData.review}
-                    onChange={(e) => setFormData({ ...formData, review: e.target.value })}
-                    className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                  />
-                </div>
-
-                <div className="flex items-center gap-6 pt-2">
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
-                    <input
-                      type="checkbox"
-                      checked={formData.approved}
-                      onChange={(e) => setFormData({ ...formData, approved: e.target.checked })}
-                      className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
-                    />
-                    <span>Approved for Website</span>
-                  </label>
-
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
-                    <input
-                      type="checkbox"
-                      checked={formData.featured}
-                      onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
-                    />
-                    <span>Feature on Homepage</span>
-                  </label>
-                </div>
-
-                <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#E7E0D2]">
+                {/* Pinned Action Footer */}
+                <div className="px-6 sm:px-8 py-4 bg-[#FCFAF7] border-t border-[#E7E0D2] flex items-center justify-end gap-3 shrink-0">
                   <button
                     type="button"
                     onClick={() => setModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] font-semibold"
+                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] font-semibold transition-colors"
                   >
                     Cancel
                   </button>

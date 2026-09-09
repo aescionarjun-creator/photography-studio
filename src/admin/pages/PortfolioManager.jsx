@@ -154,7 +154,7 @@ export default function PortfolioManager() {
       </div>
 
       {/* Search & Category Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-[#E7E0D2] shadow-sm space-y-3">
+      <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-[#E7E0D2] shadow-sm space-y-3">
         <div className="relative">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8E867B]" />
           <input
@@ -162,7 +162,7 @@ export default function PortfolioManager() {
             placeholder="Search portfolio by couple name, location, ceremony..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669]"
+            className="w-full pl-10 pr-4 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-lg text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669]"
           />
         </div>
 
@@ -219,7 +219,7 @@ export default function PortfolioManager() {
           {filteredPortfolio.map((item) => (
             <div
               key={item.id}
-              className="group bg-white rounded-2xl border border-[#E7E0D2] overflow-hidden shadow-sm hover:shadow-md hover:border-[#C9A669]/60 transition-all flex flex-col"
+              className="group bg-white rounded-xl border border-[#E7E0D2] overflow-hidden shadow-sm hover:shadow-md hover:border-[#C9A669]/60 transition-all flex flex-col"
             >
               {/* Cover Image Container */}
               <div className="relative aspect-[16/10] bg-[#F8F6F2] overflow-hidden">
@@ -309,142 +309,149 @@ export default function PortfolioManager() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] flex flex-col overflow-hidden"
             >
-              <button
-                onClick={() => setModalOpen(false)}
-                className="absolute top-6 right-6 p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="mb-5">
-                <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
-                  {editingItem ? "Edit Portfolio Story" : "New Portfolio Story"}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
-                  {editingItem ? `Edit ${editingItem.title}` : "Create Showcase Project"}
-                </h3>
+              {/* Fixed Header */}
+              <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#F0EBE1] shrink-0 bg-white">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
+                    {editingItem ? "Edit Portfolio Story" : "New Portfolio Story"}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
+                    {editingItem ? `Edit ${editingItem.title}` : "Create Showcase Project"}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2] transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
-              <form onSubmit={handleSave} className="space-y-4 text-xs">
-                {/* Cover Image */}
-                <ImageUploader
-                  value={formData.coverImage}
-                  onChange={(url) => setFormData({ ...formData, coverImage: url })}
-                  label="Project Cover Image"
-                />
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Title */}
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Story Title *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Ananya & Siddharth"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Subtitle */}
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Subtitle / Tagline</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. A Grand Chettinad Palace Celebration"
-                      value={formData.subtitle}
-                      onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {/* Category */}
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Category</label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    >
-                      <option value="Wedding">Wedding</option>
-                      <option value="Couple Shoot">Couple Shoot</option>
-                      <option value="Baby Shoot">Baby Shoot</option>
-                      <option value="Maternity Shoot">Maternity Shoot</option>
-                      <option value="Editorial">Editorial</option>
-                    </select>
-                  </div>
-
-                  {/* Event Date */}
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Shoot Date / Month</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. June 2026"
-                      value={formData.eventDate}
-                      onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Location */}
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Location / Venue</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Karaikudi, Tamil Nadu"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Description */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-[#6F6A62]">Story Overview</label>
-                  <textarea
-                    rows={3}
-                    placeholder="Describe the aesthetic, emotions, rituals and vibe of the session..."
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+              {/* Form with scrollable body & pinned footer */}
+              <form onSubmit={handleSave} className="flex flex-col flex-1 min-h-0">
+                <div className="overflow-y-auto flex-1 p-6 sm:p-8 space-y-4 text-xs modal-scrollbar">
+                  {/* Cover Image */}
+                  <ImageUploader
+                    value={formData.coverImage}
+                    onChange={(url) => setFormData({ ...formData, coverImage: url })}
+                    label="Project Cover Image"
                   />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Title */}
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Story Title *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Ananya & Siddharth"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Subtitle */}
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Subtitle / Tagline</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. A Grand Chettinad Palace Celebration"
+                        value={formData.subtitle}
+                        onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {/* Category */}
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Category</label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      >
+                        <option value="Wedding">Wedding</option>
+                        <option value="Couple Shoot">Couple Shoot</option>
+                        <option value="Baby Shoot">Baby Shoot</option>
+                        <option value="Maternity Shoot">Maternity Shoot</option>
+                        <option value="Editorial">Editorial</option>
+                      </select>
+                    </div>
+
+                    {/* Event Date */}
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Shoot Date / Month</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. June 2026"
+                        value={formData.eventDate}
+                        onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Location */}
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Location / Venue</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Karaikudi, Tamil Nadu"
+                        value={formData.location}
+                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <div className="space-y-1">
+                    <label className="font-semibold text-[#6F6A62]">Story Overview</label>
+                    <textarea
+                      rows={3}
+                      placeholder="Describe the aesthetic, emotions, rituals and vibe of the session..."
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Checkboxes */}
+                  <div className="flex items-center gap-6 pt-2">
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
+                      <input
+                        type="checkbox"
+                        checked={formData.featured}
+                        onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                        className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
+                      />
+                      <span>Feature on Homepage</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
+                      <input
+                        type="checkbox"
+                        checked={formData.published}
+                        onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                        className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
+                      />
+                      <span>Publish Story Live</span>
+                    </label>
+                  </div>
                 </div>
 
-                {/* Checkboxes */}
-                <div className="flex items-center gap-6 pt-2">
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
-                    <input
-                      type="checkbox"
-                      checked={formData.featured}
-                      onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
-                    />
-                    <span>Feature on Homepage</span>
-                  </label>
-
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
-                    <input
-                      type="checkbox"
-                      checked={formData.published}
-                      onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                      className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
-                    />
-                    <span>Publish Story Live</span>
-                  </label>
-                </div>
-
-                {/* Buttons */}
-                <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#E7E0D2]">
+                {/* Pinned Action Footer */}
+                <div className="px-6 sm:px-8 py-4 bg-[#FCFAF7] border-t border-[#E7E0D2] flex items-center justify-end gap-3 shrink-0">
                   <button
                     type="button"
                     onClick={() => setModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] font-semibold"
+                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] font-semibold transition-colors"
                   >
                     Cancel
                   </button>

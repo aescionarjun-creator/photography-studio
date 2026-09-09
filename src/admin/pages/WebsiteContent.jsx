@@ -102,7 +102,7 @@ export default function WebsiteContent() {
       {/* Tab 1: Homepage */}
       {activeTab === "home" && (
         <form onSubmit={handleSaveHome} className="space-y-6">
-          <div className="bg-white rounded-3xl border border-[#E7E0D2] p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D2]">
               <div>
                 <h3 className="text-lg font-display font-bold text-[#2B2B2B]">
@@ -236,7 +236,7 @@ export default function WebsiteContent() {
       {/* Tab 2: About Studio */}
       {activeTab === "about" && (
         <form onSubmit={handleSaveAbout} className="space-y-6">
-          <div className="bg-white rounded-3xl border border-[#E7E0D2] p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D2]">
               <div>
                 <h3 className="text-lg font-display font-bold text-[#2B2B2B]">
@@ -316,7 +316,7 @@ export default function WebsiteContent() {
       {/* Tab 3: Contact & Social */}
       {activeTab === "contact" && (
         <form onSubmit={handleSaveContact} className="space-y-6">
-          <div className="bg-white rounded-3xl border border-[#E7E0D2] p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D2]">
               <div>
                 <h3 className="text-lg font-display font-bold text-[#2B2B2B]">

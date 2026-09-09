@@ -93,51 +93,51 @@ export default function Dashboard() {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-[#24221F] to-[#1C1B19] rounded-3xl p-6 sm:p-8 text-[#F8F6F2] shadow-lg border border-[#3A3833] flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-        <div className="space-y-2 relative z-10">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#F8F6F2]">
+      <div className="bg-gradient-to-r from-[#24221F] to-[#1C1B19] rounded-xl p-5 sm:p-6 text-[#F8F6F2] shadow-lg border border-[#3A3833] flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden">
+        <div className="space-y-1.5 relative z-10">
+          <h2 className="text-xl sm:text-2xl font-display font-bold text-[#F8F6F2]">
             {getGreeting()}, {adminUser?.name || "Subash"}
           </h2>
-          <p className="text-xs sm:text-sm text-[#A8A196] max-w-xl leading-relaxed">
+          <p className="text-xs text-[#A8A196] max-w-xl leading-relaxed">
             Here's what's happening with your studio shoots, incoming bride &amp; groom enquiries, and media assets today.
           </p>
         </div>
 
         {/* Quick Actions Button Bar */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 relative z-10">
+        <div className="flex flex-wrap items-center gap-2 relative z-10">
           <Link
             to="/admin/bookings?new=true"
-            className="px-4 py-2.5 bg-gradient-to-r from-[#C9A669] to-[#9C7B3D] text-[#1C1B19] rounded-xl text-xs font-bold shadow hover:brightness-110 transition-all flex items-center gap-1.5 active:scale-95"
+            className="px-3.5 py-2 bg-gradient-to-r from-[#C9A669] to-[#9C7B3D] text-[#1C1B19] rounded-lg text-xs font-bold shadow hover:brightness-110 transition-all flex items-center gap-1.5 active:scale-95"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             <span>New Booking</span>
           </Link>
           <Link
             to="/admin/frames"
-            className="px-4 py-2.5 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
           >
-            <Frame className="w-4 h-4 text-[#C9A669]" />
+            <Frame className="w-3.5 h-3.5 text-[#C9A669]" />
             <span>Frame Orders{newFrameOrders > 0 ? ` (${newFrameOrders})` : ""}</span>
           </Link>
           <Link
             to="/admin/gallery"
-            className="px-4 py-2.5 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
           >
-            <Images className="w-4 h-4 text-[#C9A669]" />
+            <Images className="w-3.5 h-3.5 text-[#C9A669]" />
             <span>Gallery</span>
           </Link>
           <Link
             to="/admin/testimonials"
-            className="px-4 py-2.5 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-[#2E2C27] hover:bg-[#38352F] text-[#F8F6F2] border border-[#48443D] rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5"
           >
-            <Star className="w-4 h-4 text-[#C9A669]" />
+            <Star className="w-3.5 h-3.5 text-[#C9A669]" />
             <span>Reviews{pendingGoogleReviews > 0 ? ` (${pendingGoogleReviews} pending)` : ""}</span>
           </Link>
         </div>
       </div>
 
       {/* 8 Statistic Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
         <StatCard
           title="Total Bookings"
           value={totalBookings}
@@ -205,60 +205,60 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions Strip */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm min-w-0">
-        <div className="flex items-center justify-between mb-4 gap-2">
+      <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-[#E7E0D2] shadow-sm min-w-0">
+        <div className="flex items-center justify-between mb-3 gap-2">
           <h3 className="font-display font-semibold text-sm text-[#2B2B2B] truncate">
             Quick Management Actions
           </h3>
           <span className="text-xs text-[#6F6A62] shrink-0">One-click shortcuts</span>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2.5">
           <Link
             to="/admin/bookings?new=true"
-            className="p-3 sm:p-3.5 rounded-xl border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-2 group min-w-0"
+            className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
-            <div className="p-2 sm:p-2.5 rounded-lg bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
-              <CalendarDays className="w-4 h-4" />
+            <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
+              <Plus className="w-3.5 h-3.5" />
             </div>
-            <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">+ Add Booking</span>
+            <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">+ New Booking</span>
           </Link>
 
           <Link
             to="/admin/gallery"
-            className="p-3 sm:p-3.5 rounded-xl border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-2 group min-w-0"
+            className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
-            <div className="p-2 sm:p-2.5 rounded-lg bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
-              <Images className="w-4 h-4" />
+            <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
+              <Images className="w-3.5 h-3.5" />
             </div>
-            <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">+ Upload Gallery</span>
+            <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">Gallery</span>
           </Link>
 
           <Link
             to="/admin/portfolio"
-            className="p-3 sm:p-3.5 rounded-xl border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-2 group min-w-0"
+            className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
-            <div className="p-2 sm:p-2.5 rounded-lg bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
-              <Briefcase className="w-4 h-4" />
+            <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
+              <Briefcase className="w-3.5 h-3.5" />
             </div>
             <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">+ Add Project</span>
           </Link>
 
           <Link
             to="/admin/services"
-            className="p-3 sm:p-3.5 rounded-xl border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-2 group min-w-0"
+            className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
-            <div className="p-2 sm:p-2.5 rounded-lg bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
-              <Camera className="w-4 h-4" />
+            <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
+              <Camera className="w-3.5 h-3.5" />
             </div>
             <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">+ Add Service</span>
           </Link>
 
           <Link
             to="/admin/films"
-            className="p-3 sm:p-3.5 rounded-xl border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-2 group min-w-0"
+            className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
-            <div className="p-2 sm:p-2.5 rounded-lg bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
-              <Clapperboard className="w-4 h-4" />
+            <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
+              <Clapperboard className="w-3.5 h-3.5" />
             </div>
             <span className="text-xs font-semibold text-[#2B2B2B] truncate w-full">+ Add Film</span>
           </Link>
@@ -266,9 +266,9 @@ export default function Dashboard() {
       </div>
 
       {/* Analytics Section: Monthly Shoot Bar Chart & Service Distribution */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-w-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 min-w-0">
         {/* Left: Monthly Shoots Visualizer */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-4 sm:p-6 border border-[#E7E0D2] shadow-sm space-y-6 min-w-0">
+        <div className="lg:col-span-7 bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm space-y-5 min-w-0">
           <div className="flex items-center justify-between gap-2 min-w-0">
             <div className="min-w-0">
               <span className="text-[11px] uppercase font-bold tracking-wider text-[#6F6A62]">
@@ -319,7 +319,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right: Popular Services Breakdown */}
-        <div className="lg:col-span-5 bg-white rounded-2xl p-4 sm:p-6 border border-[#E7E0D2] shadow-sm space-y-5 min-w-0">
+        <div className="lg:col-span-5 bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm space-y-4 min-w-0">
           <div>
             <span className="text-[11px] uppercase font-bold tracking-wider text-[#6F6A62]">
               Package Demand
@@ -359,10 +359,10 @@ export default function Dashboard() {
       </div>
 
       {/* Two Column Layout: Upcoming Shoots & Recent Enquiries */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
         {/* Upcoming Shoots Table */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-6 border border-[#E7E0D2] shadow-sm space-y-4">
+        <div className="lg:col-span-7 bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#E7E0D2]">
             <div>
               <h3 className="font-display font-semibold text-base text-[#2B2B2B]">
@@ -425,7 +425,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Enquiries Box */}
-        <div className="lg:col-span-5 bg-white rounded-2xl p-6 border border-[#E7E0D2] shadow-sm space-y-4 min-w-0">
+        <div className="lg:col-span-5 bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm space-y-4 min-w-0">
           <div className="flex items-center justify-between pb-2 border-b border-[#E7E0D2]">
             <div>
               <h3 className="font-display font-semibold text-base text-[#2B2B2B]">
@@ -442,12 +442,12 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {recentEnquiries.map((enq) => (
               <div
                 key={enq.id}
                 onClick={() => navigate("/admin/enquiries")}
-                className="p-3.5 rounded-xl border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] cursor-pointer transition-all space-y-2 min-w-0"
+                className="p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] cursor-pointer transition-all space-y-1.5 min-w-0"
               >
                 <div className="flex items-start justify-between gap-2 min-w-0">
                   <div className="min-w-0">

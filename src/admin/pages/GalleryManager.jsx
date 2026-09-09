@@ -172,7 +172,7 @@ export default function GalleryManager() {
       </div>
 
       {/* Filter & Categories Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-[#E7E0D2] shadow-sm space-y-3">
+      <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-[#E7E0D2] shadow-sm space-y-3">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8E867B]" />
@@ -184,7 +184,7 @@ export default function GalleryManager() {
                 setSearchQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669]"
+              className="w-full pl-10 pr-4 py-2 bg-[#F8F6F2] border border-[#E7E0D2] rounded-lg text-xs text-[#2B2B2B] placeholder:text-[#8E867B] focus:outline-none focus:border-[#C9A669]"
             />
           </div>
 
@@ -263,7 +263,7 @@ export default function GalleryManager() {
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="group bg-white rounded-2xl border border-[#E7E0D2] overflow-hidden shadow-sm hover:shadow-md hover:border-[#C9A669]/60 transition-all duration-300 flex flex-col"
+                className="group bg-white rounded-xl border border-[#E7E0D2] overflow-hidden shadow-sm hover:shadow-md hover:border-[#C9A669]/60 transition-all duration-300 flex flex-col"
               >
                 {/* Image Container */}
                 <div className="relative aspect-[4/3] bg-[#F8F6F2] overflow-hidden cursor-pointer">
@@ -387,7 +387,7 @@ export default function GalleryManager() {
           </div>
 
           {/* Pagination */}
-          <div className="bg-white rounded-2xl border border-[#E7E0D2] shadow-sm p-3">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] shadow-sm p-3">
             <Pagination
               currentPage={currentPage}
               totalItems={filteredGallery.length}
@@ -413,103 +413,110 @@ export default function GalleryManager() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-lg bg-white rounded-xl shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] flex flex-col overflow-hidden"
             >
-              <button
-                onClick={() => setUploadModalOpen(false)}
-                className="absolute top-6 right-6 p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="mb-5">
-                <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
-                  {editingImage ? "Edit Gallery Item" : "New Photo Upload"}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
-                  {editingImage ? "Update Photo Details" : "Upload High-Res Photo"}
-                </h3>
+              {/* Fixed Header */}
+              <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#F0EBE1] shrink-0 bg-white">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-widest2 text-[#9C7B3D]">
+                    {editingImage ? "Edit Gallery Item" : "New Photo Upload"}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B]">
+                    {editingImage ? "Update Photo Details" : "Upload High-Res Photo"}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setUploadModalOpen(false)}
+                  className="p-2 text-[#6F6A62] hover:text-[#2B2B2B] rounded-xl hover:bg-[#F8F6F2] transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
-              <form onSubmit={handleSaveImage} className="space-y-4 text-xs">
-                {/* Cloudinary Ready Uploader */}
-                <ImageUploader
-                  value={formData.imageUrl}
-                  onChange={(url) => setFormData({ ...formData, imageUrl: url })}
-                  label="Photo Image (File or URL)"
-                />
-
-                {/* Title */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-[#6F6A62]">Photo Title</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. The Royal Muhurtham Garland Exchange"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+              {/* Form with scrollable body & pinned footer */}
+              <form onSubmit={handleSaveImage} className="flex flex-col flex-1 min-h-0">
+                <div className="overflow-y-auto flex-1 p-6 sm:p-8 space-y-4 text-xs modal-scrollbar">
+                  {/* Cloudinary Ready Uploader */}
+                  <ImageUploader
+                    value={formData.imageUrl}
+                    onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                    label="Photo Image (File or URL)"
                   />
-                </div>
 
-                {/* Category & Orientation */}
-                <div className="grid grid-cols-2 gap-3">
+                  {/* Title */}
                   <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Category</label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    <label className="font-semibold text-[#6F6A62]">Photo Title</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. The Royal Muhurtham Garland Exchange"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    >
-                      {CATEGORIES.filter((c) => c !== "All").map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
+                    />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="font-semibold text-[#6F6A62]">Orientation</label>
-                    <select
-                      value={formData.aspect}
-                      onChange={(e) => setFormData({ ...formData, aspect: e.target.value })}
-                      className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                    >
-                      <option value="landscape">Landscape (Horizontal)</option>
-                      <option value="portrait">Portrait (Vertical)</option>
-                    </select>
+                  {/* Category & Orientation */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Category</label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      >
+                        {CATEGORIES.filter((c) => c !== "All").map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-semibold text-[#6F6A62]">Orientation</label>
+                      <select
+                        value={formData.aspect}
+                        onChange={(e) => setFormData({ ...formData, aspect: e.target.value })}
+                        className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                      >
+                        <option value="landscape">Landscape (Horizontal)</option>
+                        <option value="portrait">Portrait (Vertical)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Checkboxes */}
+                  <div className="flex items-center gap-6 pt-2">
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
+                      <input
+                        type="checkbox"
+                        checked={formData.featured}
+                        onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                        className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
+                      />
+                      <span>Feature on Homepage</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
+                      <input
+                        type="checkbox"
+                        checked={formData.published}
+                        onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                        className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
+                      />
+                      <span>Publish to Live Gallery</span>
+                    </label>
                   </div>
                 </div>
 
-                {/* Checkboxes */}
-                <div className="flex items-center gap-6 pt-2">
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
-                    <input
-                      type="checkbox"
-                      checked={formData.featured}
-                      onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
-                    />
-                    <span>Feature on Homepage</span>
-                  </label>
-
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-[#2B2B2B]">
-                    <input
-                      type="checkbox"
-                      checked={formData.published}
-                      onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                      className="w-4 h-4 rounded border-[#E7E0D2] text-[#9C7B3D] focus:ring-[#C9A669]"
-                    />
-                    <span>Publish to Live Gallery</span>
-                  </label>
-                </div>
-
-                {/* Submit */}
-                <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#E7E0D2]">
+                {/* Pinned Action Footer */}
+                <div className="px-6 sm:px-8 py-4 bg-[#FCFAF7] border-t border-[#E7E0D2] flex items-center justify-end gap-3 shrink-0">
                   <button
                     type="button"
                     onClick={() => setUploadModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] font-semibold"
+                    className="px-4 py-2.5 rounded-xl border border-[#E7E0D2] text-[#6F6A62] hover:bg-[#F8F6F2] font-semibold transition-colors"
                   >
                     Cancel
                   </button>
@@ -552,7 +559,7 @@ export default function GalleryManager() {
               <img
                 src={previewImage.imageUrl}
                 alt={previewImage.title}
-                className="max-w-full max-h-[78vh] object-contain rounded-2xl shadow-2xl border border-white/10"
+                className="max-w-full max-h-[78vh] object-contain rounded-xl shadow-2xl border border-white/10"
               />
               <div className="mt-3 text-center text-white">
                 <h4 className="font-display font-semibold text-lg">{previewImage.title}</h4>

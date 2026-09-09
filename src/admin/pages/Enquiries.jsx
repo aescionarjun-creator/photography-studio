@@ -122,7 +122,7 @@ export default function Enquiries() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-[#E7E0D2] shadow-sm space-y-3">
+      <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-[#E7E0D2] shadow-sm space-y-3">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8E867B]" />
@@ -205,7 +205,7 @@ export default function Enquiries() {
           description="Incoming lead messages submitted through the website contact form will appear here."
         />
       ) : (
-        <div className="bg-white rounded-2xl border border-[#E7E0D2] shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#E7E0D2] shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-[#FDFBF7] border-b border-[#E7E0D2] text-[#6F6A62]">
@@ -332,7 +332,7 @@ export default function Enquiries() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E7E0D2] z-10 space-y-6"
+              className="relative w-full max-w-lg bg-white rounded-xl p-5 sm:p-6 shadow-2xl border border-[#E7E0D2] z-10 space-y-5"
             >
               <button
                 onClick={() => setActiveEnquiry(null)}
@@ -392,7 +392,7 @@ export default function Enquiries() {
               </div>
 
               {/* Service & Event Info */}
-              <div className="p-4 rounded-2xl bg-[#FDFBF7] border border-[#E7E0D2] space-y-2 text-xs">
+              <div className="p-4 rounded-xl bg-[#FDFBF7] border border-[#E7E0D2] space-y-2 text-xs">
                 <div className="flex justify-between">
                   <span className="text-[#6F6A62]">Interested Service:</span>
                   <span className="font-bold text-[#2B2B2B]">
@@ -418,7 +418,7 @@ export default function Enquiries() {
                 <span className="font-bold uppercase tracking-wider text-[#6F6A62]">
                   Client Inquiry Message
                 </span>
-                <div className="p-4 rounded-2xl bg-[#F8F6F2] border border-[#E7E0D2] text-[#2B2B2B] leading-relaxed text-sm whitespace-pre-wrap">
+                <div className="p-4 rounded-xl bg-[#F8F6F2] border border-[#E7E0D2] text-[#2B2B2B] leading-relaxed text-sm whitespace-pre-wrap">
                   {(activeEnquiry.message || activeEnquiry.notes || activeEnquiry.clientMessage)?.trim() ? (
                     `"${(activeEnquiry.message || activeEnquiry.notes || activeEnquiry.clientMessage).trim()}"`
                   ) : (

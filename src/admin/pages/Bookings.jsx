@@ -254,7 +254,7 @@ export default function Bookings() {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-[#E7E0D2] shadow-sm space-y-3">
+      <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-[#E7E0D2] shadow-sm space-y-3">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
           {/* Search Box */}
           <div className="relative flex-1">
@@ -369,7 +369,7 @@ export default function Bookings() {
           onAction={handleOpenAddModal}
         />
       ) : (
-        <div className="bg-white rounded-2xl border border-[#E7E0D2] shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#E7E0D2] shadow-sm overflow-hidden">
           {/* Desktop Table View */}
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
@@ -561,7 +561,7 @@ export default function Bookings() {
               {/* Drawer Content */}
               <div className="p-6 space-y-6 flex-1 text-xs text-[#2B2B2B]">
                 {/* Event Highlights */}
-                <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-[#FDFBF7] border border-[#E7E0D2]">
+                <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-[#FDFBF7] border border-[#E7E0D2]">
                   <div>
                     <span className="text-[#6F6A62] block mb-1">Event Type</span>
                     <span className="font-bold text-sm text-[#2B2B2B]">
@@ -709,7 +709,7 @@ export default function Bookings() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] flex flex-col overflow-hidden"
+              className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E7E0D2] z-10 max-h-[90vh] flex flex-col overflow-hidden"
             >
               {/* Fixed Header */}
               <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-[#F0EBE1] shrink-0 bg-white">

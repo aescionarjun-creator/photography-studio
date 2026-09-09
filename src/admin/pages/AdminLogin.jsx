@@ -60,7 +60,7 @@ export default function AdminLogin() {
       <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#9C7B3D]/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Center Container */}
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-[#3A3833]/30 z-10">
+      <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-[#3A3833]/30 z-10">
         
         {/* Left Side: Brand Visual & Heritage */}
         <div className="lg:col-span-5 bg-gradient-to-b from-[#24221F] to-[#171614] text-[#F8F6F2] p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-[#33312C]">

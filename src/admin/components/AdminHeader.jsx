@@ -176,7 +176,7 @@ export default function AdminHeader({ onMobileMenuClick }) {
           </button>
 
           {notificationsOpen && (
-            <div className="absolute right-0 mt-3 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl border border-[#E7E0D2] p-4 z-50 animate-fadeIn">
+            <div className="absolute right-0 mt-3 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-xl border border-[#E7E0D2] p-4 z-50 animate-fadeIn">
               <div className="flex items-center justify-between pb-3 border-b border-[#E7E0D2]">
                 <div className="flex items-center gap-2">
                   <h4 className="font-display font-semibold text-sm text-[#2B2B2B]">

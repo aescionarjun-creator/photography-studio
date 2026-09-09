@@ -27,22 +27,22 @@ export default function StatCard({
       whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
       onClick={onClick}
-      className={`p-4 sm:p-5 rounded-2xl border ${accentStyles} shadow-sm transition-all duration-200 min-w-0 ${
+      className={`p-3.5 sm:p-4 rounded-xl border ${accentStyles} shadow-sm transition-all duration-200 min-w-0 ${
         onClick ? "cursor-pointer hover:border-[#C9A669]" : ""
       }`}
     >
       <div className="flex items-start justify-between gap-2 min-w-0">
-        <div className="space-y-1 min-w-0">
-          <p className="text-xs font-medium uppercase tracking-wider text-[#6F6A62] truncate">
+        <div className="space-y-0.5 min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-[#6F6A62] truncate">
             {title}
           </p>
-          <h3 className="text-2xl sm:text-3xl font-display font-semibold tracking-tight text-[#2B2B2B]">
+          <h3 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-[#2B2B2B]">
             {value}
           </h3>
         </div>
         {Icon && (
-          <div className={`p-2.5 sm:p-3 rounded-xl ${iconBg} shrink-0`}>
-            <Icon className="w-4 sm:w-5 h-4 sm:h-5" />
+          <div className={`p-2 sm:p-2.5 rounded-lg ${iconBg} shrink-0`}>
+            <Icon className="w-4 sm:w-4.5 h-4 sm:h-4.5" />
           </div>
         )}
       </div>

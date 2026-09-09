@@ -144,7 +144,7 @@ export default function FramesManager() {
   return (
     <div className="space-y-8 animate-fadeIn min-w-0">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-[#24221F] to-[#1C1B19] rounded-3xl p-6 sm:p-8 text-[#F8F6F2] shadow-lg border border-[#3A3833] flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#24221F] to-[#1C1B19] rounded-xl p-5 sm:p-6 text-[#F8F6F2] shadow-lg border border-[#3A3833] flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden">
         <div className="space-y-2 relative z-10">
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#F8F6F2]">
             Custom Frame Management
@@ -243,7 +243,7 @@ export default function FramesManager() {
       {activeTab === "orders" && (
         <div className="space-y-4 min-w-0">
           {/* Search and Filters */}
-          <div className="bg-white rounded-2xl p-4 border border-[#E7E0D2] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 min-w-0">
+          <div className="bg-white rounded-xl p-3.5 sm:p-4 border border-[#E7E0D2] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 min-w-0">
             <div className="relative w-full sm:w-80">
               <Search className="w-4 h-4 text-[#8C6D32] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -272,7 +272,7 @@ export default function FramesManager() {
           </div>
 
           {/* Table Container with Contained Scroll */}
-          <div className="bg-white rounded-2xl border border-[#E7E0D2] shadow-sm overflow-hidden min-w-0 w-full">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] shadow-sm overflow-hidden min-w-0 w-full">
             <div className="overflow-x-auto w-full min-w-0">
               <table className="w-full text-left text-xs border-collapse min-w-[700px]">
                 <thead>
@@ -387,7 +387,7 @@ export default function FramesManager() {
             {(frameWoodTypes || []).map((wood) => (
               <div
                 key={wood.id}
-                className="bg-white rounded-2xl p-4 border border-[#E7E0D2] shadow-sm flex flex-col justify-between space-y-4"
+                className="bg-white rounded-xl p-4 border border-[#E7E0D2] shadow-sm flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
                   <div className="relative h-40 rounded-xl overflow-hidden bg-[#ECE7DC] border border-[#E7E0D2]">
@@ -471,7 +471,7 @@ export default function FramesManager() {
             {(frameDesigns || []).map((design) => (
               <div
                 key={design.id}
-                className="bg-white rounded-2xl p-4 border border-[#E7E0D2] shadow-sm flex flex-col justify-between space-y-4"
+                className="bg-white rounded-xl p-4 border border-[#E7E0D2] shadow-sm flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
                   <div className="relative h-36 rounded-xl overflow-hidden bg-[#ECE7DC] border border-[#E7E0D2]">
@@ -555,7 +555,7 @@ export default function FramesManager() {
             {(frameRatios || []).map((ratio) => (
               <div
                 key={ratio.id}
-                className="bg-white rounded-2xl p-5 border border-[#E7E0D2] shadow-sm flex flex-col justify-between space-y-4"
+                className="bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -615,7 +615,7 @@ export default function FramesManager() {
               initial={{ opacity: 0, scale: 0.96, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 10 }}
-              className="bg-white rounded-3xl p-5 sm:p-7 lg:p-8 max-w-4xl lg:max-w-5xl w-full max-h-[92vh] overflow-y-auto space-y-6 shadow-2xl border border-[#E7E0D2]"
+              className="bg-white rounded-xl p-5 sm:p-6 max-w-4xl lg:max-w-5xl w-full max-h-[92vh] overflow-y-auto modal-scrollbar space-y-5 shadow-2xl border border-[#E7E0D2]"
             >
               {/* Modal Top Header */}
               <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-4">
@@ -989,89 +989,93 @@ function WoodTypeModal({ isOpen, mode, initialData, onClose, onSave }) {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white rounded-3xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto space-y-4 shadow-2xl border border-[#E7E0D2]"
+        className="bg-white rounded-xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-[#E7E0D2]"
       >
-        <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
+        <div className="flex items-center justify-between border-b border-[#E7E0D2] px-5 py-4 shrink-0 bg-white">
           <h3 className="font-display font-bold text-lg text-[#1C1B19]">
             {mode === "add" ? "Add New Wood Timber" : "Edit Wood Timber"}
           </h3>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-[#6F6A62] hover:bg-[#F8F6F2]"
+            className="p-1 rounded-lg text-[#6F6A62] hover:bg-[#F8F6F2] transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Wood Name</label>
-            <input
-              name="name"
-              defaultValue={initialData?.name || ""}
-              placeholder="e.g. Teak Wood, Rose Wood..."
-              required
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+          <div className="overflow-y-auto flex-1 p-5 space-y-3.5 text-xs modal-scrollbar">
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Wood Name</label>
+              <input
+                name="name"
+                defaultValue={initialData?.name || ""}
+                placeholder="e.g. Teak Wood, Rose Wood..."
+                required
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Base Price (₹)</label>
+              <input
+                name="basePrice"
+                type="number"
+                min="0"
+                step="1"
+                defaultValue={initialData?.basePrice ?? 800}
+                required
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Stock Status</label>
+              <select
+                name="inStock"
+                defaultValue={initialData ? (initialData.inStock ? "true" : "false") : "true"}
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              >
+                <option value="true">In Stock</option>
+                <option value="false">Out of Stock</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Grain & Craft Description</label>
+              <textarea
+                name="description"
+                rows={2}
+                defaultValue={initialData?.description || ""}
+                placeholder="Brief craftsmanship and timber description..."
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            {/* Wood Image Upload */}
+            <div className="pt-1">
+              <FrameImageUploader
+                label="Wood Image"
+                value={image}
+                onChange={(newVal) => {
+                  setImage(newVal);
+                  setImageError("");
+                }}
+                helpText="JPG, PNG or WEBP • Max 5MB"
+              />
+              {imageError && (
+                <p className="text-xs text-rose-600 mt-1">{imageError}</p>
+              )}
+            </div>
           </div>
 
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Base Price (₹)</label>
-            <input
-              name="basePrice"
-              type="number"
-              min="0"
-              step="1"
-              defaultValue={initialData?.basePrice ?? 800}
-              required
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Grain Characteristic</label>
-            <input
-              name="grain"
-              defaultValue={initialData?.grain || ""}
-              placeholder="e.g. Distinguished golden-brown grain"
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Description</label>
-            <textarea
-              name="description"
-              rows={2}
-              defaultValue={initialData?.description || ""}
-              placeholder="Brief craftsmanship and timber description..."
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          {/* Wood Image Upload */}
-          <div className="pt-1">
-            <FrameImageUploader
-              label="Wood Image"
-              value={image}
-              onChange={(newVal) => {
-                setImage(newVal);
-                setImageError("");
-              }}
-              helpText="JPG, PNG or WEBP • Max 5MB"
-            />
-            {imageError && (
-              <p className="text-xs text-rose-600 mt-1">{imageError}</p>
-            )}
-          </div>
-
-          <div className="pt-3 border-t border-[#E7E0D2] flex justify-end gap-2">
+          <div className="px-5 py-3.5 bg-[#FCFAF7] border-t border-[#E7E0D2] flex justify-end gap-2 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-[#E7E0D2] text-[#2B2B2B] rounded-xl font-medium hover:bg-[#F8F6F2]"
+              className="px-4 py-2 border border-[#E7E0D2] text-[#2B2B2B] rounded-xl font-medium hover:bg-[#F8F6F2] transition-colors"
             >
               Cancel
             </button>
@@ -1079,7 +1083,7 @@ function WoodTypeModal({ isOpen, mode, initialData, onClose, onSave }) {
               type="submit"
               className="px-5 py-2 bg-[#1C1B19] text-[#F8F6F2] font-bold rounded-xl shadow hover:bg-[#322F2A] transition-colors"
             >
-              Save Wood Type
+              Save Wood
             </button>
           </div>
         </form>
@@ -1129,91 +1133,93 @@ function FrameDesignModal({ isOpen, mode, initialData, onClose, onSave }) {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white rounded-3xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto space-y-4 shadow-2xl border border-[#E7E0D2]"
+        className="bg-white rounded-xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-[#E7E0D2]"
       >
-        <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
+        <div className="flex items-center justify-between border-b border-[#E7E0D2] px-5 py-4 shrink-0 bg-white">
           <h3 className="font-display font-bold text-lg text-[#1C1B19]">
             {mode === "add" ? "Add New Frame Profile" : "Edit Frame Profile"}
           </h3>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-[#6F6A62] hover:bg-[#F8F6F2]"
+            className="p-1 rounded-lg text-[#6F6A62] hover:bg-[#F8F6F2] transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Profile Name</label>
-            <input
-              name="name"
-              defaultValue={initialData?.name || ""}
-              placeholder="e.g. Classic Gold, Modern Black..."
-              required
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+          <div className="overflow-y-auto flex-1 p-5 space-y-3.5 text-xs modal-scrollbar">
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Profile Name</label>
+              <input
+                name="name"
+                defaultValue={initialData?.name || ""}
+                placeholder="e.g. Classic Gold, Modern Black..."
+                required
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Additional Price (₹)</label>
+              <input
+                name="additionalPrice"
+                type="number"
+                min="0"
+                step="1"
+                defaultValue={initialData?.additionalPrice ?? 0}
+                required
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">
+                Compatible Woods (comma-separated or &apos;All&apos;)
+              </label>
+              <input
+                name="compatibleWoods"
+                defaultValue={(initialData?.compatibleWoods || ["All"]).join(", ")}
+                placeholder="All, or Teak Wood, Rose Wood..."
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Description</label>
+              <textarea
+                name="description"
+                rows={2}
+                defaultValue={initialData?.description || ""}
+                placeholder="Profile shape, beading, finish..."
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            {/* Frame Design Image Upload */}
+            <div className="pt-1">
+              <FrameImageUploader
+                label="Frame Design Image"
+                value={image}
+                onChange={(newVal) => {
+                  setImage(newVal);
+                  setImageError("");
+                }}
+                helpText="JPG, PNG or WEBP • Max 5MB"
+              />
+              {imageError && (
+                <p className="text-xs text-rose-600 mt-1">{imageError}</p>
+              )}
+            </div>
           </div>
 
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Additional Price (₹)</label>
-            <input
-              name="additionalPrice"
-              type="number"
-              min="0"
-              step="1"
-              defaultValue={initialData?.additionalPrice ?? 0}
-              required
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">
-              Compatible Woods (comma-separated or &apos;All&apos;)
-            </label>
-            <input
-              name="compatibleWoods"
-              defaultValue={(initialData?.compatibleWoods || ["All"]).join(", ")}
-              placeholder="All, or Teak Wood, Rose Wood..."
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Description</label>
-            <textarea
-              name="description"
-              rows={2}
-              defaultValue={initialData?.description || ""}
-              placeholder="Profile shape, beading, finish..."
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          {/* Frame Design Image Upload */}
-          <div className="pt-1">
-            <FrameImageUploader
-              label="Frame Design Image"
-              value={image}
-              onChange={(newVal) => {
-                setImage(newVal);
-                setImageError("");
-              }}
-              helpText="JPG, PNG or WEBP • Max 5MB"
-            />
-            {imageError && (
-              <p className="text-xs text-rose-600 mt-1">{imageError}</p>
-            )}
-          </div>
-
-          <div className="pt-3 border-t border-[#E7E0D2] flex justify-end gap-2">
+          <div className="px-5 py-3.5 bg-[#FCFAF7] border-t border-[#E7E0D2] flex justify-end gap-2 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-[#E7E0D2] text-[#2B2B2B] rounded-xl font-medium hover:bg-[#F8F6F2]"
+              className="px-4 py-2 border border-[#E7E0D2] text-[#2B2B2B] rounded-xl font-medium hover:bg-[#F8F6F2] transition-colors"
             >
               Cancel
             </button>
@@ -1221,7 +1227,7 @@ function FrameDesignModal({ isOpen, mode, initialData, onClose, onSave }) {
               type="submit"
               className="px-5 py-2 bg-[#1C1B19] text-[#F8F6F2] font-bold rounded-xl shadow hover:bg-[#322F2A] transition-colors"
             >
-              Save Profile Design
+              Save Frame Design
             </button>
           </div>
         </form>
@@ -1253,87 +1259,89 @@ function RatioModal({ isOpen, mode, initialData, onClose, onSave }) {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white rounded-3xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto space-y-4 shadow-2xl border border-[#E7E0D2]"
+        className="bg-white rounded-xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-[#E7E0D2]"
       >
-        <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
+        <div className="flex items-center justify-between border-b border-[#E7E0D2] px-5 py-4 shrink-0 bg-white">
           <h3 className="font-display font-bold text-lg text-[#1C1B19]">
             {mode === "add" ? "Add New Frame Size" : "Edit Frame Size"}
           </h3>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-[#6F6A62] hover:bg-[#F8F6F2]"
+            className="p-1 rounded-lg text-[#6F6A62] hover:bg-[#F8F6F2] transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">
-              Ratio / Size (e.g. 10 × 12)
-            </label>
-            <input
-              name="name"
-              defaultValue={initialData?.name || ""}
-              required
-              placeholder="e.g. 10 × 12"
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+          <div className="overflow-y-auto flex-1 p-5 space-y-3.5 text-xs modal-scrollbar">
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">
+                Ratio / Size (e.g. 10 × 12)
+              </label>
+              <input
+                name="name"
+                defaultValue={initialData?.name || ""}
+                required
+                placeholder="e.g. 10 × 12"
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Label / Title</label>
+              <input
+                name="label"
+                defaultValue={initialData?.label || ""}
+                placeholder="e.g. 10 × 12 inches (Statement Wall)"
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Price (₹)</label>
+              <input
+                name="price"
+                type="number"
+                min="0"
+                step="1"
+                defaultValue={initialData?.price ?? 600}
+                required
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#1C1B19] block mb-1">Dimensions Note</label>
+              <input
+                name="dimensions"
+                defaultValue={initialData?.dimensions || ""}
+                placeholder="e.g. 10 × 12 inches (25 × 30 cm)"
+                className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
+              <input
+                type="checkbox"
+                id="popularCheck"
+                name="popular"
+                defaultChecked={initialData?.popular || false}
+                className="rounded text-[#C9A669] focus:ring-[#C9A669]"
+              />
+              <label htmlFor="popularCheck" className="text-[#1C1B19] font-medium cursor-pointer">
+                Mark as Popular Size
+              </label>
+            </div>
           </div>
 
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Label / Title</label>
-            <input
-              name="label"
-              defaultValue={initialData?.label || ""}
-              placeholder="e.g. 10 × 12 inches (Statement Wall)"
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Price (₹)</label>
-            <input
-              name="price"
-              type="number"
-              min="0"
-              step="1"
-              defaultValue={initialData?.price ?? 600}
-              required
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-[#1C1B19] block mb-1">Dimensions Note</label>
-            <input
-              name="dimensions"
-              defaultValue={initialData?.dimensions || ""}
-              placeholder="e.g. 10 × 12 inches (25 × 30 cm)"
-              className="w-full p-2.5 rounded-xl border border-[#E7E0D2] text-xs focus:ring-2 focus:ring-[#C9A669] outline-none"
-            />
-          </div>
-
-          <div className="flex items-center gap-2 pt-1">
-            <input
-              type="checkbox"
-              id="popularCheck"
-              name="popular"
-              defaultChecked={initialData?.popular || false}
-              className="rounded text-[#C9A669] focus:ring-[#C9A669]"
-            />
-            <label htmlFor="popularCheck" className="text-[#1C1B19] font-medium cursor-pointer">
-              Mark as Popular Size
-            </label>
-          </div>
-
-          <div className="pt-3 border-t border-[#E7E0D2] flex justify-end gap-2">
+          <div className="px-5 py-3.5 bg-[#FCFAF7] border-t border-[#E7E0D2] flex justify-end gap-2 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-[#E7E0D2] text-[#2B2B2B] rounded-xl font-medium hover:bg-[#F8F6F2]"
+              className="px-4 py-2 border border-[#E7E0D2] text-[#2B2B2B] rounded-xl font-medium hover:bg-[#F8F6F2] transition-colors"
             >
               Cancel
             </button>
