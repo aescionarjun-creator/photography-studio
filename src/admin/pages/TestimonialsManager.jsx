@@ -134,6 +134,13 @@ export default function TestimonialsManager() {
     setModalOpen(true);
   };
 
+  const isNewParam = searchParams.get("new") === "true";
+  useEffect(() => {
+    if (isNewParam) {
+      handleOpenAdd();
+    }
+  }, [isNewParam]);
+
   const handleOpenEdit = (tst) => {
     setEditingTestimonial(tst);
     setFormData({

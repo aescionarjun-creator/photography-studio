@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Images,
@@ -40,6 +41,9 @@ const CATEGORIES = [
 ];
 
 export default function GalleryManager() {
+  const [searchParams] = useSearchParams();
+  const isNewParam = searchParams.get("new") === "true";
+
   const {
     gallery,
     addGalleryImage,
@@ -99,6 +103,13 @@ export default function GalleryManager() {
     setFormData(initialFormState);
     setUploadModalOpen(true);
   };
+
+  // Auto-open upload modal if requested via URL ?new=true
+  useEffect(() => {
+    if (isNewParam) {
+      handleOpenUpload();
+    }
+  }, [isNewParam]);
 
   const handleOpenEdit = (img) => {
     setEditingImage(img);

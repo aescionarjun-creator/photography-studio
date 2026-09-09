@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase,
@@ -33,6 +34,9 @@ const PORTFOLIO_CATEGORIES = [
 ];
 
 export default function PortfolioManager() {
+  const [searchParams] = useSearchParams();
+  const isNewParam = searchParams.get("new") === "true";
+
   const {
     portfolio,
     addPortfolio,
@@ -81,6 +85,13 @@ export default function PortfolioManager() {
     setFormData(initialForm);
     setModalOpen(true);
   };
+
+  // Auto-open Add modal if requested via URL ?new=true
+  useEffect(() => {
+    if (isNewParam) {
+      handleOpenAdd();
+    }
+  }, [isNewParam]);
 
   const handleOpenEdit = (item) => {
     setEditingItem(item);

@@ -224,7 +224,7 @@ export default function Dashboard() {
           </Link>
 
           <Link
-            to="/admin/gallery"
+            to="/admin/gallery?new=true"
             className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
             <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
@@ -234,7 +234,7 @@ export default function Dashboard() {
           </Link>
 
           <Link
-            to="/admin/portfolio"
+            to="/admin/portfolio?new=true"
             className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
             <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
@@ -244,7 +244,7 @@ export default function Dashboard() {
           </Link>
 
           <Link
-            to="/admin/services"
+            to="/admin/services?new=true"
             className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
             <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">
@@ -254,7 +254,7 @@ export default function Dashboard() {
           </Link>
 
           <Link
-            to="/admin/films"
+            to="/admin/films?new=true"
             className="p-2.5 sm:p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] transition-all flex flex-col items-center text-center gap-1.5 group min-w-0"
           >
             <div className="p-2 rounded-md bg-[#F8F6F2] group-hover:bg-[#F4EFE6] text-[#9C7B3D] transition-colors">

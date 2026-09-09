@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
@@ -22,6 +23,9 @@ import { useAdminData } from "../context/AdminDataContext";
 import { useToast } from "../context/ToastContext";
 
 export default function BranchesManager() {
+  const [searchParams] = useSearchParams();
+  const isNewParam = searchParams.get("new") === "true";
+
   const { branches, addBranch, updateBranch, deleteBranch, toggleBranchStatus } =
     useAdminData();
   const { addToast } = useToast();
@@ -52,6 +56,13 @@ export default function BranchesManager() {
     setFormData(initialForm);
     setModalOpen(true);
   };
+
+  // Auto-open Add modal if requested via URL ?new=true
+  useEffect(() => {
+    if (isNewParam) {
+      handleOpenAdd();
+    }
+  }, [isNewParam]);
 
   const handleOpenEdit = (branch) => {
     setEditingBranch(branch);

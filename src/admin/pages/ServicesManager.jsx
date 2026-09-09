@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Camera,
@@ -21,6 +22,9 @@ import { useAdminData } from "../context/AdminDataContext";
 import { useToast } from "../context/ToastContext";
 
 export default function ServicesManager() {
+  const [searchParams] = useSearchParams();
+  const isNewParam = searchParams.get("new") === "true";
+
   const { services, addService, updateService, deleteService, toggleServiceStatus } =
     useAdminData();
   const { addToast } = useToast();
@@ -59,6 +63,13 @@ export default function ServicesManager() {
     setFormData(initialForm);
     setModalOpen(true);
   };
+
+  // Auto-open Add modal if requested via URL ?new=true
+  useEffect(() => {
+    if (isNewParam) {
+      handleOpenAdd();
+    }
+  }, [isNewParam]);
 
   const handleOpenEdit = (srv) => {
     setEditingService(srv);

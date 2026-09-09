@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Clapperboard,
@@ -31,6 +32,9 @@ const CATEGORIES = [
 ];
 
 export default function FilmsManager() {
+  const [searchParams] = useSearchParams();
+  const isNewParam = searchParams.get("new") === "true";
+
   const {
     films,
     addFilm,
@@ -79,6 +83,13 @@ export default function FilmsManager() {
     setFormData(initialForm);
     setModalOpen(true);
   };
+
+  // Auto-open Add modal if requested via URL ?new=true
+  useEffect(() => {
+    if (isNewParam) {
+      handleOpenAdd();
+    }
+  }, [isNewParam]);
 
   const handleOpenEdit = (film) => {
     setEditingFilm(film);
