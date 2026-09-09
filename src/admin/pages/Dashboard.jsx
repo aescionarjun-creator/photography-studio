@@ -14,14 +14,12 @@ import {
   ArrowRight,
   TrendingUp,
   Phone,
-  Calendar,
   ExternalLink,
   Clapperboard,
   Briefcase,
   Eye,
   Frame,
   Star,
-  Sparkles,
 } from "lucide-react";
 import StatCard from "../components/StatCard";
 import StatusBadge from "../components/StatusBadge";
@@ -99,16 +97,6 @@ export default function Dashboard() {
         <div className="pointer-events-none absolute -right-16 -top-16 w-64 h-64 bg-[#FBF7F0] rounded-full blur-2xl opacity-70" />
 
         <div className="space-y-1.5 relative z-10 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-1.5">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F7F4EE] text-[#8C6D32] border border-[#E7DECB]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Studio Operations Live
-            </span>
-            <span className="text-[11px] text-[#8E867B] font-medium hidden sm:inline-flex items-center gap-1.5">
-              <Calendar className="w-3 h-3 text-[#C9A669]" />
-              {new Date().toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric", year: "numeric" })}
-            </span>
-          </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-[#1C1B19] tracking-tight">
             {getGreeting()},{" "}
             <span className="bg-gradient-to-r from-[#8C6D32] to-[#C9A669] bg-clip-text text-transparent">
