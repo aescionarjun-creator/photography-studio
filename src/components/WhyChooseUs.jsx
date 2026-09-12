@@ -28,64 +28,18 @@ const benefits = [
   },
 ];
 
-function BlossomOrnament({ className, flip = false }) {
-  return (
-    <svg
-      className={className}
-      width="220"
-      height="220"
-      viewBox="0 0 260 260"
-      fill="none"
-      style={flip ? { transform: "scaleX(-1)" } : undefined}
-      aria-hidden="true"
-    >
-      <g opacity="0.4" stroke="#C9A669" strokeWidth="1.2">
-        <path d="M10 40 C 60 10, 110 30, 150 90" />
-        <path d="M20 90 C 70 70, 120 90, 160 140" />
-        <path d="M0 130 C 50 120, 90 140, 120 190" />
-      </g>
-      <g opacity="0.75">
-        {[
-          [40, 46],
-          [78, 30],
-          [118, 66],
-          [58, 96],
-          [96, 118],
-          [22, 120],
-          [140, 108],
-          [70, 150],
-        ].map(([cx, cy], i) => (
-          <g key={i} transform={`translate(${cx} ${cy})`}>
-            {[0, 72, 144, 216, 288].map((deg) => (
-              <ellipse
-                key={deg}
-                cx="0"
-                cy="-6"
-                rx="4.2"
-                ry="6.5"
-                fill="#FFFDF8"
-                stroke="#E4D3A6"
-                strokeWidth="0.8"
-                transform={`rotate(${deg})`}
-              />
-            ))}
-            <circle r="2.4" fill="#C9A669" />
-          </g>
-        ))}
-      </g>
-    </svg>
-  );
-}
+import { BotanicalBranch, BotanicalCorner } from "./BotanicalDecoration";
 
 export default function WhyChooseUs() {
   return (
     <section className="relative w-full bg-bg py-24 sm:py-28 lg:py-32 overflow-hidden border-b border-line/60">
-      {/* Ambient subtle floral decorations */}
-      <BlossomOrnament className="absolute -top-10 -left-12 pointer-events-none select-none opacity-40 blur-[0.4px] hidden xl:block" />
-      <BlossomOrnament
-        className="absolute -bottom-10 -right-12 pointer-events-none select-none opacity-40 blur-[0.4px] hidden xl:block"
-        flip
-      />
+      {/* Botanical leaf decorations on left edge and right/top corner */}
+      <div className="absolute top-1/4 -left-10 pointer-events-none select-none hidden lg:block">
+        <BotanicalBranch className="w-56 h-56" rotate={75} />
+      </div>
+      <div className="absolute -top-6 -right-6 pointer-events-none select-none hidden md:block">
+        <BotanicalCorner className="w-48 h-48" rotate={90} />
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
         {/* Header */}
@@ -131,33 +85,35 @@ export default function WhyChooseUs() {
           </Reveal>
         </header>
 
-        {/* 4 Benefit columns */}
-        <div className="mt-16 sm:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-10 lg:gap-0 lg:divide-x lg:divide-gold/25">
+        {/* 4 Benefit Cards in a row */}
+        <div className="mt-14 sm:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map((b, i) => {
             const Icon = b.icon;
             return (
               <Reveal
                 key={b.title}
-                delay={0.2 + i * 0.1}
-                className="px-4 sm:px-6 lg:px-8 text-center group flex flex-col items-center"
+                delay={0.15 + i * 0.08}
+                className="h-full flex flex-col"
               >
-                {/* Elegant circular icon area */}
-                <div className="w-16 h-16 sm:w-[68px] sm:h-[68px] rounded-full border border-gold/40 bg-bg-soft flex items-center justify-center text-gold-dark mx-auto shadow-sm group-hover:border-gold group-hover:scale-105 group-hover:bg-gold/10 group-hover:text-gold transition-all duration-300">
-                  <Icon size={26} strokeWidth={1.3} aria-hidden="true" />
+                <div className="bg-white rounded-xl border border-line/80 p-7 sm:p-8 shadow-sm hover:shadow-card hover:border-gold/50 transition-all duration-300 flex flex-col items-center text-center h-full group">
+                  {/* Elegant circular icon area */}
+                  <div className="w-16 h-16 rounded-full border border-gold/40 bg-bg-soft flex items-center justify-center text-gold-dark mx-auto shadow-sm group-hover:border-gold group-hover:scale-105 group-hover:bg-gold/10 group-hover:text-gold transition-all duration-300 mb-6">
+                    <Icon size={26} strokeWidth={1.3} aria-hidden="true" />
+                  </div>
+
+                  {/* Benefit title */}
+                  <h3 className="font-display text-xl sm:text-[22px] text-ink font-medium tracking-tight mb-3">
+                    {b.title}
+                  </h3>
+
+                  {/* Short gold decorative divider */}
+                  <div className="w-8 h-[1px] bg-gold/50 mx-auto mb-4 transition-all duration-300 group-hover:w-12 group-hover:bg-gold" />
+
+                  {/* Short description */}
+                  <p className="text-sm text-ink-soft leading-relaxed">
+                    {b.description}
+                  </p>
                 </div>
-
-                {/* Benefit title */}
-                <h3 className="font-display text-xl sm:text-2xl text-ink font-medium mt-6 tracking-tight">
-                  {b.title}
-                </h3>
-
-                {/* Short gold decorative divider */}
-                <div className="w-8 h-[1px] bg-gold/50 mx-auto my-4 transition-all duration-300 group-hover:w-12 group-hover:bg-gold" />
-
-                {/* Short description */}
-                <p className="text-sm sm:text-[15px] text-ink-soft leading-relaxed max-w-xs mx-auto">
-                  {b.description}
-                </p>
               </Reveal>
             );
           })}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Star, ExternalLink } from "lucide-react";
 import Reveal from "./Reveal";
@@ -319,7 +320,7 @@ export default function TestimonialsCarousel() {
   return (
     <section
       id="testimonials"
-      className="relative py-24 sm:py-28 bg-[#F8F6F2] overflow-hidden border-t border-line/60"
+      className="relative py-24 sm:py-28 bg-[#F8F5EF] overflow-hidden border-t border-line/50"
       aria-label="Client Testimonials"
     >
       {/* Subtle decorative background glow & lines */}
@@ -329,51 +330,36 @@ export default function TestimonialsCarousel() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-        {/* Section Header with Home page scroll-triggered reveal animations */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
-          <Reveal>
-            <p className="eyebrow mb-3">KIND WORDS</p>
-          </Reveal>
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 sm:mb-16">
+          <div className="max-w-2xl">
+            <Reveal>
+              <p className="eyebrow mb-3">WHAT OUR CLIENTS SAY</p>
+            </Reveal>
 
-          <Reveal delay={0.08}>
-            <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl text-ink leading-[1.1] text-balance">
-              What Our Clients Say
-            </h2>
-          </Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl text-ink leading-[1.1] text-balance">
+                Kind Words & Keepsakes
+              </h2>
+            </Reveal>
 
-          <Reveal delay={0.16}>
-            <p className="mt-4 text-[15px] sm:text-base text-ink-soft leading-relaxed">
-              Real stories. Genuine emotions. Lasting relationships.
-            </p>
-          </Reveal>
+            <Reveal delay={0.16}>
+              <p className="mt-4 text-[15px] sm:text-base text-ink-soft leading-relaxed">
+                Real stories. Genuine emotions. Lasting relationships.
+              </p>
+            </Reveal>
+          </div>
 
-          {/* Diamond Ornament: ─── ◇ ─── */}
-          <Reveal delay={0.24}>
-            <div
-              className="flex items-center justify-center gap-3 my-6 text-gold"
-              aria-hidden="true"
+          <Reveal delay={0.2} className="self-start md:self-end">
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-semibold tracking-[0.12em] uppercase text-ink hover:text-gold-dark transition-colors whitespace-nowrap"
             >
-              <span className="h-px w-12 sm:w-16 bg-gold/40" />
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                className="rotate-45 shrink-0 text-gold"
-                fill="currentColor"
-              >
-                <rect
-                  x="2"
-                  y="2"
-                  width="8"
-                  height="8"
-                  rx="1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-              </svg>
-              <span className="h-px w-12 sm:w-16 bg-gold/40" />
-            </div>
+              <span>View All Reviews</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
           </Reveal>
         </div>
 

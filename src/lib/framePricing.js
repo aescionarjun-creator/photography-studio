@@ -56,20 +56,20 @@ export function formatRupee(amount) {
  * @param {WoodOption | null} [params.wood]
  * @param {DesignOption | null} [params.design]
  * @param {RatioOption | null} [params.ratio]
+ * @param {number | string} [params.quantity]
  * @returns {{
  *   woodPrice: number,
  *   designPrice: number,
  *   ratioPrice: number,
- *   totalAmount: number,
- *   formattedWoodPrice: string,
- *   formattedDesignPrice: string,
- *   formattedRatioPrice: string,
  *   unitPrice: number,
  *   formattedUnitPrice: string,
  *   quantity: number,
  *   subtotal: number,
  *   formattedSubtotal: string,
  *   totalAmount: number,
+ *   formattedWoodPrice: string,
+ *   formattedDesignPrice: string,
+ *   formattedRatioPrice: string,
  *   formattedTotal: string
  * }}
  */

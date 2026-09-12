@@ -7,10 +7,22 @@ html {
 }
 
 body {
-  background-color: #F8F6F2;
+  background-color: #F8F5EF;
   color: #2B2B2B;
   font-family: 'Manrope', sans-serif;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* Subtle luxury paper / grain texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 ::selection {
@@ -20,7 +32,7 @@ body {
 
 /* Custom thin scrollbar */
 ::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #F8F6F2; }
+::-webkit-scrollbar-track { background: #F8F5EF; }
 ::-webkit-scrollbar-thumb { background: #E4D3A6; border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: #C9A669; }
 

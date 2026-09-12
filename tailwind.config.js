@@ -4,8 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#F8F6F2",
-        "bg-soft": "#FFFDF8",
+        bg: "#F8F5EF",
+        "bg-soft": "#FBF8F2",
+        "bg-cream": "#F4EFE6",
         card: "#FFFFFF",
         ink: "#2B2B2B",
         "ink-soft": "#6B7280",
@@ -14,6 +15,8 @@ export default {
           light: "#E4D3A6",
           dark: "#9C7B3D",
         },
+        champagne: "#D8C3A5",
+        "warm-beige": "#E7D8C5",
         line: "#E7E0D2",
       },
       fontFamily: {

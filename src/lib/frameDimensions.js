@@ -10,7 +10,7 @@
  * @param {"portrait" | "landscape"} [orientation="portrait"]
  * @returns {string}
  */
-export function formatRatioDisplayLabel(ratioName, orientation = "") {
+export function formatRatioDisplayLabel(ratioName, orientation = "portrait") {
   if (!ratioName) return "";
   const str = String(ratioName).trim();
 
