@@ -7,7 +7,7 @@ import { Menu, X, ChevronDown, Camera, Frame } from "lucide-react";
 const NAV_LINKS = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
-  { to: "/services", label: "Services", hasDropdown: true },
+  { to: "/order-booking", label: "Services", hasDropdown: true },
   { to: "/portfolio", label: "Portfolio" },
   { to: "/gallery", label: "Gallery" },
   { to: "/films", label: "Films" },
@@ -51,7 +51,9 @@ export default function Navbar() {
   }, []);
 
   const isServicesActive =
-    location.pathname === "/services" || location.pathname === "/frames";
+    location.pathname === "/order-booking" ||
+    location.pathname === "/services" ||
+    location.pathname === "/frames";
 
   return (
     <>
@@ -99,35 +101,35 @@ export default function Navbar() {
                         onMouseEnter={() => setServicesOpen(true)}
                         onMouseLeave={() => setServicesOpen(false)}
                       >
-                        <NavLink
-                          to={l.to}
-                          onClick={() => setServicesOpen((prev) => !prev)}
-                          className={({ isActive }) =>
-                            `text-[13px] tracking-[0.08em] uppercase font-medium transition-colors duration-300 relative py-1 flex items-center gap-1 ${
-                              isActive || isServicesActive
-                                ? "text-gold-dark"
-                                : "text-ink/70 hover:text-ink"
-                            }`
-                          }
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setServicesOpen((prev) => !prev);
+                          }}
+                          className={`text-[13px] tracking-[0.08em] uppercase font-medium transition-colors duration-300 relative py-1 flex items-center gap-1 cursor-pointer select-none ${
+                            isServicesActive
+                              ? "text-gold-dark"
+                              : "text-ink/70 hover:text-ink"
+                          }`}
+                          aria-expanded={servicesOpen}
+                          aria-haspopup="true"
                         >
-                          {() => (
-                            <>
-                              <span>{l.label}</span>
-                              <ChevronDown
-                                size={13}
-                                className={`transition-transform duration-200 ${
-                                  servicesOpen ? "rotate-180" : ""
-                                }`}
-                              />
-                              {isServicesActive && (
-                                <motion.span
-                                  layoutId="nav-underline"
-                                  className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gold"
-                                />
-                              )}
-                            </>
+                          <span>{l.label}</span>
+                          <ChevronDown
+                            size={13}
+                            className={`transition-transform duration-200 ${
+                              servicesOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                          {isServicesActive && (
+                            <motion.span
+                              layoutId="nav-underline"
+                              className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gold"
+                            />
                           )}
-                        </NavLink>
+                        </button>
 
                         <AnimatePresence>
                           {servicesOpen && (
@@ -139,7 +141,7 @@ export default function Navbar() {
                               className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-[#FDFBF7] border border-[#E4D3A6]/80 rounded-2xl p-2.5 shadow-xl backdrop-blur-lg z-50 space-y-1"
                             >
                               <Link
-                                to="/services"
+                                to="/order-booking"
                                 onClick={() => setServicesOpen(false)}
                                 className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#F4EFE6] transition-colors group"
                               >
@@ -245,24 +247,18 @@ export default function Navbar() {
                   return (
                     <div key={l.to} className="flex flex-col gap-2">
                       <div className="flex items-center justify-between text-sm tracking-[0.1em] uppercase font-medium text-ink/90">
-                        <NavLink
-                          to={l.to}
-                          onClick={() => setMenuOpen(false)}
-                          className={({ isActive }) =>
-                            isActive ? "text-gold-dark font-semibold" : "text-ink/80"
-                          }
-                        >
-                          {l.label}
-                        </NavLink>
                         <button
                           type="button"
                           onClick={() => setMobileServicesOpen((v) => !v)}
-                          className="p-1 text-ink/60"
-                          aria-label="Toggle services options"
+                          className="flex items-center justify-between w-full py-1 text-left select-none cursor-pointer"
+                          aria-expanded={mobileServicesOpen}
                         >
+                          <span className={isServicesActive ? "text-gold-dark font-semibold" : "text-ink/80"}>
+                            {l.label}
+                          </span>
                           <ChevronDown
                             size={16}
-                            className={`transition-transform duration-200 ${
+                            className={`transition-transform duration-200 text-ink/60 ${
                               mobileServicesOpen ? "rotate-180" : ""
                             }`}
                           />
@@ -272,7 +268,7 @@ export default function Navbar() {
                       {mobileServicesOpen && (
                         <div className="pl-4 flex flex-col gap-3 py-2 border-l-2 border-[#C9A669]/40 ml-1">
                           <NavLink
-                            to="/services"
+                            to="/order-booking"
                             onClick={() => setMenuOpen(false)}
                             className={({ isActive }) =>
                               `text-xs tracking-[0.08em] uppercase font-medium flex items-center gap-2 ${

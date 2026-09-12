@@ -88,7 +88,7 @@ export default function ImageUploader({
           </button>
         </div>
       ) : value ? (
-        <div className="relative group rounded-2xl overflow-hidden border border-[#E7E0D2] bg-[#F8F6F2] aspect-[16/9] max-h-56 flex items-center justify-center">
+        <div className="relative group rounded-xl overflow-hidden border border-[#E7E0D2] bg-[#F8F6F2] aspect-[16/9] max-h-56 flex items-center justify-center">
           <img
             src={value}
             alt="Uploaded Preview"
@@ -119,7 +119,7 @@ export default function ImageUploader({
           onDragOver={handleDrag}
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
-          className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center ${
+          className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all flex flex-col items-center justify-center ${
             dragActive
               ? "border-[#C9A669] bg-[#FDFBF7]"
               : "border-[#E7E0D2] hover:border-[#C9A669] bg-[#FDFBF7]/60"

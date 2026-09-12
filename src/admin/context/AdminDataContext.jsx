@@ -47,6 +47,46 @@ function saveToStorage(key, data) {
   }
 }
 
+export function normalizeEnquiry(enquiry = {}) {
+  if (!enquiry) return enquiry;
+  const clientName = (enquiry.clientName || enquiry.name || "").trim();
+  const phone = (enquiry.phone || "").trim();
+  const email = (enquiry.email || "").trim();
+  const service = enquiry.interestedService || enquiry.service || "General Inquiry";
+  const eventDate = enquiry.proposedDate || enquiry.eventDate || enquiry.date || "";
+  const location = enquiry.location || enquiry.venue || "";
+  const message = (enquiry.message || enquiry.notes || enquiry.clientMessage || "").trim();
+  const status = enquiry.status || "New";
+
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+
+  const createdAt = enquiry.createdAt || dateStr;
+  const receivedDate = enquiry.receivedDate || `${createdAt} ${timeStr}`;
+
+  return {
+    ...enquiry,
+    id: enquiry.id || `ENQ-${Math.floor(1000 + Math.random() * 9000)}`,
+    name: clientName,
+    clientName,
+    phone,
+    email,
+    interestedService: service,
+    service,
+    eventDate,
+    proposedDate: eventDate,
+    location,
+    venue: location,
+    message,
+    notes: message,
+    clientMessage: message,
+    status,
+    createdAt,
+    receivedDate,
+  };
+}
+
 export function AdminDataProvider({ children }) {
   // 1. Bookings
   const [bookings, setBookings] = useState(() =>
@@ -76,18 +116,14 @@ export function AdminDataProvider({ children }) {
   };
 
   // 2. Enquiries
-  const [enquiries, setEnquiries] = useState(() =>
-    loadFromStorage("enquiries", initialEnquiries)
-  );
+  const [enquiries, setEnquiries] = useState(() => {
+    const raw = loadFromStorage("enquiries", initialEnquiries);
+    return Array.isArray(raw) ? raw.map(normalizeEnquiry) : [];
+  });
   useEffect(() => saveToStorage("enquiries", enquiries), [enquiries]);
 
   const addEnquiry = (enquiry) => {
-    const newEnquiry = {
-      ...enquiry,
-      id: `ENQ-${Math.floor(1000 + Math.random() * 9000)}`,
-      createdAt: new Date().toISOString().split("T")[0],
-      status: enquiry.status || "New",
-    };
+    const newEnquiry = normalizeEnquiry(enquiry);
     setEnquiries((prev) => [newEnquiry, ...prev]);
     return newEnquiry;
   };

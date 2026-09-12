@@ -34,22 +34,70 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [selectedBranchId, setSelectedBranchId] = useState("tirunelveli");
+  const [phoneValue, setPhoneValue] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   const servicesList = adminServices && adminServices.length > 0 ? adminServices : defaultServices;
   const currentBranch = STUDIO_LOCATIONS.find((loc) => loc.id === selectedBranchId) || STUDIO_LOCATIONS[0];
 
+  const handlePhoneChange = (e) => {
+    const raw = e.target.value;
+    const digitsOnly = raw.replace(/\D/g, "").slice(0, 10);
+    setPhoneValue(digitsOnly);
+    if (phoneError && digitsOnly.length === 10) {
+      setPhoneError("");
+    }
+  };
+
+  const handlePhonePaste = (e) => {
+    e.preventDefault();
+    const pasted = e.clipboardData?.getData("text") || "";
+    let digitsOnly = pasted.replace(/\D/g, "");
+    if (digitsOnly.length === 12 && digitsOnly.startsWith("91")) {
+      digitsOnly = digitsOnly.slice(2);
+    }
+    digitsOnly = digitsOnly.slice(0, 10);
+    setPhoneValue(digitsOnly);
+    if (phoneError && digitsOnly.length === 10) {
+      setPhoneError("");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const cleanPhone = phoneValue.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setPhoneError("Phone number needs to contain exactly 10 numbers.");
+      return;
+    }
+    setPhoneError("");
     setSubmitting(true);
     
     const formData = new FormData(e.currentTarget);
+    const rawName = formData.get("name") || "";
+    const rawPhone = `+91 ${cleanPhone}`;
+    const rawEmail = formData.get("email") || "";
+    const rawService = formData.get("service") || "General Inquiry";
+    const rawDate = formData.get("date") || "";
+    const rawLocation = formData.get("location") || currentBranch?.city || "Tirunelveli";
+    const rawMessage = formData.get("message") || formData.get("notes") || "";
+
     const enquiryData = {
-      name: formData.get("name") || "",
-      phone: formData.get("phone") || "",
-      email: formData.get("email") || "",
-      service: formData.get("service") || "General Inquiry",
-      eventDate: formData.get("date") || "",
-      notes: formData.get("notes") || "",
+      name: rawName,
+      clientName: rawName,
+      phone: rawPhone,
+      email: rawEmail,
+      service: rawService,
+      interestedService: rawService,
+      eventDate: rawDate,
+      proposedDate: rawDate,
+      location: rawLocation,
+      venue: rawLocation,
+      message: rawMessage,
+      notes: rawMessage,
+      clientMessage: rawMessage,
+      status: "New",
     };
 
     if (addEnquiry) {
@@ -94,7 +142,39 @@ export default function Contact() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Field label="Full Name" name="name" placeholder="Meera Krishnan" required />
-                <Field label="Phone Number" name="phone" placeholder="+91 98765 43210" required />
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs tracking-[0.08em] uppercase text-ink-soft font-semibold">
+                    Phone Number
+                  </label>
+                  <div
+                    className={`flex items-stretch rounded-sm border bg-bg-soft transition-colors ${
+                      phoneError
+                        ? "border-red-500 focus-within:border-red-500"
+                        : "border-line focus-within:border-gold"
+                    }`}
+                  >
+                    <span className="inline-flex items-center px-3.5 bg-line/20 border-r border-line text-sm font-semibold text-ink select-none shrink-0 tracking-wider">
+                      +91
+                    </span>
+                    <input
+                      type="tel"
+                      name="phone"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={10}
+                      value={phoneValue}
+                      onChange={handlePhoneChange}
+                      onPaste={handlePhonePaste}
+                      placeholder="9876543210"
+                      required
+                      aria-label="10-digit Indian Mobile Number"
+                      className="w-full bg-transparent px-4 py-3 text-sm text-ink focus:outline-none"
+                    />
+                  </div>
+                  {phoneError && (
+                    <p className="text-xs text-red-500 font-medium">{phoneError}</p>
+                  )}
+                </div>
                 <Field label="Email" name="email" type="email" placeholder="you@example.com" required className="md:col-span-2" />
                 <div className="flex flex-col gap-2">
                   <label className="text-xs tracking-[0.08em] uppercase text-ink-soft font-semibold">Service</label>
@@ -104,10 +184,11 @@ export default function Contact() {
                   </select>
                 </div>
                 <Field label="Event Date" name="date" type="date" />
+                <input type="hidden" name="location" value={currentBranch?.city || "Tirunelveli"} />
                 <div className="md:col-span-2 flex flex-col gap-2">
                   <label className="text-xs tracking-[0.08em] uppercase text-ink-soft font-semibold">Tell us about your day</label>
                   <textarea
-                    name="notes"
+                    name="message"
                     rows={5}
                     placeholder="Venue, guest count, style you love..."
                     className="bg-bg-soft border border-line rounded-sm px-4 py-3 text-sm text-ink focus:outline-none focus:border-gold transition-colors resize-none"

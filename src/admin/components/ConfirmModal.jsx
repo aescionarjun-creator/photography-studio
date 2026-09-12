@@ -46,7 +46,7 @@ export default function ConfirmModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="confirm-modal-title"
-          className="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-[#E7E0D2] z-10"
+          className="relative w-full max-w-md bg-white rounded-xl p-6 shadow-2xl border border-[#E7E0D2] z-10"
         >
           <button
             onClick={onClose}

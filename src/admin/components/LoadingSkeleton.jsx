@@ -1,6 +1,6 @@
 export function TableSkeleton({ rows = 5, cols = 6 }) {
   return (
-    <div className="w-full bg-white rounded-2xl border border-[#E7E0D2] overflow-hidden p-4 space-y-4">
+    <div className="w-full bg-white rounded-xl border border-[#E7E0D2] overflow-hidden p-4 space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D2]/60">
         <div className="h-6 w-36 bg-[#F3EFE8] rounded-lg animate-pulse" />
@@ -34,7 +34,7 @@ export function CardGridSkeleton({ count = 6 }) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="bg-white rounded-2xl border border-[#E7E0D2] overflow-hidden shadow-sm space-y-3 p-4"
+          className="bg-white rounded-xl border border-[#E7E0D2] overflow-hidden shadow-sm space-y-3 p-4"
         >
           <div className="aspect-[4/3] w-full bg-[#F3EFE8] rounded-xl animate-pulse" />
           <div className="h-5 w-3/4 bg-[#F3EFE8] rounded animate-pulse" />
@@ -55,7 +55,7 @@ export function StatCardsSkeleton({ count = 4 }) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="p-5 rounded-2xl bg-white border border-[#E7E0D2] shadow-sm space-y-4"
+          className="p-3.5 sm:p-4 rounded-xl bg-white border border-[#E7E0D2] shadow-sm space-y-3"
         >
           <div className="flex justify-between items-start">
             <div className="space-y-2">

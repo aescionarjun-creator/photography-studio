@@ -70,7 +70,8 @@ function PublicWebsiteLayout() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
-          <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
+          <Route path="/order-booking" element={<PageWrapper><Services /></PageWrapper>} />
+          <Route path="/services" element={<Navigate to="/order-booking" replace />} />
           <Route path="/frames" element={<PageWrapper><OrderFrames /></PageWrapper>} />
           <Route path="/portfolio" element={<PageWrapper><Portfolio /></PageWrapper>} />
           <Route path="/gallery" element={<PageWrapper><Gallery /></PageWrapper>} />

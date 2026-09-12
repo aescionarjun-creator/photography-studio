@@ -190,7 +190,7 @@ export default function Settings() {
       {/* Tab: Profile */}
       {activeTab === "profile" && (
         <form onSubmit={handleSaveProfile} className="space-y-6">
-          <div className="bg-white rounded-3xl border border-[#E7E0D2] p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D2]">
               <div>
                 <h3 className="text-lg font-display font-bold text-[#2B2B2B]">
@@ -281,7 +281,7 @@ export default function Settings() {
       {/* Tab: Security */}
       {activeTab === "security" && (
         <form onSubmit={handleSaveSecurity} className="space-y-6">
-          <div className="bg-white rounded-3xl border border-[#E7E0D2] p-6 sm:p-8 shadow-sm space-y-6 max-w-2xl">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm space-y-6 max-w-2xl">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D2]">
               <div>
                 <h3 className="text-lg font-display font-bold text-[#2B2B2B]">
@@ -352,7 +352,7 @@ export default function Settings() {
       {/* Tab: Studio Business */}
       {activeTab === "studio" && (
         <form onSubmit={handleSaveStudio} className="space-y-6">
-          <div className="bg-white rounded-3xl border border-[#E7E0D2] p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="bg-white rounded-xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-[#E7E0D2]">
               <div>
                 <h3 className="text-lg font-display font-bold text-[#2B2B2B]">
@@ -497,7 +497,7 @@ export default function Settings() {
       )}
 
       {/* Data Backup & System Management */}
-      <div className="bg-white rounded-3xl border border-[#E7E0D2] p-6 sm:p-8 shadow-sm space-y-4">
+      <div className="bg-white rounded-xl border border-[#E7E0D2] p-5 sm:p-6 shadow-sm space-y-4">
         <div>
           <h3 className="text-base font-display font-bold text-[#2B2B2B]">
             Data Management &amp; Backup
