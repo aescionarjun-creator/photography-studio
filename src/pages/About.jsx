@@ -56,7 +56,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-bg-soft py-28">
+      <section className="bg-white/60 backdrop-blur-[2px] py-28 border-y border-line/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <SectionHeading eyebrow="How We Grew" title="A decade, told in five chapters." align="center" />
           <div className="mt-20 relative">

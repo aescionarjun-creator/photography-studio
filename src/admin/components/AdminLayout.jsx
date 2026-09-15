@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
+import PremiumPageBackground from "../../components/PremiumPageBackground";
 
 export default function AdminLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F8F6F2] flex flex-row font-body text-[#2B2B2B] antialiased selection:bg-[#C9A669] selection:text-white">
+    <div className="min-h-screen bg-[#F8F6F2] flex flex-row font-body text-[#2B2B2B] antialiased selection:bg-[#C9A669] selection:text-white relative">
+      <PremiumPageBackground variant="admin" />
       {/* Sidebar */}
       <AdminSidebar
         isCollapsed={isCollapsed}

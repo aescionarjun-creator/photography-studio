@@ -7,8 +7,8 @@ import { motion } from "framer-motion";
 export default function Reveal({
   children,
   delay = 0,
-  y = 28,
-  duration = 0.8,
+  y = 20,
+  duration = 0.5,
   className = "",
   as = "div",
 }) {
@@ -17,8 +17,8 @@ export default function Reveal({
     <Comp
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration, delay, ease: [0.65, 0, 0.35, 1] }}
+      viewport={{ once: true, margin: "0px" }}
+      transition={{ duration, delay, ease: [0.25, 1, 0.5, 1] }}
       className={className}
     >
       {children}

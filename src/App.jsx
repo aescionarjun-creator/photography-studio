@@ -39,6 +39,8 @@ import TestimonialsManager from "./admin/pages/TestimonialsManager";
 import WebsiteContent from "./admin/pages/WebsiteContent";
 import Settings from "./admin/pages/Settings";
 
+import PremiumPageBackground from "./components/PremiumPageBackground";
+
 const pageVariants = {
   initial: { opacity: 0, y: 24 },
   animate: { opacity: 1, y: 0 },
@@ -64,25 +66,30 @@ function PublicWebsiteLayout() {
   useLenis();
 
   return (
-    <div className="min-h-screen flex flex-col bg-bg text-ink">
-      <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
-          <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
-          <Route path="/order-booking" element={<PageWrapper><Services /></PageWrapper>} />
-          <Route path="/services" element={<Navigate to="/order-booking" replace />} />
-          <Route path="/frames" element={<PageWrapper><OrderFrames /></PageWrapper>} />
-          <Route path="/portfolio" element={<PageWrapper><Portfolio /></PageWrapper>} />
-          <Route path="/gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
-          <Route path="/films" element={<PageWrapper><Films /></PageWrapper>} />
-          <Route path="/branches" element={<PageWrapper><Branches /></PageWrapper>} />
-          <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
-          <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
-        </Routes>
-      </AnimatePresence>
-      <Footer />
-      <FloatingButtons />
+    <div className="min-h-screen flex flex-col relative text-ink">
+      <PremiumPageBackground />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-1">
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+              <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+              <Route path="/order-booking" element={<PageWrapper><Services /></PageWrapper>} />
+              <Route path="/services" element={<Navigate to="/order-booking" replace />} />
+              <Route path="/frames" element={<PageWrapper><OrderFrames /></PageWrapper>} />
+              <Route path="/portfolio" element={<PageWrapper><Portfolio /></PageWrapper>} />
+              <Route path="/gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
+              <Route path="/films" element={<PageWrapper><Films /></PageWrapper>} />
+              <Route path="/branches" element={<PageWrapper><Branches /></PageWrapper>} />
+              <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+              <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
+            </Routes>
+          </AnimatePresence>
+        </div>
+        <Footer />
+        <FloatingButtons />
+      </div>
     </div>
   );
 }

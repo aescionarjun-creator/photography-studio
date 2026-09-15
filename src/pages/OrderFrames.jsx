@@ -40,7 +40,7 @@ import {
 
 // 4-Step Simplified Workflow Navigator
 const STEPS = [
-  { id: 1, label: "Customize", desc: "Craft timber, photo & size" },
+  { id: 1, label: "Customize", desc: "Craft size, timber, photo & finish" },
   { id: 2, label: "Review", desc: "Verify specs & approval" },
   { id: 3, label: "Details", desc: "Shipping & fulfillment" },
   { id: 4, label: "Success", desc: "Receipt & confirmation" },
@@ -83,7 +83,7 @@ export default function OrderFrames() {
   const [uploadedPhoto, setUploadedPhoto] = useState(null);
   const [photoFileName, setPhotoFileName] = useState("");
   const [photoError, setPhotoError] = useState("");
-  const [selectedRatio, setSelectedRatio] = useState(() => activeRatios[1] || activeRatios[0] || null);
+  const [selectedRatio, setSelectedRatio] = useState(() => activeRatios[0] || activeRatios[1] || null);
   const [orientation, setOrientation] = useState("portrait"); // "portrait" | "landscape"
 
   // Photo editing state (separate from original image)
@@ -576,7 +576,7 @@ export default function OrderFrames() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#F8F6F2] text-[#2B2B2B] pt-28 pb-20 px-4 sm:px-6 lg:px-10 no-print">
+      <div className="min-h-screen bg-transparent text-[#2B2B2B] pt-28 pb-20 px-4 sm:px-6 lg:px-10 no-print">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* ==========================================================
               ATELIER HEADER (TOP BADGE REMOVED)
@@ -751,317 +751,12 @@ export default function OrderFrames() {
                       LEFT COLUMN (58%): ALL CUSTOMIZATION CONTROLS
                   ==================================================== */}
                   <div className="lg:col-span-7 space-y-6">
-                    {/* SECTION 01: CHOOSE WOOD TYPE */}
+                    {/* SECTION 01: CHOOSE RATIO / SIZE & ORIENTATION */}
                     <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
                       <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
                         <div className="flex items-center gap-2.5">
                           <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
                             01
-                          </span>
-                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
-                            Choose Timber Wood
-                          </h2>
-                        </div>
-                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF8F5] text-[#8C6D32] border border-[#E7E0D2]">
-                          Selected: {selectedWood?.name}
-                        </span>
-                      </div>
-
-                      <p className="text-xs text-[#6F6A62]">
-                        Select sustainably harvested solid timber. Timber grain patterns and tones update in the live preview immediately.
-                      </p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
-                        {activeWoods.map((wood) => {
-                          const isSelected = selectedWood?.id === wood.id;
-                          return (
-                            <div
-                              key={wood.id}
-                              onClick={() => setSelectedWood(wood)}
-                              className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all p-3 flex flex-col justify-between relative ${
-                                isSelected
-                                  ? "border-[#C9A669] ring-2 ring-[#C9A669]/25 bg-[#FDFBF7] shadow-sm"
-                                  : "border-[#E7E0D2] hover:border-[#C9A669]/60 hover:bg-[#FAF8F5]"
-                              }`}
-                            >
-                              <div className="space-y-2.5">
-                                <div className="relative h-28 rounded-xl overflow-hidden bg-[#ECE7DC] border border-[#E7E0D2]">
-                                  <img
-                                    src={wood.image}
-                                    alt={wood.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                  />
-                                  {isSelected && (
-                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#C9A669] text-[#1C1B19] flex items-center justify-center shadow">
-                                      <Check className="w-3.5 h-3.5 stroke-[3]" />
-                                    </div>
-                                  )}
-                                  <div className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-[#1C1B19]/80 backdrop-blur-sm text-[#F8F6F2] text-[10px] font-semibold">
-                                    {formatRupee(wood.basePrice)} base
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <h3 className="font-display font-bold text-sm text-[#1C1B19] flex items-center justify-between">
-                                    <span>{wood.name}</span>
-                                    <span className="text-xs font-semibold text-[#8C6D32]">
-                                      {formatRupee(wood.basePrice)}
-                                    </span>
-                                  </h3>
-                                  <p className="text-[11px] text-[#6F6A62] mt-1 line-clamp-2 leading-relaxed">
-                                    {wood.description}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="mt-2.5 pt-2 border-t border-[#E7E0D2]/70 flex items-center justify-between text-[10px]">
-                                <span className="text-[#8C6D32] truncate">{wood.grain || "Natural Grain"}</span>
-                                <span className={isSelected ? "font-bold text-[#C9A669]" : "text-[#9E988E]"}>
-                                  {isSelected ? "Selected" : "Select"}
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* SECTION 02: CHOOSE FRAME DESIGN */}
-                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
-                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
-                            02
-                          </span>
-                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
-                            Choose Frame Profile &amp; Finish
-                          </h2>
-                        </div>
-                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF8F5] text-[#8C6D32] border border-[#E7E0D2]">
-                          Selected: {selectedDesign?.name}
-                        </span>
-                      </div>
-
-                      <p className="text-xs text-[#6F6A62]">
-                        Add an artisan lip or gallery accent to complement your chosen timber.
-                      </p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
-                        {activeDesigns.map((design) => {
-                          const isSelected = selectedDesign?.id === design.id;
-                          const compatible = isDesignCompatible(design, selectedWood);
-
-                          return (
-                            <div
-                              key={design.id}
-                              onClick={() => {
-                                if (compatible) setSelectedDesign(design);
-                              }}
-                              className={`group rounded-2xl overflow-hidden border transition-all p-3 flex flex-col justify-between relative ${
-                                !compatible
-                                  ? "opacity-40 bg-[#F5F2EC] border-[#DCD3C0] cursor-not-allowed"
-                                  : isSelected
-                                  ? "border-[#C9A669] ring-2 ring-[#C9A669]/25 bg-[#FDFBF7] shadow-sm cursor-pointer"
-                                  : "border-[#E7E0D2] hover:border-[#C9A669]/60 hover:bg-[#FAF8F5] cursor-pointer"
-                              }`}
-                            >
-                              <div className="space-y-2.5">
-                                <div className="relative h-24 rounded-xl overflow-hidden bg-[#ECE7DC] border border-[#E7E0D2]">
-                                  <img
-                                    src={design.image}
-                                    alt={design.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                  />
-                                  {isSelected && (
-                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#C9A669] text-[#1C1B19] flex items-center justify-center shadow">
-                                      <Check className="w-3.5 h-3.5 stroke-[3]" />
-                                    </div>
-                                  )}
-                                  <div className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-[#1C1B19]/80 backdrop-blur-sm text-[#F8F6F2] text-[10px] font-semibold">
-                                    {design.additionalPrice > 0
-                                      ? `+${formatRupee(design.additionalPrice)}`
-                                      : "Included (+₹0)"}
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <h3 className="font-display font-bold text-sm text-[#1C1B19] flex items-center justify-between">
-                                    <span className="truncate">{design.name}</span>
-                                    <span className="text-xs font-semibold text-[#8C6D32] shrink-0">
-                                      {design.additionalPrice > 0
-                                        ? `+${formatRupee(design.additionalPrice)}`
-                                        : "₹0"}
-                                    </span>
-                                  </h3>
-                                  <p className="text-[11px] text-[#6F6A62] mt-1 line-clamp-2 leading-relaxed">
-                                    {design.description}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="mt-2.5 pt-2 border-t border-[#E7E0D2]/70 text-[10px]">
-                                {!compatible ? (
-                                  <span className="text-red-700 font-medium">Incompatible</span>
-                                ) : (
-                                  <span className={isSelected ? "font-bold text-[#C9A669]" : "text-[#8C6D32]"}>
-                                    {isSelected ? "Selected" : "Select"}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* SECTION 03: UPLOAD PHOTO */}
-                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
-                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
-                            03
-                          </span>
-                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
-                            Upload Photograph
-                          </h2>
-                        </div>
-                        {uploadedPhoto && (
-                          <div className="flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                            <Check className="w-3.5 h-3.5" />
-                            <span>Photo Loaded</span>
-                          </div>
-                        )}
-                      </div>
-
-                      <input
-                        id={fileInputId}
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp"
-                        onChange={handlePhotoUpload}
-                        className="hidden"
-                      />
-
-                      {/* Dropzone */}
-                      <div
-                        onClick={() => fileInputRef.current?.click()}
-                        className="border-2 border-dashed border-[#C9A669]/70 hover:border-[#9C7B3D] bg-[#FDFBF7] hover:bg-[#FAF6EE] rounded-2xl p-6 text-center cursor-pointer transition-all space-y-2 group"
-                      >
-                        <div className="w-12 h-12 rounded-2xl bg-[#EFE9DD] group-hover:bg-[#E5DEC7] text-[#9C7B3D] mx-auto flex items-center justify-center transition-colors shadow-sm">
-                          <Upload className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h3 className="font-display font-bold text-sm text-[#1C1B19]">
-                            {uploadedPhoto ? "Change / Upload Different Photograph" : "Click or Drag to Upload Portrait"}
-                          </h3>
-                          <p className="text-xs text-[#6F6A62] mt-0.5">
-                            Supports JPG, JPEG, PNG, WebP up to 25MB (Auto-fitted for live preview)
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          className="px-4 py-1.5 bg-[#1C1B19] text-[#F8F6F2] rounded-xl text-xs font-semibold hover:bg-[#322F2A] transition-colors inline-block"
-                        >
-                          Browse Image
-                        </button>
-                      </div>
-
-                      {photoError && (
-                        <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200 flex items-center gap-2">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
-                          <span>{photoError}</span>
-                        </div>
-                      )}
-
-                      {uploadedPhoto && (
-                        <div className="p-3 bg-[#F8F6F2] rounded-xl border border-[#E7E0D2] flex items-center justify-between gap-3">
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <ImageIcon className="w-4 h-4 text-[#C9A669] shrink-0" />
-                            <div className="min-w-0">
-                              <div className="text-xs font-bold text-[#1C1B19] truncate">
-                                {photoFileName || "Uploaded Photograph"}
-                              </div>
-                              <div className="text-[10px] text-[#6F6A62]">Ready for framing &bull; Drag to pan in preview</div>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="text-xs font-semibold text-[#8C6D32] hover:underline shrink-0"
-                          >
-                            Replace
-                          </button>
-                        </div>
-                      )}
-
-                      <div className="flex items-center gap-2 text-[11px] text-[#6F6A62] bg-[#FAF8F5] p-2.5 rounded-xl border border-[#E7E0D2]">
-                        <ShieldCheck className="w-4 h-4 text-[#C9A669] shrink-0" />
-                        <span>Client-side protection active &bull; Original photograph is preserved untouched.</span>
-                      </div>
-                    </div>
-
-                    {/* SECTION 04: FINE ADJUST & CROP PHOTOGRAPH */}
-                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
-                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
-                            04
-                          </span>
-                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
-                            Fine Adjust &amp; Crop Photograph
-                          </h2>
-                        </div>
-                        {uploadedPhoto ? (
-                          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF8F5] text-[#8C6D32] border border-[#E7E0D2]">
-                            Zoom {Math.round(photoZoom * 100)}% &bull; {photoRotation}&deg;
-                          </span>
-                        ) : (
-                          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#F4EFE6] text-[#9E988E] border border-[#E7E0D2]">
-                            Photo Required
-                          </span>
-                        )}
-                      </div>
-
-                      <p className="text-xs text-[#6F6A62]">
-                        Pan, zoom, or rotate your photo. You can also click and drag directly inside the live preview on the right.
-                      </p>
-
-                      {!uploadedPhoto && (
-                        <div className="p-3.5 bg-[#FAF8F5] text-[#8C6D32] rounded-2xl border border-[#E7E0D2] flex items-center gap-3 text-xs">
-                          <div className="w-8 h-8 rounded-xl bg-[#EFE9DD] flex items-center justify-center text-[#8C6D32] shrink-0">
-                            <AlertCircle className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <div className="font-bold text-[#1C1B19]">
-                              Upload a photo to enable adjustment controls
-                            </div>
-                            <div className="text-[11px] text-[#6F6A62]">
-                              Once a portrait is uploaded in Section 03 above, zoom, rotation, and button-based nudging will unlock immediately.
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      <PhotoAdjusterControls
-                        zoom={photoZoom}
-                        pan={photoPan}
-                        rotation={photoRotation}
-                        fitMode={photoFitMode}
-                        disabled={!uploadedPhoto}
-                        onZoomChange={setPhotoZoom}
-                        onPanChange={setPhotoPan}
-                        onRotationChange={setPhotoRotation}
-                        onFitModeChange={setPhotoFitMode}
-                        onReset={handleResetPhotoAdjustments}
-                      />
-                    </div>
-
-                    {/* SECTION 05: CHOOSE RATIO / SIZE & ORIENTATION */}
-                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
-                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
-                            05
                           </span>
                           <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
                             Frame Dimensions &amp; Orientation
@@ -1168,6 +863,313 @@ export default function OrderFrames() {
                       </div>
                     </div>
 
+                    {/* SECTION 02: CHOOSE WOOD TYPE */}
+                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
+                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
+                            02
+                          </span>
+                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
+                            Choose Timber Wood
+                          </h2>
+                        </div>
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF8F5] text-[#8C6D32] border border-[#E7E0D2]">
+                          Selected: {selectedWood?.name}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-[#6F6A62]">
+                        Select sustainably harvested solid timber. Timber grain patterns and tones update in the live preview immediately.
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5">
+                        {activeWoods.map((wood) => {
+                          const isSelected = selectedWood?.id === wood.id;
+                          return (
+                            <div
+                              key={wood.id}
+                              onClick={() => setSelectedWood(wood)}
+                              className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all p-3 flex flex-col justify-between relative ${
+                                isSelected
+                                  ? "border-[#C9A669] ring-2 ring-[#C9A669]/25 bg-[#FDFBF7] shadow-sm"
+                                  : "border-[#E7E0D2] hover:border-[#C9A669]/60 hover:bg-[#FAF8F5]"
+                              }`}
+                            >
+                              <div className="space-y-2.5">
+                                <div className="relative h-28 rounded-xl overflow-hidden bg-[#ECE7DC] border border-[#E7E0D2]">
+                                  <img
+                                    src={wood.image}
+                                    alt={wood.name}
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                  />
+                                  {isSelected && (
+                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#C9A669] text-[#1C1B19] flex items-center justify-center shadow">
+                                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                                    </div>
+                                  )}
+                                  <div className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-[#1C1B19]/80 backdrop-blur-sm text-[#F8F6F2] text-[10px] font-semibold">
+                                    {formatRupee(wood.basePrice)} base
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <h3 className="font-display font-bold text-sm text-[#1C1B19] flex items-center justify-between">
+                                    <span>{wood.name}</span>
+                                    <span className="text-xs font-semibold text-[#8C6D32]">
+                                      {formatRupee(wood.basePrice)}
+                                    </span>
+                                  </h3>
+                                  <p className="text-[11px] text-[#6F6A62] mt-1 line-clamp-2 leading-relaxed">
+                                    {wood.description}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="mt-2.5 pt-2 border-t border-[#E7E0D2]/70 flex items-center justify-between text-[10px]">
+                                <span className="text-[#8C6D32] truncate">{wood.grain || "Natural Grain"}</span>
+                                <span className={isSelected ? "font-bold text-[#C9A669]" : "text-[#9E988E]"}>
+                                  {isSelected ? "Selected" : "Select"}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* SECTION 03: CHOOSE FRAME PROFILE & FINISH */}
+                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
+                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
+                            03
+                          </span>
+                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
+                            Choose Frame Profile &amp; Finish
+                          </h2>
+                        </div>
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF8F5] text-[#8C6D32] border border-[#E7E0D2]">
+                          Selected: {selectedDesign?.name}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-[#6F6A62]">
+                        Add an artisan lip or gallery accent to complement your chosen timber.
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
+                        {activeDesigns.map((design) => {
+                          const isSelected = selectedDesign?.id === design.id;
+                          const compatible = isDesignCompatible(design, selectedWood);
+
+                          return (
+                            <div
+                              key={design.id}
+                              onClick={() => {
+                                if (compatible) setSelectedDesign(design);
+                              }}
+                              className={`group rounded-2xl overflow-hidden border transition-all p-3 flex flex-col justify-between relative ${
+                                !compatible
+                                  ? "opacity-40 bg-[#F5F2EC] border-[#DCD3C0] cursor-not-allowed"
+                                  : isSelected
+                                  ? "border-[#C9A669] ring-2 ring-[#C9A669]/25 bg-[#FDFBF7] shadow-sm cursor-pointer"
+                                  : "border-[#E7E0D2] hover:border-[#C9A669]/60 hover:bg-[#FAF8F5] cursor-pointer"
+                              }`}
+                            >
+                              <div className="space-y-2.5">
+                                <div className="relative h-24 rounded-xl overflow-hidden bg-[#ECE7DC] border border-[#E7E0D2]">
+                                  <img
+                                    src={design.image}
+                                    alt={design.name}
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                  />
+                                  {isSelected && (
+                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#C9A669] text-[#1C1B19] flex items-center justify-center shadow">
+                                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                                    </div>
+                                  )}
+                                  <div className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded bg-[#1C1B19]/80 backdrop-blur-sm text-[#F8F6F2] text-[10px] font-semibold">
+                                    {design.additionalPrice > 0
+                                      ? `+${formatRupee(design.additionalPrice)}`
+                                      : "Included (+₹0)"}
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <h3 className="font-display font-bold text-sm text-[#1C1B19] flex items-center justify-between">
+                                    <span className="truncate">{design.name}</span>
+                                    <span className="text-xs font-semibold text-[#8C6D32] shrink-0">
+                                      {design.additionalPrice > 0
+                                        ? `+${formatRupee(design.additionalPrice)}`
+                                        : "₹0"}
+                                    </span>
+                                  </h3>
+                                  <p className="text-[11px] text-[#6F6A62] mt-1 line-clamp-2 leading-relaxed">
+                                    {design.description}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="mt-2.5 pt-2 border-t border-[#E7E0D2]/70 text-[10px]">
+                                {!compatible ? (
+                                  <span className="text-red-700 font-medium">Incompatible</span>
+                                ) : (
+                                  <span className={isSelected ? "font-bold text-[#C9A669]" : "text-[#8C6D32]"}>
+                                    {isSelected ? "Selected" : "Select"}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* SECTION 04: UPLOAD PHOTOGRAPH */}
+                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
+                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
+                            04
+                          </span>
+                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
+                            Upload Photograph
+                          </h2>
+                        </div>
+                        {uploadedPhoto && (
+                          <div className="flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Photo Loaded</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <input
+                        id={fileInputId}
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={handlePhotoUpload}
+                        className="hidden"
+                      />
+
+                      {/* Dropzone */}
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        className="border-2 border-dashed border-[#C9A669]/70 hover:border-[#9C7B3D] bg-[#FDFBF7] hover:bg-[#FAF6EE] rounded-2xl p-6 text-center cursor-pointer transition-all space-y-2 group"
+                      >
+                        <div className="w-12 h-12 rounded-2xl bg-[#EFE9DD] group-hover:bg-[#E5DEC7] text-[#9C7B3D] mx-auto flex items-center justify-center transition-colors shadow-sm">
+                          <Upload className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-display font-bold text-sm text-[#1C1B19]">
+                            {uploadedPhoto ? "Change / Upload Different Photograph" : "Click or Drag to Upload Portrait"}
+                          </h3>
+                          <p className="text-xs text-[#6F6A62] mt-0.5">
+                            Supports JPG, JPEG, PNG, WebP up to 25MB (Auto-fitted for live preview)
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          className="px-4 py-1.5 bg-[#1C1B19] text-[#F8F6F2] rounded-xl text-xs font-semibold hover:bg-[#322F2A] transition-colors inline-block"
+                        >
+                          Browse Image
+                        </button>
+                      </div>
+
+                      {photoError && (
+                        <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200 flex items-center gap-2">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
+                          <span>{photoError}</span>
+                        </div>
+                      )}
+
+                      {uploadedPhoto && (
+                        <div className="p-3 bg-[#F8F6F2] rounded-xl border border-[#E7E0D2] flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <ImageIcon className="w-4 h-4 text-[#C9A669] shrink-0" />
+                            <div className="min-w-0">
+                              <div className="text-xs font-bold text-[#1C1B19] truncate">
+                                {photoFileName || "Uploaded Photograph"}
+                              </div>
+                              <div className="text-[10px] text-[#6F6A62]">Ready for framing &bull; Drag to pan in preview</div>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="text-xs font-semibold text-[#8C6D32] hover:underline shrink-0"
+                          >
+                            Replace
+                          </button>
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-2 text-[11px] text-[#6F6A62] bg-[#FAF8F5] p-2.5 rounded-xl border border-[#E7E0D2]">
+                        <ShieldCheck className="w-4 h-4 text-[#C9A669] shrink-0" />
+                        <span>Client-side protection active &bull; Original photograph is preserved untouched.</span>
+                      </div>
+                    </div>
+
+                    {/* SECTION 05: FINE ADJUST & CROP PHOTOGRAPH */}
+                    <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-4">
+                      <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-6 h-6 rounded-full bg-[#1C1B19] text-[#F8F6F2] text-xs font-bold flex items-center justify-center">
+                            05
+                          </span>
+                          <h2 className="text-base sm:text-lg font-display font-bold text-[#1C1B19]">
+                            Fine Adjust &amp; Crop Photograph
+                          </h2>
+                        </div>
+                        {uploadedPhoto ? (
+                          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF8F5] text-[#8C6D32] border border-[#E7E0D2]">
+                            Zoom {Math.round(photoZoom * 100)}% &bull; {photoRotation}&deg;
+                          </span>
+                        ) : (
+                          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#F4EFE6] text-[#9E988E] border border-[#E7E0D2]">
+                            Photo Required
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-xs text-[#6F6A62]">
+                        Pan, zoom, or rotate your photo. You can also click and drag directly inside the live preview on the right.
+                      </p>
+
+                      {!uploadedPhoto && (
+                        <div className="p-3.5 bg-[#FAF8F5] text-[#8C6D32] rounded-2xl border border-[#E7E0D2] flex items-center gap-3 text-xs">
+                          <div className="w-8 h-8 rounded-xl bg-[#EFE9DD] flex items-center justify-center text-[#8C6D32] shrink-0">
+                            <AlertCircle className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="font-bold text-[#1C1B19]">
+                              Upload a photo to enable adjustment controls
+                            </div>
+                            <div className="text-[11px] text-[#6F6A62]">
+                              Once a portrait is uploaded in Section 04 above, zoom, rotation, and button-based nudging will unlock immediately.
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      <PhotoAdjusterControls
+                        zoom={photoZoom}
+                        pan={photoPan}
+                        rotation={photoRotation}
+                        fitMode={photoFitMode}
+                        disabled={!uploadedPhoto}
+                        onZoomChange={setPhotoZoom}
+                        onPanChange={setPhotoPan}
+                        onRotationChange={setPhotoRotation}
+                        onFitModeChange={setPhotoFitMode}
+                        onReset={handleResetPhotoAdjustments}
+                      />
+                    </div>
+
+
+
                     {/* SECTION 06: QUANTITY & ADD TO CART */}
                     <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#E7E0D2] shadow-sm space-y-6">
                       <div className="flex items-center justify-between border-b border-[#E7E0D2] pb-3">
@@ -1221,6 +1223,10 @@ export default function OrderFrames() {
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                           <div className="flex items-center gap-1.5 text-[#1C1B19]">
+                            <CheckCircle2 className={`w-4 h-4 ${selectedRatio ? "text-emerald-600" : "text-gray-300"}`} />
+                            <span>Ratio &amp; Size</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-[#1C1B19]">
                             <CheckCircle2 className={`w-4 h-4 ${selectedWood ? "text-emerald-600" : "text-gray-300"}`} />
                             <span>Wood Selected</span>
                           </div>
@@ -1231,10 +1237,6 @@ export default function OrderFrames() {
                           <div className="flex items-center gap-1.5 text-[#1C1B19]">
                             <CheckCircle2 className={`w-4 h-4 ${uploadedPhoto ? "text-emerald-600" : "text-gray-300"}`} />
                             <span>Photo Uploaded</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 text-[#1C1B19]">
-                            <CheckCircle2 className={`w-4 h-4 ${selectedRatio ? "text-emerald-600" : "text-gray-300"}`} />
-                            <span>Ratio &amp; Size</span>
                           </div>
                         </div>
                       </div>

@@ -83,7 +83,7 @@ export default function Portfolio() {
 
 
   return (
-    <main className="bg-[#F8F6F1] min-h-screen">
+    <main className="bg-transparent min-h-screen">
 
 
       {/* ========================================
