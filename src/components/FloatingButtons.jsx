@@ -5,16 +5,16 @@ export default function FloatingButtons() {
   return (
     <div
       data-no-print="true"
-      className="fixed bottom-7 right-6 lg:bottom-9 lg:right-9 z-40 flex flex-col gap-4 no-print print:hidden"
+      className="fixed bottom-10 right-6 lg:bottom-14 lg:right-8 xl:right-10 z-30 flex flex-col gap-3.5 no-print print:hidden"
     >
       <motion.a
         href="https://www.instagram.com/subash_studio/"
         target="_blank"
         rel="noreferrer"
         aria-label="Instagram"
-        animate={{ y: [0, -8, 0] }}
+        animate={{ y: [0, -6, 0] }}
         transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-        className="w-12 h-12 rounded-full bg-card shadow-soft border border-line flex items-center justify-center text-ink/70 hover:text-gold-dark hover:border-gold transition-colors"
+        className="w-12 h-12 rounded-full bg-white shadow-[0_6px_20px_rgba(0,0,0,0.12)] border border-[#E7E0D2] flex items-center justify-center text-[#1C1B19] hover:text-[#B38F4D] hover:border-[#B38F4D] transition-all duration-300"
       >
         <FaInstagram size={19} />
       </motion.a>
@@ -23,9 +23,9 @@ export default function FloatingButtons() {
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
-        animate={{ y: [0, -8, 0] }}
+        animate={{ y: [0, -6, 0] }}
         transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-        className="w-12 h-12 rounded-full bg-[#25D366] shadow-soft flex items-center justify-center text-white hover:brightness-95 transition"
+        className="w-12 h-12 rounded-full bg-[#25D366] shadow-[0_6px_20px_rgba(37,211,102,0.35)] flex items-center justify-center text-white hover:brightness-105 transition-all duration-300"
       >
         <FaWhatsapp size={20} />
       </motion.a>

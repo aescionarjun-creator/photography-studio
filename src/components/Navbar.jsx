@@ -90,7 +90,7 @@ export default function Navbar() {
                 </div>
               </Link>
 
-              <nav className="hidden lg:flex items-center gap-9">
+              <nav className="hidden lg:flex items-center gap-5 xl:gap-7 2xl:gap-8">
                 {NAV_LINKS.map((l) => {
                   if (l.hasDropdown) {
                     return (
@@ -189,9 +189,10 @@ export default function Navbar() {
                     <NavLink
                       key={l.to}
                       to={l.to}
+                      end={l.to === "/"}
                       className={({ isActive }) =>
                         `text-[13px] tracking-[0.08em] uppercase font-medium transition-colors duration-300 relative py-1 ${
-                          isActive ? "text-gold-dark" : "text-ink/70 hover:text-ink"
+                          isActive ? "text-[#B38F4D] font-bold" : "text-[#1C1B19]/75 hover:text-[#1C1B19]"
                         }`
                       }
                     >
@@ -201,7 +202,7 @@ export default function Navbar() {
                           {isActive && (
                             <motion.span
                               layoutId="nav-underline"
-                              className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-gold"
+                              className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-[#B38F4D]"
                             />
                           )}
                         </>
@@ -214,9 +215,9 @@ export default function Navbar() {
               <div className="hidden lg:flex items-center gap-5">
                 <Link
                   to="/contact"
-                  className="px-6 py-2.5 bg-[#1C1B19] text-[#F8F6F2] hover:bg-[#322F2A] text-[12px] tracking-[0.14em] uppercase font-bold rounded-full transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95"
+                  className="w-[160px] h-[45px] flex items-center justify-center bg-[#1C1B19] text-[#F8F6F2] hover:bg-black text-[12px] tracking-[0.14em] uppercase font-bold rounded-full transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95"
                 >
-                  Book a Shoot
+                  BOOK A SHOOT
                 </Link>
               </div>
 
@@ -321,8 +322,8 @@ export default function Navbar() {
                 <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="text-ink/60"><FaWhatsapp size={20} /></a>
                 <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-ink/60"><FaInstagram size={20} /></a>
               </div>
-              <Link to="/contact" onClick={() => setMenuOpen(false)} className="mt-2 px-5 py-3 bg-ink text-bg-soft text-center text-[12px] tracking-[0.12em] uppercase font-semibold rounded-full">
-                Book a Shoot
+              <Link to="/contact" onClick={() => setMenuOpen(false)} className="mt-2 px-5 py-3 bg-ink text-bg-soft text-center text-[12px] tracking-[0.14em] uppercase font-bold rounded-full">
+                BOOK A SHOOT
               </Link>
             </div>
           </motion.div>

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowRight, ArrowDown, Play } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import * as ReactCountUp from "react-countup";
 const CountUp = ReactCountUp.default?.default || ReactCountUp.default;
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
 import WhyChooseUs from "../components/WhyChooseUs";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
+import HomeHero from "../components/home/HomeHero";
 
 const stats = [
   { end: 12, suffix: "+", label: "Years Behind the Lens" },
@@ -50,107 +50,24 @@ const selectedWorkItems = [
 
 export default function Home() {
   return (
-    <>
+    <div className="relative pt-[84px]">
       <Seo
         title="Home | Fine Photography & Cinematic Films"
         description="SUBASH STUDIO — Fine photography and cinematic films preserving timeless heritage, profound emotions, and authentic human celebrations."
       />
 
       {/* =========================================================
-          SECTION 2: HERO SECTION (Balanced Editorial 2-Column)
+          HERO SECTION (Luxury Editorial & Heritage Reference Design)
       ========================================================= */}
-      <section className="relative w-full overflow-hidden pt-[96px] pb-16 lg:pb-24 border-b border-[#E7E0D2]/70 bg-transparent">
-
-        <div className="relative z-10 max-w-7xl xl:max-w-[1360px] mx-auto px-6 sm:px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] items-center gap-10 lg:gap-12 xl:gap-14">
-          {/* Left Column: Editorial Headline & Actions */}
-          <div className="flex flex-col justify-center max-w-xl lg:max-w-none lg:pl-2 xl:pl-4">
-            {/* Eyebrow */}
-            <p className="text-[11px] sm:text-xs tracking-[0.28em] font-semibold text-[#B38F4D] uppercase mb-4">
-              FINE PHOTOGRAPHY &amp; CINEMATIC FILMS
-            </p>
-
-            {/* Main Headline */}
-            <h1 className="font-display font-semibold leading-[0.98] tracking-tight">
-              <span className="block text-5xl sm:text-6xl lg:text-[76px] text-[#1C1B19] font-bold">
-                Subash
-              </span>
-              <span className="block text-5xl sm:text-6xl lg:text-[76px] text-[#B38F4D] font-normal italic mt-1">
-                Photography
-              </span>
-            </h1>
-
-            {/* Delicate Gold Star Ornament Divider */}
-            <div className="flex items-center gap-3 my-6 origin-left">
-              <span className="h-px w-10 bg-[#B38F4D]/50" />
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 14 14"
-                className="text-[#B38F4D] shrink-0"
-                aria-hidden="true"
-              >
-                <path d="M7 0 L9 7 L7 14 L5 7 Z" fill="currentColor" />
-              </svg>
-              <span className="h-px w-10 bg-[#B38F4D]/50" />
-            </div>
-
-            {/* Supporting Copy */}
-            <p className="text-[#6F6A62] text-[15px] sm:text-base leading-relaxed max-w-lg">
-              Preserving timeless heritage, profound emotions, and authentic human celebrations across generations.
-            </p>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 mt-8">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#B38F4D] hover:bg-[#9C7B3D] text-white rounded-full text-xs font-bold tracking-wider uppercase transition-all shadow-md active:scale-95"
-              >
-                <span>BOOK A SHOOT</span>
-                <ArrowRight size={14} />
-              </Link>
-              <Link
-                to="/portfolio"
-                className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-[#B38F4D]/70 text-[#1C1B19] hover:bg-[#1C1B19] hover:border-[#1C1B19] hover:text-[#F8F6F2] rounded-full text-xs font-bold tracking-wider uppercase transition-all active:scale-95"
-              >
-                <span>EXPLORE OUR WORK</span>
-                <ArrowRight size={14} />
-              </Link>
-            </div>
-
-            {/* Centered SCROLL DOWN Indicator */}
-            <div className="flex flex-col items-center gap-2 mt-12 sm:mt-14 select-none self-center lg:self-start lg:ml-16">
-              <span className="text-[10px] tracking-[0.26em] uppercase font-medium text-[#8C8275]">
-                SCROLL DOWN
-              </span>
-              <motion.div
-                animate={{ y: [0, 5, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                className="w-8 h-8 rounded-full border border-[#B38F4D]/50 flex items-center justify-center text-[#B38F4D]"
-              >
-                <ArrowDown size={13} />
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Right Column: Hero Storefront Photograph */}
-          <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-[530px] xl:max-w-[560px] mx-auto lg:mr-0">
-            <div className="relative p-2.5 sm:p-3 rounded-3xl bg-white/70 backdrop-blur-sm border border-[#E7E0D2]/90 shadow-[0_25px_60px_-15px_rgba(28,27,25,0.18)]">
-              <div className="relative rounded-2xl overflow-hidden aspect-[4/5] sm:aspect-[4/5] lg:h-[590px] xl:h-[620px] w-full bg-[#FAF8F5]">
-                <img
-                  src="/images/storefront.jpg"
-                  alt="SUBASH STUDIO flagship storefront elevation"
-                  className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
 
       {/* =========================================================
-          SECTION 3: STATS SECTION (Clean Horizontal Strip)
+          SECTION 2: STATS SECTION (Clean Horizontal Strip)
       ========================================================= */}
-      <section className="bg-transparent border-b border-[#E7E0D2]/70 py-10 sm:py-12">
+      <section
+        id="home-stats-section"
+        className="bg-transparent border-b border-[#E7E0D2]/70 py-10 sm:py-12 scroll-mt-20"
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E7E0D2]/80">
           {stats.map((s, i) => (
             <div
@@ -362,6 +279,6 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
-    </>
+    </div>
   );
 }
