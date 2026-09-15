@@ -52,28 +52,28 @@ export function formatRupee(amount) {
  * Formula:
  * FINAL PRICE = Wood Base Price + Design Additional Price + Ratio/Size Price
  * 
- * @param {Object} params
+ * @param {Object} [params]
  * @param {WoodOption | null} [params.wood]
  * @param {DesignOption | null} [params.design]
  * @param {RatioOption | null} [params.ratio]
+ * @param {number | string} [params.quantity]
  * @returns {{
  *   woodPrice: number,
  *   designPrice: number,
  *   ratioPrice: number,
- *   totalAmount: number,
- *   formattedWoodPrice: string,
- *   formattedDesignPrice: string,
- *   formattedRatioPrice: string,
  *   unitPrice: number,
  *   formattedUnitPrice: string,
  *   quantity: number,
  *   subtotal: number,
  *   formattedSubtotal: string,
  *   totalAmount: number,
+ *   formattedWoodPrice: string,
+ *   formattedDesignPrice: string,
+ *   formattedRatioPrice: string,
  *   formattedTotal: string
  * }}
  */
-export function calculateFramePrice({ wood, design, ratio, quantity = 1 }) {
+export function calculateFramePrice({ wood = null, design = null, ratio = null, quantity = 1 } = {}) {
   const woodPrice = wood ? parsePrice(wood.price || wood.basePrice) : 0;
   const designPrice = design ? parsePrice(design.additionalPrice || design.price) : 0;
   const ratioPrice = ratio ? parsePrice(ratio.price) : 0;
