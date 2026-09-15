@@ -64,11 +64,11 @@ export default function Navbar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
             transition={{ duration: 0.55, ease: [0.65, 0, 0.35, 1] }}
-            className={`fixed top-0 left-0 right-0 z-50 bg-bg-soft/95 backdrop-blur-md border-b transition-shadow duration-300 ${
-              scrolled ? "border-line shadow-card" : "border-transparent"
+            className={`fixed top-0 left-0 right-0 z-50 bg-[#FAF7F2]/95 backdrop-blur-md border-b transition-shadow duration-300 ${
+              scrolled ? "border-line/70 shadow-sm" : "border-transparent"
             }`}
           >
-            <div className="w-full px-3 sm:px-6 lg:px-8 h-[84px] flex items-center justify-between">
+            <div className="w-full px-4 sm:px-6 lg:px-10 h-[84px] flex items-center justify-between">
               <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
                 <img
                   src="/logo.png"
@@ -214,7 +214,7 @@ export default function Navbar() {
               <div className="hidden lg:flex items-center gap-5">
                 <Link
                   to="/contact"
-                  className="px-5 py-2.5 bg-ink text-bg-soft text-[12px] tracking-[0.12em] uppercase font-semibold rounded-full hover:bg-gold-dark transition-colors duration-300 shadow-card"
+                  className="px-6 py-2.5 bg-[#1C1B19] text-[#F8F6F2] hover:bg-[#322F2A] text-[12px] tracking-[0.14em] uppercase font-bold rounded-full transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95"
                 >
                   Book a Shoot
                 </Link>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Star, ExternalLink } from "lucide-react";
 import Reveal from "./Reveal";
@@ -40,13 +41,13 @@ function TestimonialCard({ card }) {
   const isGoogle = card.source === "google";
 
   return (
-    <div className="bg-card rounded-xl p-7 sm:p-8 shadow-card border border-line/70 flex flex-col justify-between h-full relative group hover:shadow-soft hover:border-gold/50 transition-all duration-500">
-      {/* Top section: Stars & Badges */}
-      <div className="space-y-4">
+    <div className="bg-white rounded-2xl p-7 sm:p-8 border border-[#EAE4D7] shadow-sm hover:shadow-md hover:border-[#B38F4D]/50 transition-all duration-300 flex flex-col justify-between h-full group">
+      {/* Top section: Stars & Category Pill */}
+      <div>
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          {/* Star Rating */}
+          {/* 5 Star Rating */}
           <div
-            className="flex items-center gap-1 text-gold"
+            className="flex items-center gap-1 text-[#B38F4D]"
             aria-label={`${card.rating} out of 5 stars`}
           >
             {[1, 2, 3, 4, 5].map((star) => (
@@ -55,8 +56,8 @@ function TestimonialCard({ card }) {
                 size={16}
                 className={
                   star <= card.rating
-                    ? "fill-gold text-gold"
-                    : "text-line fill-transparent"
+                    ? "fill-[#B38F4D] text-[#B38F4D]"
+                    : "text-[#D8D0C2] fill-transparent"
                 }
                 strokeWidth={1.5}
               />
@@ -64,62 +65,57 @@ function TestimonialCard({ card }) {
           </div>
 
           <div className="flex items-center gap-1.5 flex-wrap">
-            {/* Google Review Badge */}
-            {isGoogle && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase border border-line bg-[#F8F6F2] text-ink-soft">
+            {isGoogle ? (
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border border-[#E7E0D2] bg-[#FAF8F5] text-[#6F6A62]">
                 <GoogleGIcon className="w-2.5 h-2.5" />
                 Google
               </span>
-            )}
-
-            {/* Optional Featured Badge */}
-            {card.featured && (
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-widest uppercase border border-gold/40 bg-gold/10 text-gold-dark">
-                Featured
+            ) : (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border border-[#E7E0D2] bg-[#FAF8F5] text-[#8C6D32]">
+                {card.service || "Featured"}
               </span>
             )}
           </div>
         </div>
 
         {/* Testimonial Quote */}
-        <p className="font-serif italic text-ink/90 text-[15px] sm:text-[16px] leading-relaxed break-words">
+        <p className="font-serif italic text-[#1C1B19] text-[15px] sm:text-base leading-relaxed break-words mt-4">
           &ldquo;{card.review}&rdquo;
         </p>
       </div>
 
       {/* Bottom section: Divider & Client Info */}
-      <div className="mt-6">
-        <div className="hairline mb-5" />
+      <div className="mt-6 pt-5 border-t border-[#E7E0D2]/70">
         <div className="flex items-center justify-between gap-3 min-w-0">
           <div className="flex items-center gap-3.5 min-w-0">
-            {/* Avatar / Fallback */}
+            {/* Avatar */}
             {hasImage ? (
               <img
                 src={card.image}
                 alt={card.name}
                 onError={() => setImageError(true)}
-                className="w-12 h-12 rounded-full object-cover border border-gold/30 shrink-0 shadow-sm"
+                className="w-12 h-12 rounded-full object-cover border border-[#B38F4D]/40 shrink-0 shadow-sm"
                 loading="lazy"
               />
             ) : (
               <div
-                className="w-12 h-12 rounded-full bg-gradient-to-br from-gold/20 via-gold-light/30 to-gold/10 border border-gold/30 flex items-center justify-center text-gold-dark font-display font-semibold text-sm shrink-0 shadow-sm"
+                className="w-12 h-12 rounded-full bg-[#FAF0DE] border border-[#B38F4D]/30 flex items-center justify-center text-[#B38F4D] font-display font-bold text-sm shrink-0 shadow-sm"
                 aria-hidden="true"
               >
                 {getInitials(card.name)}
               </div>
             )}
 
-            {/* Name, Category/Role & Date */}
+            {/* Name, Category & Date */}
             <div className="min-w-0 flex-1">
-              <h4 className="font-display font-semibold text-ink text-[15px] sm:text-base leading-snug truncate">
+              <h4 className="font-display font-bold text-[#1C1B19] text-[15px] sm:text-base leading-snug truncate">
                 {card.name}
               </h4>
-              <p className="text-xs text-ink-soft tracking-wider uppercase mt-0.5 truncate">
+              <p className="text-[11px] text-[#8C6D32] tracking-wider uppercase font-semibold mt-0.5 truncate">
                 {card.service}
               </p>
               {card.date && (
-                <p className="text-[11px] text-ink-soft/70 mt-0.5 truncate">
+                <p className="text-[10px] text-[#6F6A62] mt-0.5 truncate">
                   {card.date}
                 </p>
               )}
@@ -132,7 +128,7 @@ function TestimonialCard({ card }) {
               href={card.googleReviewUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full text-ink-soft/60 hover:text-[#1A73E8] hover:bg-gold/10 transition-colors shrink-0"
+              className="p-2 rounded-full text-[#6F6A62] hover:text-[#1A73E8] hover:bg-[#FAF0DE] transition-colors shrink-0"
               title="Verified Google Review"
               aria-label="View verified review on Google"
             >
@@ -319,61 +315,42 @@ export default function TestimonialsCarousel() {
   return (
     <section
       id="testimonials"
-      className="relative py-24 sm:py-28 bg-[#F8F6F2] overflow-hidden border-t border-line/60"
+      className="relative py-20 sm:py-24 bg-transparent overflow-hidden border-b border-[#E7E0D2]/70"
       aria-label="Client Testimonials"
     >
-      {/* Subtle decorative background glow & lines */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gold/5 rounded-full blur-3xl" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
-      </div>
-
       <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-        {/* Section Header with Home page scroll-triggered reveal animations */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
-          <Reveal>
-            <p className="eyebrow mb-3">KIND WORDS</p>
-          </Reveal>
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 sm:mb-14">
+          <div className="max-w-2xl">
+            <Reveal>
+              <p className="text-xs tracking-[0.25em] font-semibold text-[#B38F4D] uppercase mb-2">
+                WHAT OUR CLIENTS SAY
+              </p>
+            </Reveal>
 
-          <Reveal delay={0.08}>
-            <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl text-ink leading-[1.1] text-balance">
-              What Our Clients Say
-            </h2>
-          </Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-[42px] text-[#1C1B19] leading-tight">
+                Kind Words &amp; Keepsakes
+              </h2>
+            </Reveal>
 
-          <Reveal delay={0.16}>
-            <p className="mt-4 text-[15px] sm:text-base text-ink-soft leading-relaxed">
-              Real stories. Genuine emotions. Lasting relationships.
-            </p>
-          </Reveal>
+            <Reveal delay={0.16}>
+              <p className="mt-2 text-sm text-[#6F6A62] leading-relaxed">
+                Real stories. Genuine emotions. Lasting relationships.
+              </p>
+            </Reveal>
+          </div>
 
-          {/* Diamond Ornament: ─── ◇ ─── */}
-          <Reveal delay={0.24}>
-            <div
-              className="flex items-center justify-center gap-3 my-6 text-gold"
-              aria-hidden="true"
+          <Reveal delay={0.2} className="self-start md:self-end">
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2 text-xs sm:text-[13px] font-bold tracking-[0.14em] uppercase text-[#1C1B19] hover:text-[#B38F4D] transition-colors whitespace-nowrap"
             >
-              <span className="h-px w-12 sm:w-16 bg-gold/40" />
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                className="rotate-45 shrink-0 text-gold"
-                fill="currentColor"
-              >
-                <rect
-                  x="2"
-                  y="2"
-                  width="8"
-                  height="8"
-                  rx="1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-              </svg>
-              <span className="h-px w-12 sm:w-16 bg-gold/40" />
-            </div>
+              <span>VIEW ALL REVIEWS</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
           </Reveal>
         </div>
 

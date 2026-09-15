@@ -18,7 +18,7 @@ export default function Services() {
     slug: s.slug || s.id || s.name,
   }));
   return (
-    <main className="min-h-screen bg-[#F8F6F1]">
+    <main className="min-h-screen bg-transparent">
 
       {/* ========================================
           SERVICES INTRO SECTION

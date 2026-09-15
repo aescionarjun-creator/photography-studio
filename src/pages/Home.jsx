@@ -1,285 +1,363 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight, ArrowDown, Play } from "lucide-react";
 import * as ReactCountUp from "react-countup";
 const CountUp = ReactCountUp.default?.default || ReactCountUp.default;
 import Seo from "../components/Seo";
 import Reveal from "../components/Reveal";
-import SectionHeading from "../components/SectionHeading";
-import FloralCorners from "../components/FloralCorners";
 import WhyChooseUs from "../components/WhyChooseUs";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
-import { portfolioProjects as defaultPortfolio } from "../data/portfolio";
-import { useAdminData } from "../admin/context/AdminDataContext";
 
-const defaultStats = [
+const stats = [
   { end: 12, suffix: "+", label: "Years Behind the Lens" },
-  { end: 1400, suffix: "+", label: "Weddings Documented" },
-  { end: 2, suffix: "", label: "Studio Branches" },
-  { end: 98, suffix: "%", label: "Clients Who Refer Us" },
+  { end: 1002, suffix: "+", label: "Happy Clients" },
+  { end: 3, suffix: "", label: "Studio Branches" },
+  { end: 94, suffix: "%", label: "Client Satisfaction" },
+];
+
+const selectedWorkItems = [
+  {
+    title: "Forever Begins",
+    category: "WEDDING",
+    image: "/images/portfolio/wedding-01.jpg",
+  },
+  {
+    title: "A Beautiful Beginning",
+    category: "WEDDING",
+    image: "/images/portfolio/wedding-02.jpg",
+  },
+  {
+    title: "The Wedding Story",
+    category: "WEDDING",
+    image: "/images/portfolio/wedding-03.jpg",
+  },
+  {
+    title: "Two Hearts",
+    category: "COUPLE",
+    image: "/images/portfolio/couple-01.jpg",
+  },
+  {
+    title: "Together",
+    category: "FAMILY",
+    image: "/images/portfolio/couple-02.jpg",
+  },
+  {
+    title: "Little Moments",
+    category: "BABY",
+    image: "/images/portfolio/baby-01.jpg",
+  },
 ];
 
 export default function Home() {
-  const { websiteContent, portfolio: adminPortfolio } = useAdminData();
-
-  const homeData = websiteContent?.home || {};
-  const heroEyebrow = homeData.heroHeading || "Fine Photography & Cinematic Films";
-  const heroSub = homeData.heroTagline || "Preserving timeless heritage, profound emotions, and authentic human celebrations across generations.";
-
-  const displayPortfolio = (adminPortfolio && adminPortfolio.length > 0
-    ? adminPortfolio.filter((p) => p.published !== false)
-    : defaultPortfolio
-  ).map((p) => ({
-    ...p,
-    title: p.title || p.client || "Portfolio",
-    image: p.coverImage || p.image || p.imageUrl || "/images/wedding photos.jpg",
-  }));
   return (
     <>
-      <Seo title="Home" description="SUBASH STUDIO — a premium photography and cinematography house crafting timeless wedding, portrait and editorial imagery across three branches." />
+      <Seo
+        title="Home | Fine Photography & Cinematic Films"
+        description="SUBASH STUDIO — Fine photography and cinematic films preserving timeless heritage, profound emotions, and authentic human celebrations."
+      />
 
-      {/* HERO */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-br from-bg-soft via-bg to-bg-soft pt-[84px]">
-        <FloralCorners />
+      {/* =========================================================
+          SECTION 2: HERO SECTION (Balanced Editorial 2-Column)
+      ========================================================= */}
+      <section className="relative w-full overflow-hidden pt-[96px] pb-16 lg:pb-24 border-b border-[#E7E0D2]/70 bg-transparent">
 
-        <div className="relative max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_1fr] items-center">
-          {/* Left — copy */}
-          <div className="relative z-10 flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-16 lg:py-12">
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="eyebrow mb-6"
-            >
-              {heroEyebrow}
-            </motion.p>
+        <div className="relative z-10 max-w-7xl xl:max-w-[1360px] mx-auto px-6 sm:px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] items-center gap-10 lg:gap-12 xl:gap-14">
+          {/* Left Column: Editorial Headline & Actions */}
+          <div className="flex flex-col justify-center max-w-xl lg:max-w-none lg:pl-2 xl:pl-4">
+            {/* Eyebrow */}
+            <p className="text-[11px] sm:text-xs tracking-[0.28em] font-semibold text-[#B38F4D] uppercase mb-4">
+              FINE PHOTOGRAPHY &amp; CINEMATIC FILMS
+            </p>
 
-            <h1 className="font-display font-semibold leading-[0.95] tracking-tight">
-              <motion.span
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35, duration: 0.9 }}
-                className="block text-6xl sm:text-7xl lg:text-[5.5rem] text-ink"
-              >
+            {/* Main Headline */}
+            <h1 className="font-display font-semibold leading-[0.98] tracking-tight">
+              <span className="block text-5xl sm:text-6xl lg:text-[76px] text-[#1C1B19] font-bold">
                 Subash
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.9 }}
-                className="block text-6xl sm:text-7xl lg:text-[5.5rem] text-gold-dark"
-              >
+              </span>
+              <span className="block text-5xl sm:text-6xl lg:text-[76px] text-[#B38F4D] font-normal italic mt-1">
                 Photography
-              </motion.span>
+              </span>
             </h1>
 
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-              className="flex items-center gap-3 my-7 origin-left"
-            >
-              <span className="h-px w-14 bg-gold/60" />
-              <svg width="14" height="14" viewBox="0 0 14 14" className="text-gold shrink-0">
+            {/* Delicate Gold Star Ornament Divider */}
+            <div className="flex items-center gap-3 my-6 origin-left">
+              <span className="h-px w-10 bg-[#B38F4D]/50" />
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 14 14"
+                className="text-[#B38F4D] shrink-0"
+                aria-hidden="true"
+              >
                 <path d="M7 0 L9 7 L7 14 L5 7 Z" fill="currentColor" />
               </svg>
-              <span className="h-px w-14 bg-gold/60" />
-            </motion.div>
+              <span className="h-px w-10 bg-[#B38F4D]/50" />
+            </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="max-w-sm text-ink-soft text-[15px] leading-relaxed"
-            >
-              {heroSub}
-            </motion.p>
+            {/* Supporting Copy */}
+            <p className="text-[#6F6A62] text-[15px] sm:text-base leading-relaxed max-w-lg">
+              Preserving timeless heritage, profound emotions, and authentic human celebrations across generations.
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.95, duration: 0.8 }}
-              className="flex flex-wrap items-center gap-4 mt-9"
-            >
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-4 mt-8">
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-ink text-[13px] font-semibold tracking-[0.1em] uppercase rounded-full shadow-soft hover:bg-gold-dark hover:text-bg-soft transition-colors duration-300"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#B38F4D] hover:bg-[#9C7B3D] text-white rounded-full text-xs font-bold tracking-wider uppercase transition-all shadow-md active:scale-95"
               >
-                Book a Shoot
-                <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+                <span>BOOK A SHOOT</span>
+                <ArrowRight size={14} />
               </Link>
               <Link
-                to="/gallery"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 border border-gold/70 text-ink text-[13px] font-semibold tracking-[0.1em] uppercase rounded-full hover:bg-ink hover:border-ink hover:text-bg-soft transition-colors duration-300"
+                to="/portfolio"
+                className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-[#B38F4D]/70 text-[#1C1B19] hover:bg-[#1C1B19] hover:border-[#1C1B19] hover:text-[#F8F6F2] rounded-full text-xs font-bold tracking-wider uppercase transition-all active:scale-95"
               >
-                Explore Photography
-                <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+                <span>EXPLORE OUR WORK</span>
+                <ArrowRight size={14} />
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.3, duration: 0.8 }}
-              className="hidden sm:flex flex-col items-center gap-3 mt-16"
-              style={{ alignSelf: "flex-start" }}
-            >
-              <span className="text-ink-soft/70 text-[10px] tracking-[0.32em] uppercase">Scroll Down</span>
+            {/* Centered SCROLL DOWN Indicator */}
+            <div className="flex flex-col items-center gap-2 mt-12 sm:mt-14 select-none self-center lg:self-start lg:ml-16">
+              <span className="text-[10px] tracking-[0.26em] uppercase font-medium text-[#8C8275]">
+                SCROLL DOWN
+              </span>
               <motion.div
-                animate={{ y: [0, 6, 0] }}
+                animate={{ y: [0, 5, 0] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                className="w-9 h-9 rounded-full border border-gold/70 flex items-center justify-center text-gold-dark"
+                className="w-8 h-8 rounded-full border border-[#B38F4D]/50 flex items-center justify-center text-[#B38F4D]"
               >
-                <ArrowDown size={14} />
+                <ArrowDown size={13} />
               </motion.div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* Right — image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
-            className="relative w-full aspect-square overflow-hidden"
-            style={{ aspectRatio: "1 / 1" }}
-          >
-            <img
-              src="/images/storefront.jpg"
-              alt="SUBASH STUDIO storefront"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-bg-soft/30 lg:to-bg-soft/0 pointer-events-none" />
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg-soft to-transparent hidden lg:block pointer-events-none" />
-          </motion.div>
+          {/* Right Column: Hero Storefront Photograph */}
+          <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-[530px] xl:max-w-[560px] mx-auto lg:mr-0">
+            <div className="relative p-2.5 sm:p-3 rounded-3xl bg-white/70 backdrop-blur-sm border border-[#E7E0D2]/90 shadow-[0_25px_60px_-15px_rgba(28,27,25,0.18)]">
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/5] sm:aspect-[4/5] lg:h-[590px] xl:h-[620px] w-full bg-[#FAF8F5]">
+                <img
+                  src="/images/storefront.jpg"
+                  alt="SUBASH STUDIO flagship storefront elevation"
+                  className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="bg-bg-soft border-y border-line">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
-          {defaultStats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.08} className="text-center">
-              <p className="font-display text-4xl md:text-5xl text-gold-dark">
+      {/* =========================================================
+          SECTION 3: STATS SECTION (Clean Horizontal Strip)
+      ========================================================= */}
+      <section className="bg-transparent border-b border-[#E7E0D2]/70 py-10 sm:py-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E7E0D2]/80">
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              className={`text-center py-4 sm:py-0 px-4 ${
+                i === 1 ? "border-r-0 lg:border-r border-[#E7E0D2]/80" : ""
+              }`}
+            >
+              <p className="font-display text-4xl sm:text-5xl lg:text-[50px] text-[#B38F4D] font-medium leading-none">
                 <CountUp end={s.end} duration={2.2} enableScrollSpy scrollSpyOnce />
                 {s.suffix}
               </p>
-              <p className="mt-2 text-xs tracking-[0.12em] uppercase text-ink-soft">{s.label}</p>
-            </Reveal>
+              <p className="mt-2.5 text-[11px] sm:text-xs tracking-[0.18em] uppercase font-semibold text-[#6F6A62]">
+                {s.label}
+              </p>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* WHY CHOOSE US */}
+      {/* =========================================================
+          SECTION 4: WHY CHOOSE US (4 Balanced Benefit Cards)
+      ========================================================= */}
       <WhyChooseUs />
 
-      {/* INTRO / ABOUT TEASER */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 py-28 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <Reveal className="relative">
-          <div className="relative rounded-md overflow-hidden shadow-soft aspect-[4/5]">
-            <img src="/images/shyam chandru.jpeg" alt="SUBASH STUDIO photographer at work" className="w-full h-full object-cover" />
-          </div>
-          <div className="hidden md:flex absolute -bottom-8 right-2 lg:-right-8 w-40 h-40 rounded-md overflow-hidden shadow-soft border-4 border-bg-soft">
-            <img src="/images/shyam chandru.jpeg" alt="Detail from a SUBASH STUDIO wedding shoot" className="w-full h-full object-cover" />
-          </div>
-        </Reveal>
-
-        <div>
-          <SectionHeading
-            eyebrow="Our Craft"
-            title="Photography that feels less like a service, more like a keepsake."
-            desc="For over a decade, SUBASH STUDIO has documented weddings, families and milestones across Tamil Nadu with an editorial eye and an unhurried hand. What began as a single studio in Mylapore has grown into three branches, one shared philosophy: light, honesty, and a story worth returning to."
-          />
-          <Reveal delay={0.24}>
-            <Link to="/about" className="inline-flex items-center gap-3 mt-8 text-sm font-semibold tracking-[0.08em] uppercase text-ink group">
-              Our Story
-              <span className="w-8 h-[1px] bg-gold group-hover:w-12 transition-all duration-300" />
-            </Link>
+      {/* =========================================================
+          SECTION 5: OUR CRAFT / FOUNDER STORY (Editorial Split)
+      ========================================================= */}
+      <section className="relative w-full bg-transparent border-b border-[#E7E0D2]/70 overflow-hidden py-24 sm:py-28">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center relative z-10">
+          {/* Left: Founder portrait with secondary overlapping B&W portrait */}
+          <Reveal className="relative max-w-md sm:max-w-lg mx-auto lg:max-w-none w-full">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-[#E7E0D2]/80 aspect-[4/5] bg-[#FAF8F5]">
+              <img
+                src="/images/shyam chandru.jpeg"
+                alt="Subash - Founder and Lead Photographer at SUBASH STUDIO"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            {/* Small overlapping secondary black-and-white portrait at bottom/right */}
+            <div className="hidden sm:flex absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-6 w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white z-10">
+              <img
+                src="/images/shyam chandru.jpeg"
+                alt="Subash at work behind the lens"
+                className="w-full h-full object-cover object-center grayscale contrast-125 hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
           </Reveal>
-        </div>
-      </section>
 
-      {/* CLIENT TESTIMONIALS CAROUSEL */}
-      <TestimonialsCarousel />
-
-      {/* PORTFOLIO PREVIEW */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 py-28">
-        {/* SECTION HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-          <SectionHeading
-            eyebrow="Selected Work"
-            title="Stories captured, moments preserved."
-            desc="A glimpse into the celebrations, emotions, and unforgettable moments captured by SUBASH STUDIO."
-          />
-
-          <Reveal delay={0.15}>
-            <Link
-              to="/portfolio"
-              className="group inline-flex items-center gap-3 text-sm font-semibold tracking-[0.08em] uppercase text-ink whitespace-nowrap"
-            >
-              Full Portfolio
-              <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">
-                →
+          {/* Right: Content, signature and video action */}
+          <div className="flex flex-col justify-center">
+            <Reveal>
+              <span className="text-xs tracking-[0.25em] font-semibold text-[#B38F4D] uppercase mb-3 block">
+                OUR CRAFT
               </span>
-            </Link>
-          </Reveal>
-        </div>
+            </Reveal>
 
-        {/* PORTFOLIO GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayPortfolio.slice(0, 6).map((item, idx) => (
-            <Reveal key={item.id || item.title || idx} delay={idx * 0.08}>
+            <Reveal delay={0.08}>
+              <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-[44px] leading-[1.18] text-[#1C1B19] tracking-tight">
+                Photography that feels less like a service, more like a keepsake.
+              </h2>
+            </Reveal>
+
+            <Reveal delay={0.16}>
+              <p className="mt-6 text-[#6F6A62] text-[15px] sm:text-base leading-relaxed">
+                At Subash Studio, we believe every photograph has a story — a feeling, a connection, a moment that deserves to live forever. What began as a simple studio has grown into a trusted name, known for its authenticity, artistic vision, and heartfelt approach.
+              </p>
+              <p className="mt-4 text-[#6F6A62] text-[15px] sm:text-base leading-relaxed">
+                From family portraits to grand weddings, from traditional ceremonies to cinematic films, we capture life as it truly is — beautiful, emotional, and real.
+              </p>
+            </Reveal>
+
+            {/* Signature & Play Button Row */}
+            <Reveal
+              delay={0.24}
+              className="mt-10 pt-8 border-t border-[#E7E0D2]/80 flex flex-wrap items-center justify-between gap-6"
+            >
+              {/* Left: Signature style text */}
+              <div>
+                <p className="font-display italic text-3xl text-[#B38F4D] font-normal select-none -rotate-2 mb-1">
+                  Subash
+                </p>
+                <p className="text-xs font-bold tracking-[0.22em] text-[#1C1B19] uppercase">
+                  SUBASH
+                </p>
+                <p className="text-[10px] tracking-[0.2em] text-[#6F6A62] uppercase font-semibold mt-0.5">
+                  FOUNDER &amp; LEAD PHOTOGRAPHER
+                </p>
+              </div>
+
+              {/* Right: Circular play button & WATCH OUR STORY */}
               <Link
-                to="/portfolio"
-                className="group relative block overflow-hidden rounded-md shadow-card aspect-[4/5]"
+                to="/films"
+                className="group flex items-center gap-3.5 select-none"
               >
-                <img
-                  src={item.image}
-                  alt={`${item.title} by SUBASH STUDIO`}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                  <p className="text-white/70 text-xs uppercase tracking-[0.18em] mb-2">
-                    {item.category || "Featured"}
-                  </p>
-                  <h3 className="text-white font-display text-2xl">
-                    {item.title}
-                  </h3>
+                <div className="w-12 h-12 rounded-full bg-[#FAF0DE] border border-[#B38F4D]/40 flex items-center justify-center text-[#B38F4D] group-hover:bg-[#B38F4D] group-hover:text-white group-hover:scale-105 transition-all duration-300 shadow-sm">
+                  <Play size={15} className="fill-current ml-0.5" />
                 </div>
+                <span className="text-xs font-bold tracking-[0.18em] uppercase text-[#1C1B19] group-hover:text-[#B38F4D] transition-colors">
+                  Watch Our Story
+                </span>
               </Link>
             </Reveal>
-          ))}
+          </div>
         </div>
-
-        {/* VIEW PORTFOLIO BUTTON */}
-        <Reveal delay={0.3} className="mt-14 text-center">
-          <Link
-            to="/portfolio"
-            className="inline-flex items-center gap-3 px-8 py-3.5 border border-ink/20 text-ink text-[13px] font-semibold tracking-[0.12em] uppercase rounded-full hover:border-gold hover:text-gold-dark transition-all duration-300"
-          >
-            Explore Full Portfolio
-            <span className="transition-transform duration-300 hover:translate-x-1">
-              →
-            </span>
-          </Link>
-        </Reveal>
       </section>
 
-      {/* CTA BAND */}
-      <section className="relative py-28 overflow-hidden">
-        <img src="/images/girl pic for studio.webp" alt="A candid photography moment by SUBASH STUDIO" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-ink/75" />
-        <div className="relative max-w-3xl mx-auto px-6 text-center">
-          <SectionHeading
-            eyebrow="Let's Begin"
-            title="Your story deserves more than a snapshot."
-            desc="Tell us the date, the place, the people — we'll take it from there."
-            align="center"
-            light
-          />
-          <Reveal delay={0.24}>
-            <Link to="/contact" className="inline-block mt-10 px-9 py-4 bg-gold text-ink text-[13px] font-semibold tracking-[0.12em] uppercase rounded-full hover:bg-bg-soft transition-colors">
-              Book a Shoot
+      {/* =========================================================
+          SECTION 6: TESTIMONIALS (Kind Words & Keepsakes)
+      ========================================================= */}
+      <TestimonialsCarousel />
+
+      {/* =========================================================
+          SECTION 7: SELECTED WORK / PORTFOLIO (6 Image Cards)
+      ========================================================= */}
+      <section className="relative w-full bg-transparent border-t border-[#E7E0D2]/70 overflow-hidden py-20 sm:py-24">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 sm:mb-14">
+            <div>
+              <Reveal>
+                <p className="text-xs tracking-[0.25em] font-semibold text-[#B38F4D] uppercase mb-2">
+                  SELECTED WORK
+                </p>
+              </Reveal>
+              <Reveal delay={0.08}>
+                <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-[42px] text-[#1C1B19] leading-tight">
+                  Stories captured, moments preserved.
+                </h2>
+              </Reveal>
+            </div>
+
+            <Reveal delay={0.15}>
+              <Link
+                to="/portfolio"
+                className="group inline-flex items-center gap-2 text-xs sm:text-[13px] font-bold tracking-[0.14em] uppercase text-[#1C1B19] hover:text-[#B38F4D] whitespace-nowrap transition-colors"
+              >
+                <span>EXPLORE FULL PORTFOLIO</span>
+                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5">
+                  →
+                </span>
+              </Link>
+            </Reveal>
+          </div>
+
+          {/* 6 Clean Image Cards in a single row on desktop */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
+            {selectedWorkItems.map((item, idx) => (
+              <Reveal key={item.title} delay={idx * 0.06}>
+                <Link to="/portfolio" className="group block">
+                  <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-sm border border-[#E7E0D2]/80 bg-[#FAF8F5]">
+                    <img
+                      src={item.image}
+                      alt={`${item.title} by SUBASH STUDIO`}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  </div>
+
+                  <div className="mt-3">
+                    <h3 className="font-display text-[15px] sm:text-base font-bold text-[#1C1B19] group-hover:text-[#B38F4D] transition-colors line-clamp-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-[10px] text-[#8C6D32] uppercase tracking-[0.18em] font-bold mt-0.5">
+                      {item.category}
+                    </p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          SECTION 8: LARGE CTA BANNER SECTION
+      ========================================================= */}
+      <section className="relative py-24 sm:py-28 overflow-hidden">
+        <img
+          src="/images/wedding photos.jpg"
+          alt="SUBASH STUDIO authentic wedding moments"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#141210]/65 backdrop-blur-[0.5px]" />
+
+        <div className="relative max-w-3xl mx-auto px-6 text-center z-10">
+          <Reveal>
+            <h2 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl text-white leading-[1.15] text-balance">
+              Your story deserves <br className="hidden sm:inline" />
+              more than a snapshot.
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <p className="mt-4 text-[#F8F6F2]/80 text-base sm:text-lg leading-relaxed max-w-xl mx-auto font-light">
+              Let&apos;s create timeless memories together.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.16}>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 mt-8 px-9 py-4 bg-[#B38F4D] text-[#1C1B19] hover:bg-[#C9A669] text-xs font-bold tracking-[0.14em] uppercase rounded-full transition-all duration-300 shadow-lg hover:scale-105 active:scale-95"
+            >
+              <span>BOOK A SHOOT</span>
+              <ArrowRight size={14} />
             </Link>
           </Reveal>
         </div>
