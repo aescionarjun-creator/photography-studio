@@ -69,7 +69,7 @@ export default function Gallery() {
           </p>
 
           <h1 className="font-display text-5xl md:text-6xl text-ink leading-tight">
-            Thirteen collections.
+            Timeless stories.
             <br />
             One studio.
           </h1>

@@ -28,7 +28,7 @@ export default function Services() {
 
         <SectionHeading
           eyebrow="WHAT WE OFFER"
-          title="Twenty crafts, one studio standard."
+          title="Crafted with purpose. Captured with care."
           desc="Whether it's a three-day wedding or a single passport photo, every service carries the same attention to light, timing and detail."
         />
 

@@ -142,7 +142,7 @@ export default function Branches() {
       <section className="pt-40 pb-20 max-w-7xl mx-auto px-6 lg:px-10">
         <SectionHeading
           eyebrow="Find Us"
-          title="Three studios, one door always open."
+          title="Every location. One studio experience."
           desc="Walk in for a consultation, an album preview, or simply to see the space where your photographs will be made."
         />
       </section>
