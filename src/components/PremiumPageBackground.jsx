@@ -49,7 +49,9 @@ export default function PremiumPageBackground({
 
   return (
     <div
-      className={`page-background-root fixed inset-0 pointer-events-none select-none z-0 overflow-hidden bg-[#FAF7F2] ${className}`}
+      className={`page-background-root fixed inset-0 pointer-events-none select-none z-0 overflow-hidden ${
+        isAdminDashboard ? "bg-transparent" : "bg-[#FAF7F2]"
+      } ${className}`}
       aria-hidden="true"
     >
       {/* =========================================================

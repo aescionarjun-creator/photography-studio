@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   PanelsTopLeft,
@@ -23,9 +23,16 @@ export default function WebsiteContent() {
   const [activeTab, setActiveTab] = useState("home");
 
   // Local editable copies
-  const [homeForm, setHomeForm] = useState(websiteContent.home);
-  const [aboutForm, setAboutForm] = useState(websiteContent.about);
-  const [contactForm, setContactForm] = useState(websiteContent.contact);
+  const [homeForm, setHomeForm] = useState(websiteContent?.home || {});
+  const [aboutForm, setAboutForm] = useState(websiteContent?.about || {});
+  const [contactForm, setContactForm] = useState(websiteContent?.contact || {});
+
+  // Keep local tabs synced when context updates
+  useEffect(() => {
+    if (websiteContent?.home) setHomeForm(websiteContent.home);
+    if (websiteContent?.about) setAboutForm(websiteContent.about);
+    if (websiteContent?.contact) setContactForm(websiteContent.contact);
+  }, [websiteContent]);
 
   const handleSaveHome = (e) => {
     e.preventDefault();
@@ -126,7 +133,7 @@ export default function WebsiteContent() {
                 <label className="font-semibold text-[#6F6A62]">Hero Main Headline</label>
                 <input
                   type="text"
-                  value={homeForm.heroHeading}
+                  value={homeForm.heroHeading || ""}
                   onChange={(e) =>
                     setHomeForm({ ...homeForm, heroHeading: e.target.value })
                   }
@@ -138,7 +145,7 @@ export default function WebsiteContent() {
                 <label className="font-semibold text-[#6F6A62]">Hero Subtitle / Tagline</label>
                 <textarea
                   rows={2}
-                  value={homeForm.heroTagline}
+                  value={homeForm.heroTagline || ""}
                   onChange={(e) =>
                     setHomeForm({ ...homeForm, heroTagline: e.target.value })
                   }
@@ -150,7 +157,7 @@ export default function WebsiteContent() {
                 <label className="font-semibold text-[#6F6A62]">Primary Call to Action (CTA) Text</label>
                 <input
                   type="text"
-                  value={homeForm.heroCtaText}
+                  value={homeForm.heroCtaText || ""}
                   onChange={(e) =>
                     setHomeForm({ ...homeForm, heroCtaText: e.target.value })
                   }
@@ -261,7 +268,7 @@ export default function WebsiteContent() {
                   <label className="font-semibold text-[#6F6A62]">About Page Heading</label>
                   <input
                     type="text"
-                    value={aboutForm.heading}
+                    value={aboutForm.heading || ""}
                     onChange={(e) =>
                       setAboutForm({ ...aboutForm, heading: e.target.value })
                     }
@@ -273,7 +280,7 @@ export default function WebsiteContent() {
                   <label className="font-semibold text-[#6F6A62]">Established Year</label>
                   <input
                     type="text"
-                    value={aboutForm.establishedYear}
+                    value={aboutForm.establishedYear || ""}
                     onChange={(e) =>
                       setAboutForm({
                         ...aboutForm,
@@ -289,7 +296,7 @@ export default function WebsiteContent() {
                 <label className="font-semibold text-[#6F6A62]">Studio Story &amp; History</label>
                 <textarea
                   rows={4}
-                  value={aboutForm.studioStory}
+                  value={aboutForm.studioStory || ""}
                   onChange={(e) =>
                     setAboutForm({ ...aboutForm, studioStory: e.target.value })
                   }
@@ -301,7 +308,7 @@ export default function WebsiteContent() {
                 <label className="font-semibold text-[#6F6A62]">Artistic Philosophy</label>
                 <textarea
                   rows={3}
-                  value={aboutForm.philosophy}
+                  value={aboutForm.philosophy || ""}
                   onChange={(e) =>
                     setAboutForm({ ...aboutForm, philosophy: e.target.value })
                   }
@@ -341,7 +348,7 @@ export default function WebsiteContent() {
                   <label className="font-semibold text-[#6F6A62]">Primary Phone</label>
                   <input
                     type="text"
-                    value={contactForm.phone}
+                    value={contactForm.phone || ""}
                     onChange={(e) =>
                       setContactForm({ ...contactForm, phone: e.target.value })
                     }
@@ -353,7 +360,7 @@ export default function WebsiteContent() {
                   <label className="font-semibold text-[#6F6A62]">WhatsApp Hotline</label>
                   <input
                     type="text"
-                    value={contactForm.whatsapp}
+                    value={contactForm.whatsapp || ""}
                     onChange={(e) =>
                       setContactForm({ ...contactForm, whatsapp: e.target.value })
                     }
@@ -365,7 +372,7 @@ export default function WebsiteContent() {
                   <label className="font-semibold text-[#6F6A62]">Studio Email</label>
                   <input
                     type="email"
-                    value={contactForm.email}
+                    value={contactForm.email || ""}
                     onChange={(e) =>
                       setContactForm({ ...contactForm, email: e.target.value })
                     }
@@ -378,7 +385,7 @@ export default function WebsiteContent() {
                 <label className="font-semibold text-[#6F6A62]">Business &amp; Atelier Hours</label>
                 <input
                   type="text"
-                  value={contactForm.hours}
+                  value={contactForm.hours || ""}
                   onChange={(e) =>
                     setContactForm({ ...contactForm, hours: e.target.value })
                   }
@@ -398,7 +405,7 @@ export default function WebsiteContent() {
                     </label>
                     <input
                       type="url"
-                      value={contactForm.instagram}
+                      value={contactForm.instagram || ""}
                       onChange={(e) =>
                         setContactForm({ ...contactForm, instagram: e.target.value })
                       }
@@ -413,7 +420,7 @@ export default function WebsiteContent() {
                     </label>
                     <input
                       type="url"
-                      value={contactForm.facebook}
+                      value={contactForm.facebook || ""}
                       onChange={(e) =>
                         setContactForm({ ...contactForm, facebook: e.target.value })
                       }
@@ -428,7 +435,7 @@ export default function WebsiteContent() {
                     </label>
                     <input
                       type="url"
-                      value={contactForm.youtube}
+                      value={contactForm.youtube || ""}
                       onChange={(e) =>
                         setContactForm({ ...contactForm, youtube: e.target.value })
                       }

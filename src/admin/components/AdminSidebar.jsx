@@ -76,6 +76,7 @@ export const navItems = [
     path: "/admin/testimonials",
     label: "Testimonials",
     icon: Star,
+    badgeKey: "testimonials",
   },
   {
     path: "/admin/content",
@@ -96,16 +97,18 @@ export default function AdminSidebar({
   setMobileOpen,
 }) {
   const { adminUser, logout } = useAdminAuth();
-  const { bookings, enquiries, frameOrders } = useAdminData();
+  const { bookings, enquiries, frameOrders, testimonials } = useAdminData();
 
-  const newBookingsCount = bookings.filter((b) => b.status === "New").length;
-  const newEnquiriesCount = enquiries.filter((e) => e.status === "New").length;
+  const newBookingsCount = (bookings || []).filter((b) => b.status === "New").length;
+  const newEnquiriesCount = (enquiries || []).filter((e) => e.status === "New").length;
   const newFrameOrdersCount = (frameOrders || []).filter((o) => o.status === "New").length;
+  const pendingTestimonialsCount = (testimonials || []).filter((t) => !t.approved && !t.hidden).length;
 
   const getBadge = (key) => {
     if (key === "bookings" && newBookingsCount > 0) return newBookingsCount;
     if (key === "enquiries" && newEnquiriesCount > 0) return newEnquiriesCount;
     if (key === "frames" && newFrameOrdersCount > 0) return newFrameOrdersCount;
+    if (key === "testimonials" && pendingTestimonialsCount > 0) return pendingTestimonialsCount;
     return null;
   };
 

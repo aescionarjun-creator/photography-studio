@@ -20,8 +20,24 @@ import { useToast } from "../context/ToastContext";
 
 export default function Settings() {
   const { adminUser, updateProfile } = useAdminAuth();
-  const { settings, updateSettings, resetAllDemoData, bookings, enquiries, gallery } =
-    useAdminData();
+  const {
+    settings,
+    updateSettings,
+    resetAllDemoData,
+    bookings,
+    enquiries,
+    gallery,
+    portfolio,
+    services,
+    films,
+    branches,
+    testimonials,
+    websiteContent,
+    frameWoodTypes,
+    frameDesigns,
+    frameRatios,
+    frameOrders,
+  } = useAdminData();
   const { addToast } = useToast();
 
   const [activeTab, setActiveTab] = useState("profile");
@@ -104,11 +120,31 @@ export default function Settings() {
     const snapshot = {
       exportedAt: new Date().toISOString(),
       studio: "SUBASH STUDIO",
-      bookingsCount: bookings.length,
-      enquiriesCount: enquiries.length,
-      galleryCount: gallery.length,
+      counts: {
+        bookings: bookings.length,
+        enquiries: enquiries.length,
+        gallery: gallery.length,
+        portfolio: (portfolio || []).length,
+        services: services.length,
+        films: (films || []).length,
+        branches: branches.length,
+        testimonials: (testimonials || []).length,
+        frameOrders: (frameOrders || []).length,
+      },
       bookings,
       enquiries,
+      gallery,
+      portfolio,
+      services,
+      films,
+      branches,
+      testimonials,
+      websiteContent,
+      settings,
+      frameWoodTypes,
+      frameDesigns,
+      frameRatios,
+      frameOrders,
     };
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(snapshot, null, 2));
     const downloadAnchor = document.createElement("a");
@@ -117,7 +153,7 @@ export default function Settings() {
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    addToast("Data snapshot exported as JSON backup.", "success");
+    addToast("Complete studio backup exported as JSON.", "success");
   };
 
   return (

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
 import * as ReactCountUp from "react-countup";
@@ -7,13 +8,9 @@ import Reveal from "../components/Reveal";
 import WhyChooseUs from "../components/WhyChooseUs";
 import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import HomeHero from "../components/home/HomeHero";
+import { useAdminData } from "../admin/context/AdminDataContext";
 
-const stats = [
-  { end: 12, suffix: "+", label: "Years Behind the Lens" },
-  { end: 1002, suffix: "+", label: "Happy Clients" },
-  { end: 3, suffix: "", label: "Studio Branches" },
-  { end: 94, suffix: "%", label: "Client Satisfaction" },
-];
+
 
 const selectedWorkItems = [
   {
@@ -49,6 +46,29 @@ const selectedWorkItems = [
 ];
 
 export default function Home() {
+  const { portfolio, branches } = useAdminData();
+
+  const dynamicStats = useMemo(() => {
+    const activeBranches = branches?.filter((b) => b.active !== false).length || 3;
+    return [
+      { end: 12, suffix: "+", label: "Years Behind the Lens" },
+      { end: 1002, suffix: "+", label: "Happy Clients" },
+      { end: activeBranches, suffix: "", label: "Studio Branches" },
+      { end: 94, suffix: "%", label: "Client Satisfaction" },
+    ];
+  }, [branches]);
+
+  const workItems = useMemo(() => {
+    if (portfolio && portfolio.length > 0) {
+      return portfolio.slice(0, 6).map((item) => ({
+        id: item.id || item.title,
+        title: item.title,
+        category: (item.category || "PORTFOLIO").toUpperCase(),
+        image: item.image || item.coverImage || item.imageUrl || "/images/portfolio/wedding-01.jpg",
+      }));
+    }
+    return selectedWorkItems;
+  }, [portfolio]);
   return (
     <div className="relative pt-[84px]">
       <Seo
@@ -69,7 +89,7 @@ export default function Home() {
         className="bg-transparent border-b border-[#E7E0D2]/70 py-10 sm:py-12 scroll-mt-20"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E7E0D2]/80">
-          {stats.map((s, i) => (
+          {dynamicStats.map((s, i) => (
             <div
               key={s.label}
               className={`text-center py-4 sm:py-0 px-4 ${
@@ -215,7 +235,7 @@ export default function Home() {
 
           {/* 6 Clean Image Cards in a single row on desktop */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
-            {selectedWorkItems.map((item, idx) => (
+            {workItems.map((item, idx) => (
               <Reveal key={item.title} delay={idx * 0.06}>
                 <Link to="/portfolio" className="group block">
                   <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-sm border border-[#E7E0D2]/80 bg-[#FAF8F5]">

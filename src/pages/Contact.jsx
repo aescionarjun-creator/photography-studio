@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send, Check, ExternalLink, Navigation } from "lucide-react";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
@@ -30,15 +30,36 @@ const STUDIO_LOCATIONS = [
 ];
 
 export default function Contact() {
-  const { addEnquiry, services: adminServices } = useAdminData();
+  const { addEnquiry, services: adminServices, branches } = useAdminData();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [selectedBranchId, setSelectedBranchId] = useState("tirunelveli");
   const [phoneValue, setPhoneValue] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
+  const studioLocations = useMemo(() => {
+    if (branches && branches.length > 0) {
+      return branches
+        .filter((b) => b.active !== false)
+        .map((b) => ({
+          id: b.id || (b.city || b.name || "").toLowerCase().replace(/\s+/g, "-"),
+          name: b.name || `${b.city} Studio`,
+          city: b.city || "Studio Branch",
+          tag: b.tag || "Studio & Consultation Lounge",
+          address: b.address || "",
+          embedUrl: b.city?.toLowerCase().includes("kalladaikurichi")
+            ? "https://www.google.com/maps?q=subashstudio,Kalladaikurichi,TamilNadu&output=embed"
+            : (b.city?.toLowerCase().includes("tirunelveli")
+                ? "https://maps.google.com/maps?q=8.7023167,77.7226628&hl=en&z=16&output=embed"
+                : `https://maps.google.com/maps?q=${encodeURIComponent(b.address || b.city)}&output=embed`),
+          mapsUrl: b.mapsUrl || `https://maps.google.com/?q=Subash+Studio+${encodeURIComponent(b.city || "")}`,
+        }));
+    }
+    return STUDIO_LOCATIONS;
+  }, [branches]);
+
   const servicesList = adminServices && adminServices.length > 0 ? adminServices : defaultServices;
-  const currentBranch = STUDIO_LOCATIONS.find((loc) => loc.id === selectedBranchId) || STUDIO_LOCATIONS[0];
+  const currentBranch = studioLocations.find((loc) => loc.id === selectedBranchId) || studioLocations[0];
 
   const handlePhoneChange = (e) => {
     const raw = e.target.value;
@@ -220,8 +241,8 @@ export default function Contact() {
 
               <div className="pt-3 border-t border-bg-soft/10 space-y-3">
                 <p className="text-[11px] uppercase tracking-[0.14em] text-gold-light/75 font-semibold">Our Studio Locations</p>
-                {STUDIO_LOCATIONS.map((loc) => {
-                  const isSelected = selectedBranchId === loc.id;
+                {studioLocations.map((loc) => {
+                  const isSelected = currentBranch?.id === loc.id;
                   return (
                     <button
                       key={loc.id}

@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   CalendarDays,
   MessageSquare,
@@ -12,12 +11,8 @@ import {
   MapPin,
   Plus,
   ArrowRight,
-  TrendingUp,
-  Phone,
-  Calendar,
-  ExternalLink,
-  Clapperboard,
   Briefcase,
+  Clapperboard,
   Eye,
   Frame,
   Star,
@@ -50,45 +45,129 @@ export default function Dashboard() {
     return "Good Evening";
   };
 
-  // Metrics
+  // Metrics directly derived from AdminDataContext
   const totalBookings = bookings.length;
-  const newEnquiries = enquiries.filter((e) => e.status === "New").length;
+  const pendingBookings = bookings.filter((b) => b.status === "New" || b.status === "Contacted").length;
   const confirmedBookings = bookings.filter((b) => b.status === "Confirmed").length;
   const completedShoots = bookings.filter((b) => b.status === "Completed").length;
   const cancelledBookings = bookings.filter((b) => b.status === "Cancelled").length;
-  const totalGallery = gallery.length;
-  const totalServices = services.length;
-  const totalBranches = branches.length;
-  const newFrameOrders = (frameOrders || []).filter((o) => o.status === "New").length;
-  const googleReviews = (testimonials || []).filter((t) => t.source === "google");
-  const pendingGoogleReviews = googleReviews.filter((t) => !t.approved && !t.hidden).length;
 
-  // Upcoming shoots (sorted by date)
-  const upcomingShoots = [...bookings]
-    .filter((b) => b.status === "Confirmed" || b.status === "In Progress" || b.status === "New")
-    .slice(0, 5);
+  const totalEnquiries = enquiries.length;
+  const newEnquiries = enquiries.filter((e) => e.status === "New").length;
+
+  const totalGallery = gallery.length;
+  const totalPortfolio = (portfolio || []).length;
+  const totalServices = services.length;
+  const totalFilms = (films || []).length;
+  const totalBranches = branches.length;
+  const totalTestimonials = (testimonials || []).length;
+
+  const totalFrameOrders = (frameOrders || []).length;
+  const newFrameOrders = (frameOrders || []).filter((o) => o.status === "New").length;
+
+  // Upcoming shoots (sorted by event date ascending)
+  const upcomingShoots = useMemo(() => {
+    return [...bookings]
+      .filter((b) => b.status === "Confirmed" || b.status === "In Progress" || b.status === "New")
+      .sort((a, b) => {
+        const timeA = a.eventDate ? new Date(a.eventDate).getTime() : 0;
+        const timeB = b.eventDate ? new Date(b.eventDate).getTime() : 0;
+        return timeA - timeB;
+      })
+      .slice(0, 5);
+  }, [bookings]);
 
   // Recent enquiries
-  const recentEnquiries = [...enquiries].slice(0, 4);
+  const recentEnquiries = useMemo(() => {
+    return [...enquiries].slice(0, 4);
+  }, [enquiries]);
 
-  // Monthly breakdown mock data for SVG chart
-  const monthlyData = [
-    { month: "Mar", count: 8, revenue: "₹6.4L" },
-    { month: "Apr", count: 14, revenue: "₹11.2L" },
-    { month: "May", count: 19, revenue: "₹15.8L" },
-    { month: "Jun", count: 12, revenue: "₹9.5L" },
-    { month: "Jul", count: 16, revenue: "₹13.0L" },
-    { month: "Aug", count: 22, revenue: "₹18.4L" },
-  ];
-  const maxCount = Math.max(...monthlyData.map((d) => d.count));
+  // Dynamic monthly shoot visualizer derived from actual bookings
+  const monthlyData = useMemo(() => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const now = new Date();
+    const result = [];
 
-  // Service distribution
-  const serviceStats = [
-    { name: "Wedding Photography", count: 42, percentage: 48 },
-    { name: "Pre-Wedding Shoots", count: 24, percentage: 28 },
-    { name: "Cinematic Wedding Films", count: 18, percentage: 20 },
-    { name: "Baby & Maternity", count: 10, percentage: 12 },
-  ];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      result.push({
+        month: months[d.getMonth()],
+        year: d.getFullYear(),
+        monthIndex: d.getMonth(),
+        count: 0,
+        revenueNum: 0,
+      });
+    }
+
+    bookings.forEach((b) => {
+      const dateStr = b.eventDate || b.createdAt;
+      if (!dateStr) return;
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return;
+      const mIdx = d.getMonth();
+      const yr = d.getFullYear();
+      const target = result.find((m) => m.monthIndex === mIdx && m.year === yr);
+      if (target) {
+        target.count += 1;
+        const rawBudget = parseInt((b.budget || "0").replace(/[^0-9]/g, ""), 10) || 0;
+        target.revenueNum += rawBudget;
+      }
+    });
+
+    return result.map((m) => {
+      let revenueStr = "₹0";
+      if (m.revenueNum >= 100000) {
+        revenueStr = `₹${(m.revenueNum / 100000).toFixed(1)}L`;
+      } else if (m.revenueNum > 0) {
+        revenueStr = `₹${(m.revenueNum / 1000).toFixed(0)}k`;
+      }
+      return {
+        month: m.month,
+        count: m.count,
+        revenue: revenueStr,
+      };
+    });
+  }, [bookings]);
+
+  const maxCount = Math.max(1, ...monthlyData.map((d) => d.count));
+
+  // Dynamic service demand distribution derived from services and bookings
+  const serviceStats = useMemo(() => {
+    if (!services || services.length === 0) return [];
+    const counts = {};
+    services.forEach((s) => {
+      counts[s.name] = 0;
+    });
+
+    bookings.forEach((b) => {
+      const srvName = b.requiredService || b.service;
+      if (!srvName) return;
+      if (counts[srvName] !== undefined) {
+        counts[srvName] += 1;
+      } else {
+        const match = services.find((s) =>
+          s.name.toLowerCase().includes(srvName.toLowerCase()) ||
+          srvName.toLowerCase().includes(s.name.toLowerCase())
+        );
+        if (match) counts[match.name] = (counts[match.name] || 0) + 1;
+      }
+    });
+
+    const totalAssigned = Object.values(counts).reduce((a, b) => a + b, 0);
+
+    return services
+      .map((s) => {
+        const count = counts[s.name] || 0;
+        const percentage = totalAssigned > 0 ? Math.round((count / totalAssigned) * 100) : 0;
+        return {
+          name: s.name,
+          count,
+          percentage,
+        };
+      })
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+  }, [services, bookings]);
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -98,29 +177,25 @@ export default function Dashboard() {
         <div className="pointer-events-none absolute -right-16 -top-16 w-64 h-64 bg-[#FBF7F0] rounded-full blur-2xl opacity-70" />
 
         <div className="space-y-1.5 relative z-10 min-w-0">
-          <div className="inline-flex items-center gap-1.5 text-xs text-[#7A746B] font-medium mb-0.5">
-            <Calendar className="w-3.5 h-3.5 text-[#C9A669]" />
-            <span>
-              {new Date().toLocaleDateString("en-US", {
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs text-[#8E867B] font-medium">
+              {new Date().toLocaleDateString("en-IN", {
                 weekday: "long",
-                month: "short",
                 day: "numeric",
+                month: "short",
                 year: "numeric",
               })}
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-[#1C1B19] tracking-tight">
-            {getGreeting()},{" "}
-            <span className="bg-gradient-to-r from-[#8C6D32] to-[#C9A669] bg-clip-text text-transparent">
-              {adminUser?.name || "Subash"}
-            </span>
+          <h2 className="text-xl sm:text-2xl font-display font-bold text-[#2B2B2B] tracking-tight">
+            {getGreeting()}, {adminUser?.name || "Subash"}
           </h2>
-          <p className="text-xs sm:text-sm text-[#6F6A62] max-w-xl leading-relaxed">
-            Here is what is happening across your studio shoots, incoming bride &amp; groom enquiries, and media assets today.
+          <p className="text-xs text-[#6F6A62] max-w-xl">
+            Real-time synchronization across bookings, client enquiries, portfolio, framing orders, and studio operations.
           </p>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Button & Quick Status */}
         <div className="flex items-center gap-2.5 relative z-10 shrink-0">
           {newFrameOrders > 0 ? (
             <Link
@@ -153,8 +228,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 8 Statistic Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+      {/* Dynamic Statistics Cards Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
         <StatCard
           title="Total Bookings"
           value={totalBookings}
@@ -164,18 +239,84 @@ export default function Dashboard() {
           onClick={() => navigate("/admin/bookings")}
         />
         <StatCard
-          title="New Enquiries"
-          value={newEnquiries}
+          title="Pending Bookings"
+          value={pendingBookings}
+          icon={Clock}
+          description="Awaiting shoot date"
+          accent={pendingBookings > 0 ? "gold" : "neutral"}
+          onClick={() => navigate("/admin/bookings")}
+        />
+        <StatCard
+          title="Total Enquiries"
+          value={totalEnquiries}
           icon={MessageSquare}
-          trend={`${newEnquiries} awaiting review`}
-          accent="gold"
+          trend={newEnquiries > 0 ? `${newEnquiries} new lead${newEnquiries > 1 ? "s" : ""}` : undefined}
+          description={newEnquiries === 0 ? "All leads addressed" : undefined}
+          accent={newEnquiries > 0 ? "gold" : "neutral"}
           onClick={() => navigate("/admin/enquiries")}
+        />
+        <StatCard
+          title="Frame Orders"
+          value={totalFrameOrders}
+          icon={Frame}
+          trend={newFrameOrders > 0 ? `${newFrameOrders} new order${newFrameOrders > 1 ? "s" : ""}` : undefined}
+          description={newFrameOrders === 0 ? "Bespoke framing orders" : undefined}
+          accent={newFrameOrders > 0 ? "gold" : "neutral"}
+          onClick={() => navigate("/admin/frames")}
+        />
+        <StatCard
+          title="Gallery Items"
+          value={totalGallery}
+          icon={Images}
+          description="High-res photos"
+          accent="neutral"
+          onClick={() => navigate("/admin/gallery")}
+        />
+        <StatCard
+          title="Portfolio Items"
+          value={totalPortfolio}
+          icon={Briefcase}
+          description="Curated stories"
+          accent="neutral"
+          onClick={() => navigate("/admin/portfolio")}
+        />
+        <StatCard
+          title="Services"
+          value={totalServices}
+          icon={Camera}
+          description="Active packages"
+          accent="neutral"
+          onClick={() => navigate("/admin/services")}
+        />
+        <StatCard
+          title="Films"
+          value={totalFilms}
+          icon={Clapperboard}
+          description="Cinematic films"
+          accent="neutral"
+          onClick={() => navigate("/admin/films")}
+        />
+        <StatCard
+          title="Branches"
+          value={totalBranches}
+          icon={MapPin}
+          description="Studios & lounges"
+          accent="neutral"
+          onClick={() => navigate("/admin/branches")}
+        />
+        <StatCard
+          title="Testimonials"
+          value={totalTestimonials}
+          icon={Star}
+          description="Client reviews"
+          accent="neutral"
+          onClick={() => navigate("/admin/testimonials")}
         />
         <StatCard
           title="Confirmed Shoots"
           value={confirmedBookings}
           icon={CheckCircle2}
-          description="Upcoming schedule"
+          description="Confirmed on calendar"
           accent="neutral"
           onClick={() => navigate("/admin/bookings")}
         />
@@ -186,38 +327,6 @@ export default function Dashboard() {
           description="Successfully archived"
           accent="neutral"
           onClick={() => navigate("/admin/bookings")}
-        />
-        <StatCard
-          title="Cancelled Shoots"
-          value={cancelledBookings}
-          icon={XCircle}
-          description="Postponed or cancelled"
-          accent="neutral"
-          onClick={() => navigate("/admin/bookings")}
-        />
-        <StatCard
-          title="Gallery Images"
-          value={totalGallery}
-          icon={Images}
-          description="High-res photos"
-          accent="neutral"
-          onClick={() => navigate("/admin/gallery")}
-        />
-        <StatCard
-          title="Active Services"
-          value={totalServices}
-          icon={Camera}
-          description="Studio packages"
-          accent="neutral"
-          onClick={() => navigate("/admin/services")}
-        />
-        <StatCard
-          title="Active Branches"
-          value={totalBranches}
-          icon={MapPin}
-          description="Studios & lounges"
-          accent="neutral"
-          onClick={() => navigate("/admin/branches")}
         />
       </div>
 
@@ -282,7 +391,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Analytics Section: Monthly Shoot Bar Chart & Service Distribution */}
+      {/* Analytics Section: Monthly Shoot Visualizer & Dynamic Service Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 min-w-0">
         {/* Left: Monthly Shoots Visualizer */}
         <div className="lg:col-span-7 bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm space-y-5 min-w-0">
@@ -296,25 +405,27 @@ export default function Dashboard() {
               </h3>
             </div>
             <span className="text-xs px-2.5 py-1 bg-[#F8F6F2] text-[#9C7B3D] rounded-full font-semibold border border-[#E7E0D2] shrink-0">
-              2026 Season
+              {new Date().getFullYear()} Season
             </span>
           </div>
 
           {/* Minimalist Interactive Bar Chart */}
           <div className="h-56 flex items-end justify-between gap-2 sm:gap-3 pt-8 pb-2 px-1 sm:px-2 border-b border-[#E7E0D2] relative">
             {monthlyData.map((item, idx) => {
-              const heightPercent = (item.count / maxCount) * 100;
+              const heightPercent = Math.max(item.count > 0 ? 8 : 2, (item.count / maxCount) * 100);
               return (
                 <div key={idx} className="flex-1 flex flex-col items-center h-full justify-end group relative min-w-0">
-                  {/* Tooltip on hover - positioned absolutely so it never expands flex width */}
+                  {/* Tooltip on hover */}
                   <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-center pointer-events-none z-20">
                     <span className="bg-[#2B2B2B] text-[#E4D3A6] text-[10px] py-1 px-2 rounded-md font-bold shadow whitespace-nowrap">
-                      {item.count} Shoots ({item.revenue})
+                      {item.count} Shoot{item.count === 1 ? "" : "s"} ({item.revenue})
                     </span>
                   </div>
                   {/* Bar */}
-                  <div className="w-full max-w-[42px] bg-[#F4EFE6] group-hover:bg-[#C9A669] rounded-t-xl transition-all duration-300 relative overflow-hidden"
-                       style={{ height: `${heightPercent}%` }}>
+                  <div
+                    className="w-full max-w-[42px] bg-[#F4EFE6] group-hover:bg-[#C9A669] rounded-t-xl transition-all duration-300 relative overflow-hidden"
+                    style={{ height: `${heightPercent}%` }}
+                  >
                     <div className="absolute inset-x-0 bottom-0 top-0 bg-gradient-to-t from-[#9C7B3D]/30 to-transparent opacity-0 group-hover:opacity-100" />
                   </div>
                   {/* Label */}
@@ -329,13 +440,15 @@ export default function Dashboard() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs text-[#6F6A62] pt-1 min-w-0">
             <span className="flex items-center gap-2 min-w-0 truncate">
               <span className="w-2.5 h-2.5 rounded-full bg-[#C9A669] shrink-0" />
-              <span className="truncate">Peak Season: August &amp; Wedding Auspicious Muhurtham</span>
+              <span className="truncate">Active Calendar Shoots &amp; Muhurtham Seasons</span>
             </span>
-            <span className="font-semibold text-[#2B2B2B] shrink-0 pl-4 sm:pl-0">91 Total Shoots YTD</span>
+            <span className="font-semibold text-[#2B2B2B] shrink-0 pl-4 sm:pl-0">
+              {totalBookings} Total Shoot{totalBookings === 1 ? "" : "s"} YTD
+            </span>
           </div>
         </div>
 
-        {/* Right: Popular Services Breakdown */}
+        {/* Right: Popular Services Breakdown (Dynamically Computed) */}
         <div className="lg:col-span-5 bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm space-y-4 min-w-0">
           <div>
             <span className="text-[11px] uppercase font-bold tracking-wider text-[#6F6A62]">
@@ -347,20 +460,28 @@ export default function Dashboard() {
           </div>
 
           <div className="space-y-4">
-            {serviceStats.map((srv, idx) => (
-              <div key={idx} className="space-y-1.5 min-w-0">
-                <div className="flex items-center justify-between text-xs font-medium gap-2 min-w-0">
-                  <span className="text-[#2B2B2B] truncate">{srv.name}</span>
-                  <span className="text-[#9C7B3D] font-bold shrink-0 pl-2">{srv.count} shoots ({srv.percentage}%)</span>
+            {serviceStats.length > 0 ? (
+              serviceStats.map((srv, idx) => (
+                <div key={idx} className="space-y-1.5 min-w-0">
+                  <div className="flex items-center justify-between text-xs font-medium gap-2 min-w-0">
+                    <span className="text-[#2B2B2B] truncate">{srv.name}</span>
+                    <span className="text-[#9C7B3D] font-bold shrink-0 pl-2">
+                      {srv.count} shoot{srv.count === 1 ? "" : "s"} ({srv.percentage}%)
+                    </span>
+                  </div>
+                  <div className="w-full h-2.5 bg-[#F8F6F2] rounded-full overflow-hidden border border-[#E7E0D2]/80">
+                    <div
+                      className="h-full bg-gradient-to-r from-[#C9A669] to-[#9C7B3D] rounded-full transition-all duration-500"
+                      style={{ width: `${Math.max(srv.percentage > 0 ? 4 : 0, srv.percentage)}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="w-full h-2.5 bg-[#F8F6F2] rounded-full overflow-hidden border border-[#E7E0D2]/80">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#C9A669] to-[#9C7B3D] rounded-full transition-all duration-500"
-                    style={{ width: `${srv.percentage}%` }}
-                  />
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-xs text-[#6F6A62] py-4 text-center">
+                No services configured yet.
+              </p>
+            )}
           </div>
 
           <div className="pt-2 border-t border-[#E7E0D2]/80">
@@ -377,7 +498,6 @@ export default function Dashboard() {
 
       {/* Two Column Layout: Upcoming Shoots & Recent Enquiries */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        
         {/* Upcoming Shoots Table */}
         <div className="lg:col-span-7 bg-white rounded-xl p-4 sm:p-5 border border-[#E7E0D2] shadow-sm space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#E7E0D2]">
@@ -385,7 +505,7 @@ export default function Dashboard() {
               <h3 className="font-display font-semibold text-base text-[#2B2B2B]">
                 Upcoming Scheduled Shoots
               </h3>
-              <p className="text-xs text-[#6F6A62]">Next confirmed client sessions</p>
+              <p className="text-xs text-[#6F6A62]">Next client sessions in calendar order</p>
             </div>
             <Link
               to="/admin/bookings"
@@ -408,34 +528,44 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F8F6F2]">
-                {upcomingShoots.map((b) => (
-                  <tr key={b.id} className="hover:bg-[#FDFBF7] transition-colors">
-                    <td className="py-3 font-medium text-[#2B2B2B]">
-                      <div className="font-semibold">{b.customerName}</div>
-                      <div className="text-[10px] text-[#8E867B]">{b.location}</div>
-                    </td>
-                    <td className="py-3 text-[#6F6A62]">{b.requiredService}</td>
-                    <td className="py-3 font-medium text-[#2B2B2B]">
-                      {new Date(b.eventDate).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                    <td className="py-3">
-                      <StatusBadge status={b.status} size="sm" />
-                    </td>
-                    <td className="py-3 text-right">
-                      <button
-                        onClick={() => navigate(`/admin/bookings?id=${b.id}`)}
-                        className="p-1.5 text-[#6F6A62] hover:text-[#9C7B3D] rounded-lg hover:bg-[#F8F6F2]"
-                        title="View Shoot Details"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
+                {upcomingShoots.length > 0 ? (
+                  upcomingShoots.map((b) => (
+                    <tr key={b.id} className="hover:bg-[#FDFBF7] transition-colors">
+                      <td className="py-3 font-medium text-[#2B2B2B]">
+                        <div className="font-semibold">{b.customerName}</div>
+                        <div className="text-[10px] text-[#8E867B]">{b.location}</div>
+                      </td>
+                      <td className="py-3 text-[#6F6A62]">{b.requiredService}</td>
+                      <td className="py-3 font-medium text-[#2B2B2B]">
+                        {b.eventDate
+                          ? new Date(b.eventDate).toLocaleDateString("en-IN", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "TBD"}
+                      </td>
+                      <td className="py-3">
+                        <StatusBadge status={b.status} size="sm" />
+                      </td>
+                      <td className="py-3 text-right">
+                        <button
+                          onClick={() => navigate(`/admin/bookings?id=${b.id}`)}
+                          className="p-1.5 text-[#6F6A62] hover:text-[#9C7B3D] rounded-lg hover:bg-[#F8F6F2]"
+                          title="View Shoot Details"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-xs text-[#6F6A62]">
+                      No upcoming shoots scheduled.
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -460,35 +590,40 @@ export default function Dashboard() {
           </div>
 
           <div className="space-y-2.5">
-            {recentEnquiries.map((enq) => (
-              <div
-                key={enq.id}
-                onClick={() => navigate("/admin/enquiries")}
-                className="p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] cursor-pointer transition-all space-y-1.5 min-w-0"
-              >
-                <div className="flex items-start justify-between gap-2 min-w-0">
-                  <div className="min-w-0">
-                    <h4 className="text-xs font-bold text-[#2B2B2B] truncate">
-                      {enq.clientName || enq.name || "Anonymous"}
-                    </h4>
-                    <p className="text-[11px] text-[#9C7B3D] font-medium truncate">
-                      {enq.interestedService || enq.service || "General Inquiry"}
-                    </p>
+            {recentEnquiries.length > 0 ? (
+              recentEnquiries.map((enq) => (
+                <div
+                  key={enq.id}
+                  onClick={() => navigate("/admin/enquiries")}
+                  className="p-3 rounded-lg border border-[#E7E0D2] hover:border-[#C9A669] hover:bg-[#FDFBF7] cursor-pointer transition-all space-y-1.5 min-w-0"
+                >
+                  <div className="flex items-start justify-between gap-2 min-w-0">
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-[#2B2B2B] truncate">
+                        {enq.clientName || enq.name || "Anonymous"}
+                      </h4>
+                      <p className="text-[11px] text-[#9C7B3D] font-medium truncate">
+                        {enq.interestedService || enq.service || "General Inquiry"}
+                      </p>
+                    </div>
+                    <StatusBadge status={enq.status} size="sm" />
                   </div>
-                  <StatusBadge status={enq.status} size="sm" />
+                  <p className="text-xs text-[#6F6A62] line-clamp-2 leading-relaxed break-words">
+                    "{enq.message || enq.notes || enq.clientMessage || "No message provided."}"
+                  </p>
+                  <div className="flex items-center justify-between text-[11px] text-[#8E867B] pt-1">
+                    <span>{enq.phone || "No phone"}</span>
+                    <span>{enq.receivedDate || enq.createdAt || ""}</span>
+                  </div>
                 </div>
-                <p className="text-xs text-[#6F6A62] line-clamp-2 leading-relaxed break-words">
-                  "{enq.message || enq.notes || enq.clientMessage || "No message provided."}"
-                </p>
-                <div className="flex items-center justify-between text-[11px] text-[#8E867B] pt-1">
-                  <span>{enq.phone || "No phone"}</span>
-                  <span>{enq.receivedDate || enq.createdAt || ""}</span>
-                </div>
+              ))
+            ) : (
+              <div className="py-6 text-center text-xs text-[#6F6A62]">
+                No client enquiries yet.
               </div>
-            ))}
+            )}
           </div>
         </div>
-
       </div>
     </div>
   );

@@ -149,10 +149,6 @@ export default function FramesManager() {
         <div className="pointer-events-none absolute -right-16 -top-16 w-64 h-64 bg-[#FBF7F0] rounded-full blur-2xl opacity-70" />
 
         <div className="space-y-1.5 relative z-10 min-w-0">
-          <div className="inline-flex items-center gap-1.5 text-xs text-[#7A746B] font-medium mb-0.5">
-            <Frame className="w-3.5 h-3.5 text-[#C9A669]" />
-            <span>Handcrafted Studio Framing</span>
-          </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-[#1C1B19] tracking-tight">
             Custom Frame{" "}
             <span className="bg-gradient-to-r from-[#8C6D32] to-[#C9A669] bg-clip-text text-transparent">

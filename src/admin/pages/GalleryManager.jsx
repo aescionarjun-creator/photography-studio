@@ -114,9 +114,9 @@ export default function GalleryManager() {
   const handleOpenEdit = (img) => {
     setEditingImage(img);
     setFormData({
-      title: img.title || "",
+      title: img.title || img.caption || "",
       category: img.category || "Wedding",
-      imageUrl: img.imageUrl || "",
+      imageUrl: img.imageUrl || img.src || "",
       featured: img.featured ?? false,
       published: img.published ?? true,
       aspect: img.aspect || "landscape",
@@ -126,19 +126,25 @@ export default function GalleryManager() {
 
   const handleSaveImage = (e) => {
     e.preventDefault();
-    if (!formData.imageUrl) {
+    const effectiveUrl = formData.imageUrl || formData.src || "";
+    if (!effectiveUrl) {
       addToast("Please provide or upload an image.", "warning");
       return;
     }
 
+    const payload = {
+      ...formData,
+      imageUrl: effectiveUrl,
+      src: effectiveUrl,
+      title: formData.title || `${formData.category} Special Moment`,
+      caption: formData.title || `${formData.category} Special Moment`,
+    };
+
     if (editingImage) {
-      updateGalleryImage(editingImage.id, formData);
+      updateGalleryImage(editingImage.id, payload);
       addToast("Gallery photo updated successfully.", "success");
     } else {
-      addGalleryImage({
-        ...formData,
-        title: formData.title || `${formData.category} Special Moment`,
-      });
+      addGalleryImage(payload);
       addToast("New photo added to gallery.", "success");
     }
 

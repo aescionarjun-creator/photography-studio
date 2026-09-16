@@ -30,7 +30,7 @@ export default function HomeHero() {
 
   return (
     <section
-      className="relative w-full min-h-[auto] lg:min-h-[640px] lg:h-[clamp(650px,47.2vw,880px)] lg:max-h-[calc(100vh-84px)] flex flex-col justify-start overflow-hidden bg-[#FAF7F2] border-b border-[#E7E0D2]/70"
+      className="relative w-full min-h-[auto] lg:min-h-[600px] lg:h-[clamp(620px,46vw,840px)] flex flex-col justify-start overflow-hidden bg-[#FAF7F2] border-b border-[#E7E0D2]/70"
       aria-label="Subash Studio Welcome"
     >
       {/* =========================================================
@@ -70,31 +70,31 @@ export default function HomeHero() {
       </div>
 
       {/* =========================================================
-          LAYER 2: DESKTOP RIGHT-SIDE INTEGRATED STOREFRONT PHOTO (z-10)
+          LAYER 2: DESKTOP RIGHT-SIDE STOREFRONT PHOTO (z-10)
           Dominant architectural visual spanning the right side of the hero canvas.
-          Begins immediately at top: 0 below the Navbar and grounds at bottom: 0.
-          SHARP, CRISP, VIBRANT, FULL-CONTRAST photograph with opacity: 1.
-          Gentle left-edge feather ONLY; right side fills completely flush to the screen edge.
-          Preserves complete storefront: sky + top camera logo + wooden facade +
-          backlit couple photo + Tamil signage + entrance doors + reflective stone pavement.
+          Calibrated with responsive widths (w-[50%] xl:w-[46%] 2xl:w-[42%] max-w-[840px])
+          so that on both Laptop and PC screens:
+          - Words never collide with the photo (comfortable breathing room)
+          - No excessive empty gap on laptops
+          - Storefront building, signage, couple photo, and right trees remain fully visible
       ========================================================= */}
       <div
-        className="hidden lg:flex absolute top-0 bottom-0 right-0 w-[58%] xl:w-[56%] 2xl:w-[55%] items-end justify-end z-10 pointer-events-none select-none overflow-hidden"
+        className="hidden lg:flex absolute top-0 bottom-0 right-0 w-[50%] xl:w-[46%] 2xl:w-[42%] max-w-[840px] items-end justify-end z-10 pointer-events-none select-none overflow-hidden"
         aria-hidden="true"
       >
-        <div className="relative h-full aspect-square flex items-end justify-end shrink-0">
-          {/* Main Storefront Photograph extending flush to the right edge */}
+        <div className="relative h-full w-full flex items-end justify-end">
+          {/* Main Storefront Photograph anchored flush to the right edge */}
           <img
             src="/images/storefront.jpg"
             alt="Subash Studio storefront"
             loading="eager"
             fetchPriority="high"
-            className="h-full w-full object-cover object-top"
+            className="h-full w-full object-cover object-[right_top]"
             style={{
               WebkitMaskImage:
-                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 2%, black 6%, black 100%)",
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 3%, black 9%, black 100%)",
               maskImage:
-                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 2%, black 6%, black 100%)",
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 3%, black 9%, black 100%)",
             }}
           />
         </div>
@@ -127,13 +127,13 @@ export default function HomeHero() {
             >
               <span
                 className="block text-[#1C1B19] font-bold"
-                style={{ fontSize: "clamp(2.85rem, 5.2vw, 5.6rem)" }}
+                style={{ fontSize: "clamp(2.4rem, 5.2vw, 5.6rem)" }}
               >
                 Subash
               </span>
               <span
                 className="block text-[#B38F4D] font-normal italic mt-1 sm:mt-1.5 lg:whitespace-nowrap"
-                style={{ fontSize: "clamp(2.85rem, 5.2vw, 5.6rem)" }}
+                style={{ fontSize: "clamp(2.4rem, 5.2vw, 5.6rem)" }}
               >
                 Photography
               </span>
@@ -176,12 +176,12 @@ export default function HomeHero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.28, ease: [0.25, 1, 0.5, 1] }}
-              className="flex items-center gap-4 sm:gap-5 mt-6 sm:mt-7 xl:mt-8 w-fit"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 lg:gap-5 mt-6 sm:mt-7 xl:mt-8 w-full sm:w-fit sm:mx-auto lg:mx-0"
             >
               {/* Primary: BOOK A SHOOT (~210px-225px x 52px-58px) */}
               <Link
                 to="/contact"
-                className="group w-[210px] xl:w-[220px] h-[52px] xl:h-[56px] bg-[#B38F4D] hover:bg-[#9C7B3D] text-white rounded-full text-[12px] font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-[0_8px_20px_-4px_rgba(179,143,77,0.38)] hover:shadow-lg hover:scale-[1.02] active:scale-95 inline-flex items-center justify-center gap-2.5 shrink-0"
+                className="group w-full sm:w-[210px] xl:w-[220px] h-[50px] sm:h-[52px] xl:h-[56px] bg-[#B38F4D] hover:bg-[#9C7B3D] text-white rounded-full text-[12px] font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-[0_8px_20px_-4px_rgba(179,143,77,0.38)] hover:shadow-lg hover:scale-[1.02] active:scale-95 inline-flex items-center justify-center gap-2.5 shrink-0"
               >
                 <span>BOOK A SHOOT</span>
                 <ArrowRight
@@ -193,7 +193,7 @@ export default function HomeHero() {
               {/* Secondary: EXPLORE OUR WORK (~230px-245px x 52px-58px) */}
               <Link
                 to="/portfolio"
-                className="group w-[230px] xl:w-[240px] h-[52px] xl:h-[56px] bg-[#FAF7F2]/80 hover:bg-[#1C1B19] border border-[#B38F4D]/70 hover:border-[#1C1B19] text-[#1C1B19] hover:text-[#F8F6F2] rounded-full text-[12px] font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95 inline-flex items-center justify-center gap-2.5 shrink-0"
+                className="group w-full sm:w-[230px] xl:w-[240px] h-[50px] sm:h-[52px] xl:h-[56px] bg-[#FAF7F2]/80 hover:bg-[#1C1B19] border border-[#B38F4D]/70 hover:border-[#1C1B19] text-[#1C1B19] hover:text-[#F8F6F2] rounded-full text-[12px] font-bold tracking-[0.16em] uppercase transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95 inline-flex items-center justify-center gap-2.5 shrink-0"
               >
                 <span>EXPLORE OUR WORK</span>
                 <ArrowRight
@@ -212,16 +212,16 @@ export default function HomeHero() {
             <img
               src="/images/storefront.jpg"
               alt="Subash Studio storefront"
-              className="w-full aspect-square object-contain object-bottom"
+              className="w-full aspect-square object-cover object-center"
             />
           </div>
 
-          {/* Scroll Down Indicator - Horizontally centered relative to the buttons/editorial content */}
+          {/* Scroll Down Indicator - Horizontally centered across mobile/tablet and aligned under buttons on desktop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.36 }}
-            className="w-[456px] max-w-full xl:w-[480px] flex flex-col items-center gap-2 mt-8 sm:mt-9 xl:mt-10 select-none"
+            className="w-full lg:w-[456px] xl:w-[480px] flex flex-col items-center mx-auto lg:mx-0 gap-2 mt-8 sm:mt-9 xl:mt-10 select-none"
           >
             <span className="text-[10px] xl:text-[11px] tracking-[0.28em] uppercase font-semibold text-[#8C8275]">
               SCROLL DOWN

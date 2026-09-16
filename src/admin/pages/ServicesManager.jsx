@@ -100,10 +100,14 @@ export default function ServicesManager() {
 
     const payload = {
       name: formData.name,
+      title: formData.name,
       slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, "-"),
       image: formData.image || "/images/services/wedding-photography.jpg",
+      imageUrl: formData.image || "/images/services/wedding-photography.jpg",
       shortDesc: formData.shortDesc,
+      blurb: formData.shortDesc,
       fullDesc: formData.fullDesc,
+      description: formData.fullDesc || formData.shortDesc,
       startingPrice: formData.startingPrice,
       features,
       status: formData.status,

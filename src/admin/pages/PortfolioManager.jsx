@@ -96,13 +96,13 @@ export default function PortfolioManager() {
   const handleOpenEdit = (item) => {
     setEditingItem(item);
     setFormData({
-      title: item.title || "",
-      subtitle: item.subtitle || "",
+      title: item.title || item.client || "",
+      subtitle: item.subtitle || item.client || "",
       category: item.category || "Wedding",
-      coverImage: item.coverImage || "",
+      coverImage: item.coverImage || item.image || item.imageUrl || "",
       eventDate: item.eventDate || "",
       location: item.location || "",
-      description: item.description || "",
+      description: item.description || item.excerpt || "",
       featured: item.featured ?? false,
       published: item.published ?? true,
     });
@@ -111,16 +111,26 @@ export default function PortfolioManager() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    if (!formData.title.trim() || !formData.coverImage) {
+    const effectiveImage = formData.coverImage || "";
+    if (!formData.title.trim() || !effectiveImage) {
       addToast("Please provide project title and cover image.", "warning");
       return;
     }
 
+    const payload = {
+      ...formData,
+      coverImage: effectiveImage,
+      image: effectiveImage,
+      imageUrl: effectiveImage,
+      description: formData.description || "",
+      excerpt: formData.description || "",
+    };
+
     if (editingItem) {
-      updatePortfolio(editingItem.id, formData);
+      updatePortfolio(editingItem.id, payload);
       addToast("Portfolio project updated successfully.", "success");
     } else {
-      addPortfolio(formData);
+      addPortfolio(payload);
       addToast("New portfolio story created.", "success");
     }
 

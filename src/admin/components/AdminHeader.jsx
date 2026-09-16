@@ -21,7 +21,7 @@ import { useToast } from "../context/ToastContext";
 
 export default function AdminHeader({ onMobileMenuClick }) {
   const { adminUser, logout } = useAdminAuth();
-  const { bookings, enquiries, resetAllDemoData } = useAdminData();
+  const { bookings, enquiries, frameOrders, resetAllDemoData } = useAdminData();
   const { addToast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
@@ -57,6 +57,8 @@ export default function AdminHeader({ onMobileMenuClick }) {
         return { title: "Shoot Bookings", subtitle: "Manage client bookings, status & schedules" };
       case "/admin/enquiries":
         return { title: "Client Enquiries", subtitle: "Direct client inquiries and consultation leads" };
+      case "/admin/frames":
+        return { title: "Frame Management", subtitle: "Manage timber frames, sizes & customer orders" };
       case "/admin/gallery":
         return { title: "Gallery Management", subtitle: "Organize client images, categories & featured photos" };
       case "/admin/portfolio":
@@ -80,10 +82,11 @@ export default function AdminHeader({ onMobileMenuClick }) {
 
   const pageMeta = getPageMeta();
 
-  // Recent notifications from bookings & enquiries
-  const unreadEnquiries = enquiries.filter((e) => e.status === "New");
-  const recentBookings = bookings.slice(0, 3);
-  const totalNotifications = unreadEnquiries.length + recentBookings.length;
+  // Active unread alerts derived from AdminDataContext
+  const unreadEnquiries = (enquiries || []).filter((e) => e.status === "New");
+  const newBookings = (bookings || []).filter((b) => b.status === "New");
+  const newOrders = (frameOrders || []).filter((o) => o.status === "New");
+  const totalNotifications = unreadEnquiries.length + newBookings.length + newOrders.length;
 
   const handleResetData = () => {
     if (window.confirm("Reset all admin data back to initial demo seeds?")) {
@@ -168,9 +171,9 @@ export default function AdminHeader({ onMobileMenuClick }) {
             aria-label="View notifications"
           >
             <Bell className="w-4 h-4" />
-            {unreadEnquiries.length > 0 && (
+            {totalNotifications > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#C9A669] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow">
-                {unreadEnquiries.length}
+                {totalNotifications}
               </span>
             )}
           </button>
@@ -182,9 +185,9 @@ export default function AdminHeader({ onMobileMenuClick }) {
                   <h4 className="font-display font-semibold text-sm text-[#2B2B2B]">
                     Studio Activity
                   </h4>
-                  {unreadEnquiries.length > 0 && (
+                  {totalNotifications > 0 && (
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900">
-                      {unreadEnquiries.length} New Enquiries
+                      {totalNotifications} New Alert{totalNotifications > 1 ? "s" : ""}
                     </span>
                   )}
                 </div>
