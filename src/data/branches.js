@@ -8,7 +8,7 @@ export const branches = [
     hours: "Mon – Sun, 08:00 AM – 09:00 PM",
     image: "/images/gallery/branches/kalladaikurichi.jpg",
     mapsUrl: "https://maps.google.com/?q=Subash+Studio+Kalladaikurichi",
-    embedUrl: "https://www.google.com/maps?q=subashstudio,Kalladaikurichi,TamilNadu&output=embed",
+    embedUrl: "https://maps.google.com/maps?q=8.6890,77.4580&t=k&maptype=satellite&hl=en&z=17&output=embed",
   },
 
   {
@@ -20,8 +20,17 @@ export const branches = [
     hours: "Mon – Sun, 08:00 AM – 09:00 PM",
     image: "/images/gallery/branches/tirunelveli.jpg",
     mapsUrl: "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9",
-    embedUrl: "https://maps.google.com/maps?q=8.7023167,77.7226628&hl=en&z=16&output=embed",
+    embedUrl: "https://maps.google.com/maps?q=8.7023167,77.7226628&t=k&maptype=satellite&hl=en&z=17&output=embed",
   },
-
- 
+  {
+    city: "Tenkasi",
+    tag: "Experience Centre",
+    desc: "Client consultation and bespoke fine-art album lounge located on Courtallam Main Road.",
+    address: "14 Royal Enclave, Courtallam Main Road, Tenkasi, Tamil Nadu 627811",
+    phone: "+91 93457 06609",
+    hours: "Tue – Sun, 09:00 AM – 08:30 PM",
+    image: "/images/storefront.jpg",
+    mapsUrl: "https://maps.google.com/?q=Subash+Studio,+14+Royal+Enclave,+Courtallam+Main+Road,+Tenkasi,+Tamil+Nadu+627811",
+    embedUrl: "https://maps.google.com/maps?q=8.9580,77.3075&t=k&maptype=satellite&hl=en&z=17&output=embed",
+  },
 ];

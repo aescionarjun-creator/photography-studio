@@ -10,22 +10,37 @@ import { useAdminData } from "../admin/context/AdminDataContext";
 
 const STUDIO_LOCATIONS = [
   {
-    id: "tirunelveli",
-    name: "Tirunelveli Studio & Gallery",
-    city: "Tirunelveli",
-    tag: "Studio & Gallery",
-    address: "Ahil Complex, S Bypass Rd, next to selam RR briyani, Vasanth Nagar, Tirunelveli, Tamil Nadu 627005",
-    embedUrl: "https://maps.google.com/maps?q=8.7023167,77.7226628&hl=en&z=16&output=embed",
-    mapsUrl: "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9",
-  },
-  {
     id: "kalladaikurichi",
     name: "Kalladaikurichi Flagship Studio",
     city: "Kalladaikurichi",
     tag: "Flagship Studio & Atelier",
     address: "88 Main Road, Kalladaikurichi, Tamil Nadu 627416",
-    embedUrl: "https://www.google.com/maps?q=subashstudio,Kalladaikurichi,TamilNadu&output=embed",
-    mapsUrl: "https://maps.google.com/?q=Subash+Studio+Kalladaikurichi",
+    latitude: 8.6890,
+    longitude: 77.4580,
+    embedUrl: "https://maps.google.com/maps?q=8.6890,77.4580&t=k&maptype=satellite&hl=en&z=17&output=embed",
+    mapsUrl: "https://maps.google.com/?q=Subash+Studio,+88+Main+Road,+Kalladaikurichi,+Tamil+Nadu+627416",
+  },
+  {
+    id: "tirunelveli",
+    name: "Tirunelveli Studio & Gallery",
+    city: "Tirunelveli",
+    tag: "Studio & Gallery",
+    address: "Ahil Complex, S Bypass Rd, next to Selam RR Briyani, Vasanth Nagar, Tirunelveli, Tamil Nadu 627005",
+    latitude: 8.7023167,
+    longitude: 77.7226628,
+    embedUrl: "https://maps.google.com/maps?q=8.7023167,77.7226628&t=k&maptype=satellite&hl=en&z=17&output=embed",
+    mapsUrl: "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9",
+  },
+  {
+    id: "tenkasi",
+    name: "Tenkasi Experience Centre",
+    city: "Tenkasi",
+    tag: "Client Consultation & Album Lounge",
+    address: "14 Royal Enclave, Courtallam Main Road, Tenkasi, Tamil Nadu 627811",
+    latitude: 8.9580,
+    longitude: 77.3075,
+    embedUrl: "https://maps.google.com/maps?q=8.9580,77.3075&t=k&maptype=satellite&hl=en&z=17&output=embed",
+    mapsUrl: "https://maps.google.com/?q=Subash+Studio,+14+Royal+Enclave,+Courtallam+Main+Road,+Tenkasi,+Tamil+Nadu+627811",
   },
 ];
 
@@ -33,29 +48,38 @@ export default function Contact() {
   const { addEnquiry, services: adminServices, branches } = useAdminData();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [selectedBranchId, setSelectedBranchId] = useState("tirunelveli");
+  const [selectedBranchId, setSelectedBranchId] = useState("kalladaikurichi");
   const [phoneValue, setPhoneValue] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
   const studioLocations = useMemo(() => {
-    if (branches && branches.length > 0) {
-      return branches
-        .filter((b) => b.active !== false)
-        .map((b) => ({
-          id: b.id || (b.city || b.name || "").toLowerCase().replace(/\s+/g, "-"),
-          name: b.name || `${b.city} Studio`,
-          city: b.city || "Studio Branch",
-          tag: b.tag || "Studio & Consultation Lounge",
-          address: b.address || "",
-          embedUrl: b.city?.toLowerCase().includes("kalladaikurichi")
-            ? "https://www.google.com/maps?q=subashstudio,Kalladaikurichi,TamilNadu&output=embed"
-            : (b.city?.toLowerCase().includes("tirunelveli")
-                ? "https://maps.google.com/maps?q=8.7023167,77.7226628&hl=en&z=16&output=embed"
-                : `https://maps.google.com/maps?q=${encodeURIComponent(b.address || b.city)}&output=embed`),
-          mapsUrl: b.mapsUrl || `https://maps.google.com/?q=Subash+Studio+${encodeURIComponent(b.city || "")}`,
-        }));
-    }
-    return STUDIO_LOCATIONS;
+    return STUDIO_LOCATIONS.map((baseLoc) => {
+      const match = (branches || []).find((b) => {
+        if (b.active === false) return false;
+        const cityLower = (b.city || "").toLowerCase();
+        const nameLower = (b.name || "").toLowerCase();
+        return (
+          cityLower.includes(baseLoc.id) ||
+          baseLoc.id.includes(cityLower) ||
+          nameLower.includes(baseLoc.id)
+        );
+      });
+
+      if (match) {
+        return {
+          ...baseLoc,
+          branchDbId: match.id,
+          name: match.name || baseLoc.name,
+          city: match.city || baseLoc.city,
+          tag: match.tag || baseLoc.tag,
+          address: match.address || baseLoc.address,
+          phone: match.phone || "+91 93457 06609",
+          mapsUrl: match.mapsUrl || baseLoc.mapsUrl,
+          embedUrl: baseLoc.embedUrl,
+        };
+      }
+      return baseLoc;
+    });
   }, [branches]);
 
   const servicesList = adminServices && adminServices.length > 0 ? adminServices : defaultServices;
@@ -310,13 +334,13 @@ export default function Contact() {
           <div className="rounded-md overflow-hidden shadow-card border border-line/60 bg-card flex flex-col">
             <div className="p-3 bg-bg-soft border-b border-line flex items-center justify-between gap-2">
               <div className="flex items-center gap-1 bg-card p-1 rounded border border-line">
-                {STUDIO_LOCATIONS.map((loc) => (
+                {studioLocations.map((loc) => (
                   <button
                     key={loc.id}
                     type="button"
                     onClick={() => setSelectedBranchId(loc.id)}
                     className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
-                      selectedBranchId === loc.id
+                      currentBranch?.id === loc.id
                         ? "bg-ink text-bg-soft shadow-xs"
                         : "text-ink-soft hover:text-ink hover:bg-bg-soft"
                     }`}
