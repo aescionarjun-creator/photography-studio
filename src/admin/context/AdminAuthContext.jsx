@@ -4,9 +4,10 @@ import { Navigate, useLocation } from "react-router-dom";
 const AdminAuthContext = createContext(null);
 
 const AUTH_STORAGE_KEY = "subash_studio_admin_auth";
+const CREDENTIALS_STORAGE_KEY = "subash_studio_admin_credentials";
 const SESSION_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-const ALLOWED_ADMIN_CREDENTIALS = [
+const DEFAULT_ALLOWED_ADMIN_CREDENTIALS = [
   {
     email: (import.meta.env?.VITE_ADMIN_EMAIL || "admin@subashstudio.com").toLowerCase(),
     password: import.meta.env?.VITE_ADMIN_PASSWORD || "subash@2026",
@@ -22,6 +23,20 @@ const ALLOWED_ADMIN_CREDENTIALS = [
     avatar: "/images/admin/profile.png",
   },
 ];
+
+export function getStoredCredentials() {
+  try {
+    const stored = localStorage.getItem(CREDENTIALS_STORAGE_KEY);
+    if (!stored) return DEFAULT_ALLOWED_ADMIN_CREDENTIALS;
+    const parsed = JSON.parse(stored);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
+  } catch (err) {
+    console.warn("Failed to read credentials from storage:", err);
+  }
+  return DEFAULT_ALLOWED_ADMIN_CREDENTIALS;
+}
 
 const DEFAULT_ADMIN_USER = {
   name: "Subash",
@@ -89,8 +104,9 @@ export function AdminAuthProvider({ children }) {
           return;
         }
 
-        const matched = ALLOWED_ADMIN_CREDENTIALS.find(
-          (c) => c.email === cleanEmail && c.password === cleanPassword
+        const credentials = getStoredCredentials();
+        const matched = credentials.find(
+          (c) => c.email.toLowerCase() === cleanEmail && c.password === cleanPassword
         );
 
         if (!matched) {
@@ -153,6 +169,75 @@ export function AdminAuthProvider({ children }) {
     });
   };
 
+  const changePassword = async (currentPassword, newPassword) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const cleanCurrent = (currentPassword || "").trim();
+        const cleanNew = (newPassword || "").trim();
+
+        if (!cleanCurrent) {
+          reject(new Error("Please enter your current password."));
+          return;
+        }
+        if (!cleanNew) {
+          reject(new Error("Please enter a new password."));
+          return;
+        }
+        if (cleanNew.length < 4) {
+          reject(new Error("New password must be at least 4 characters long."));
+          return;
+        }
+
+        const credentials = getStoredCredentials();
+        const userEmail = (adminUser?.email || "").toLowerCase().trim();
+
+        // Verify that current password matches stored credentials
+        const isValidCurrent = credentials.some(
+          (c) =>
+            c.password === cleanCurrent &&
+            (!userEmail || c.email.toLowerCase() === userEmail || c.name === "Subash")
+        );
+
+        if (!isValidCurrent) {
+          reject(
+            new Error("Current password is incorrect. Please verify your current password.")
+          );
+          return;
+        }
+
+        // Update credentials with new password
+        const updatedCredentials = credentials.map((c) => {
+          if (!userEmail || c.email.toLowerCase() === userEmail || c.password === cleanCurrent || c.name === "Subash") {
+            return { ...c, password: cleanNew };
+          }
+          return c;
+        });
+
+        try {
+          localStorage.setItem(CREDENTIALS_STORAGE_KEY, JSON.stringify(updatedCredentials));
+        } catch (err) {
+          console.error("Failed to save credentials to storage:", err);
+        }
+
+        // Keep active session alive with updated timestamp
+        try {
+          const storedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
+          const parsed = safeParseAuth(storedAuth);
+          if (parsed?.user) {
+            localStorage.setItem(
+              AUTH_STORAGE_KEY,
+              JSON.stringify({ ...parsed, expiresAt: Date.now() + SESSION_DURATION_MS })
+            );
+          }
+        } catch {
+          // Fallback
+        }
+
+        resolve(true);
+      }, 300);
+    });
+  };
+
   return (
     <AdminAuthContext.Provider
       value={{
@@ -162,6 +247,7 @@ export function AdminAuthProvider({ children }) {
         login,
         logout,
         updateProfile,
+        changePassword,
       }}
     >
       {children}

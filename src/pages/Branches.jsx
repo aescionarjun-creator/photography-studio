@@ -123,10 +123,10 @@ export default function Branches() {
     image: (b.image && !b.image.includes("outdoor-01.jpg"))
       ? b.image
       : (b.city?.toLowerCase().includes("tirunelveli")
-          ? "/images/gallery/branches/tirunelveli.jpg"
-          : (b.city?.toLowerCase().includes("tenkasi")
-              ? "/images/storefront.jpg"
-              : "/images/gallery/branches/kalladaikurichi.jpg")),
+        ? "/images/gallery/branches/tirunelveli.jpg"
+        : (b.city?.toLowerCase().includes("tenkasi")
+          ? "/images/storefront.jpg"
+          : "/images/gallery/branches/kalladaikurichi.jpg")),
     mapsUrl: b.mapsUrl || (b.city?.toLowerCase().includes("tirunelveli") ? "https://maps.app.goo.gl/hh7A1jwk1hhb8svr9" : "https://maps.google.com/?q=Subash+Studio+" + encodeURIComponent(b.city || "")),
   }));
   return (
@@ -159,4 +159,4 @@ export default function Branches() {
       </section>
     </>
   );
-}
+}

@@ -12,7 +12,7 @@ import {
   Sparkles,
   AlertCircle,
 } from "lucide-react";
-import { useAdminAuth } from "../context/AdminAuthContext";
+import { useAdminAuth, getStoredCredentials } from "../context/AdminAuthContext";
 import { useToast } from "../context/ToastContext";
 import PremiumPageBackground from "../../components/PremiumPageBackground";
 
@@ -22,10 +22,10 @@ export default function AdminLogin() {
   const { login, loading } = useAdminAuth();
   const { addToast } = useToast();
 
-  const [email, setEmail] = useState("admin@subashstudio.com");
-  const [password, setPassword] = useState("subash@2026");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   const from = location.state?.from?.pathname || "/admin/dashboard";
@@ -49,8 +49,10 @@ export default function AdminLogin() {
   };
 
   const handleFillDemo = () => {
-    setEmail("admin@subashstudio.com");
-    setPassword("subash@2026");
+    const credentials = getStoredCredentials();
+    const active = credentials[0] || { email: "admin@subashstudio.com", password: "subash@2026" };
+    setEmail(active.email || "admin@subashstudio.com");
+    setPassword(active.password || "subash@2026");
     setErrorMsg("");
   };
 
@@ -146,6 +148,7 @@ export default function AdminLogin() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@subashstudio.com"
+                    autoComplete="off"
                     className="w-full pl-10 pr-4 py-3 bg-white border border-[#E7E0D2] rounded-xl text-sm text-[#2B2B2B] placeholder:text-[#AAA398] focus:outline-none focus:border-[#C9A669] transition-all shadow-sm"
                   />
                 </div>
@@ -161,7 +164,7 @@ export default function AdminLogin() {
                     type="button"
                     onClick={() =>
                       alert(
-                        "For demo mode, default credentials are prefilled. Click 'Demo Credentials' below to reset."
+                        "Default admin credentials: admin@subashstudio.com / subash@2026. You can update your password in Settings → Security & Password."
                       )
                     }
                     className="text-xs text-[#9C7B3D] hover:underline font-medium"
@@ -177,6 +180,7 @@ export default function AdminLogin() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
+                    autoComplete="new-password"
                     className="w-full pl-10 pr-11 py-3 bg-white border border-[#E7E0D2] rounded-xl text-sm text-[#2B2B2B] placeholder:text-[#AAA398] focus:outline-none focus:border-[#C9A669] transition-all shadow-sm"
                   />
                   <button

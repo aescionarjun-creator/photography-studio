@@ -12,6 +12,8 @@ import {
   Download,
   CheckCircle2,
   AlertTriangle,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import ImageUploader from "../components/ImageUploader";
 import { useAdminAuth } from "../context/AdminAuthContext";
@@ -19,7 +21,7 @@ import { useAdminData } from "../context/AdminDataContext";
 import { useToast } from "../context/ToastContext";
 
 export default function Settings() {
-  const { adminUser, updateProfile } = useAdminAuth();
+  const { adminUser, updateProfile, changePassword } = useAdminAuth();
   const {
     settings,
     updateSettings,
@@ -57,6 +59,10 @@ export default function Settings() {
     newPassword: "",
     confirmPassword: "",
   });
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [savingPassword, setSavingPassword] = useState(false);
 
   // Studio Form
   const [studioForm, setStudioForm] = useState(
@@ -90,9 +96,13 @@ export default function Settings() {
     addToast("Admin profile updated successfully.", "success");
   };
 
-  const handleSaveSecurity = (e) => {
+  const handleSaveSecurity = async (e) => {
     e.preventDefault();
-    if (!securityForm.newPassword) {
+    if (!securityForm.currentPassword.trim()) {
+      addToast("Please enter your current password.", "warning");
+      return;
+    }
+    if (!securityForm.newPassword.trim()) {
       addToast("Please enter a new password.", "warning");
       return;
     }
@@ -100,8 +110,21 @@ export default function Settings() {
       addToast("New passwords do not match.", "error");
       return;
     }
-    setSecurityForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
-    addToast("Admin password updated successfully.", "success");
+    if (securityForm.newPassword.length < 4) {
+      addToast("New password must be at least 4 characters long.", "warning");
+      return;
+    }
+
+    setSavingPassword(true);
+    try {
+      await changePassword(securityForm.currentPassword, securityForm.newPassword);
+      setSecurityForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      addToast("Admin password changed successfully! Please use it on your next login.", "success");
+    } catch (err) {
+      addToast(err.message || "Failed to update password.", "error");
+    } finally {
+      setSavingPassword(false);
+    }
   };
 
   const handleSaveStudio = (e) => {
@@ -329,55 +352,86 @@ export default function Settings() {
               </div>
               <button
                 type="submit"
-                className="px-5 py-2 rounded-xl bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold flex items-center gap-2 shadow-sm transition-all active:scale-95"
+                disabled={savingPassword}
+                className="px-5 py-2 rounded-xl bg-[#2B2B2B] text-white hover:bg-[#1C1B19] text-xs font-semibold flex items-center gap-2 shadow-sm transition-all active:scale-95 disabled:opacity-60"
               >
                 <Lock className="w-4 h-4 text-[#E4D3A6]" />
-                <span>Change Password</span>
+                <span>{savingPassword ? "Updating..." : "Change Password"}</span>
               </button>
             </div>
 
             <div className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="font-semibold text-[#6F6A62]">Current Password</label>
-                <input
-                  type="password"
-                  placeholder="••••••••••••"
-                  value={securityForm.currentPassword}
-                  onChange={(e) =>
-                    setSecurityForm({ ...securityForm, currentPassword: e.target.value })
-                  }
-                  className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                />
+                <div className="relative">
+                  <input
+                    type={showCurrentPassword ? "text" : "password"}
+                    placeholder="Enter current password"
+                    value={securityForm.currentPassword}
+                    onChange={(e) =>
+                      setSecurityForm({ ...securityForm, currentPassword: e.target.value })
+                    }
+                    className="w-full p-2.5 pr-10 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E867B] hover:text-[#2B2B2B]"
+                    aria-label={showCurrentPassword ? "Hide current password" : "Show current password"}
+                  >
+                    {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="font-semibold text-[#6F6A62]">New Password</label>
-                  <input
-                    type="password"
-                    placeholder="••••••••••••"
-                    value={securityForm.newPassword}
-                    onChange={(e) =>
-                      setSecurityForm({ ...securityForm, newPassword: e.target.value })
-                    }
-                    className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      placeholder="Enter new password"
+                      value={securityForm.newPassword}
+                      onChange={(e) =>
+                        setSecurityForm({ ...securityForm, newPassword: e.target.value })
+                      }
+                      className="w-full p-2.5 pr-10 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E867B] hover:text-[#2B2B2B]"
+                      aria-label={showNewPassword ? "Hide new password" : "Show new password"}
+                    >
+                      {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-semibold text-[#6F6A62]">Confirm New Password</label>
-                  <input
-                    type="password"
-                    placeholder="••••••••••••"
-                    value={securityForm.confirmPassword}
-                    onChange={(e) =>
-                      setSecurityForm({
-                        ...securityForm,
-                        confirmPassword: e.target.value,
-                      })
-                    }
-                    className="w-full p-2.5 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm new password"
+                      value={securityForm.confirmPassword}
+                      onChange={(e) =>
+                        setSecurityForm({
+                          ...securityForm,
+                          confirmPassword: e.target.value,
+                        })
+                      }
+                      className="w-full p-2.5 pr-10 bg-[#F8F6F2] border border-[#E7E0D2] rounded-xl text-xs text-[#2B2B2B] focus:border-[#C9A669] focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E867B] hover:text-[#2B2B2B]"
+                      aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
