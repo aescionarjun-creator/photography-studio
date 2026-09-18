@@ -1,4 +1,30 @@
-# Logs
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment and Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+!.env.example
+*.pem
+*.key
+credentials/
+secrets/
+.google_token.json
+.firebase/
+
+# Production Builds
+dist/
+dist-ssr/
+build/
+*.local
+
+# Logs and Debugging
 logs
 *.log
 npm-debug.log*
@@ -7,33 +33,25 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Uploads & Media (Local development)
+uploads/
+backend/uploads/
 
-# Environment and secrets
-.env
-.env.*
-!.env.example
-.google_token.json
-server/.google_token.json
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# OS Files
 .DS_Store
+Thumbs.db
+
+# IDE Configurations
+.vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# Playwright
-playwright/.auth/
-test-results/
+# Testing & Coverage
+coverage/
+.nyc_output
 playwright-report/
-
-# Local CLI wrappers
-powershell.cmd
+test-results/
